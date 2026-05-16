@@ -4,14 +4,19 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+  const { resolvedTheme, setTheme } = useTheme();
+
+  useEffect(() => { setMounted(true); }, []);
 
   const navLinks = [
     { label: "Sobre",     href: "/about" },
@@ -91,6 +96,17 @@ export function Navbar() {
 
           {/* Right: CTAs */}
           <div className="hidden md:flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-[8px] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-card)] transition-colors"
+              aria-label="Alternar tema"
+            >
+              {mounted && resolvedTheme === "dark" ? (
+                <Sun className="w-4 h-4" aria-hidden="true" />
+              ) : (
+                <Moon className="w-4 h-4" aria-hidden="true" />
+              )}
+            </button>
             <Button variant="secondary" size="sm" asChild>
               <Link href="/portfolio">Ver Trabalhos</Link>
             </Button>
@@ -107,6 +123,17 @@ export function Navbar() {
 
           {/* Mobile: hamburger */}
           <div className="md:hidden flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+              className="p-2 rounded-[8px] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-card)] transition-colors"
+              aria-label="Alternar tema"
+            >
+              {mounted && resolvedTheme === "dark" ? (
+                <Sun className="w-5 h-5" aria-hidden="true" />
+              ) : (
+                <Moon className="w-5 h-5" aria-hidden="true" />
+              )}
+            </button>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="p-2 rounded-[8px] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-card)] transition-colors"
