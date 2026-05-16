@@ -439,9 +439,13 @@ function ProductModal({
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const panelInitial = isMobile ? { y: "100%" } : { scale: 0.96, opacity: 0 };
-  const panelAnimate = isMobile ? { y: 0 } : { scale: 1, opacity: 1 };
-  const panelExit = isMobile ? { y: "100%" } : { scale: 0.96, opacity: 0 };
+  const panelInitial = isMobile
+    ? { y: "100%", opacity: 1, scale: 1 }
+    : { y: 0, scale: 0.96, opacity: 0 };
+  const panelAnimate = { y: 0, scale: 1, opacity: 1 };
+  const panelExit = isMobile
+    ? { y: "100%", opacity: 1, scale: 1 }
+    : { y: 0, scale: 0.96, opacity: 0 };
 
   return (
     <motion.div
