@@ -2,17 +2,17 @@
 
 /* ─── Design Tokens ─────────────────────────────────────────── */
 :root {
-  /* Backgrounds */
-  --bg: #06080f;
-  --bg-secondary: #0a0e1a;
-  --bg-card: #11162a;
-  --bg-card-hover: #161c33;
-  --bg-glass: rgba(17, 22, 42, 0.7);
+  /* Backgrounds — navy escuro com caráter, não preto puro */
+  --bg: #0d1117;
+  --bg-secondary: #101622;
+  --bg-card: #18213a;
+  --bg-card-hover: #1e2a45;
+  --bg-glass: rgba(18, 22, 45, 0.75);
 
-  /* Borders */
-  --border: rgba(255, 255, 255, 0.06);
-  --border-subtle: rgba(255, 255, 255, 0.03);
-  --border-strong: rgba(255, 255, 255, 0.12);
+  /* Borders — ligeiramente mais visíveis */
+  --border: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-strong: rgba(255, 255, 255, 0.15);
 
   /* Brand — cobalt blue */
   --primary: #1d6df0;
@@ -34,7 +34,7 @@
   --text: #f1f5f9;
   --text-muted: #94a3b8;
   --text-subtle: #64748b;
-  --text-faint: #3f4a5a;
+  --text-faint: #4e5f74;
 
   /* Status */
   --success: #22c55e;
@@ -67,6 +67,38 @@
   --transition: 150ms cubic-bezier(0.22, 1, 0.36, 1);
   --transition-slow: 300ms cubic-bezier(0.22, 1, 0.36, 1);
   --transition-entry: 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ─── Light Theme ───────────────────────────────────────────── */
+[data-theme="light"] {
+  /* Backgrounds — slate-blue mid-tone, não branco */
+  --bg: #dde4ee;
+  --bg-secondary: #d2dbe8;
+  --bg-card: #ecf1f8;
+  --bg-card-hover: #e4ecf6;
+  --bg-glass: rgba(221, 228, 238, 0.82);
+
+  /* Borders — mais definidas sobre fundo escuro */
+  --border: rgba(0, 0, 0, 0.12);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-strong: rgba(0, 0, 0, 0.22);
+
+  /* Text */
+  --text: #0d1929;
+  --text-muted: #3d5068;
+  --text-subtle: #5a6a7e;
+  --text-faint: #a0b0c0;
+
+  /* Shadows — mais perceptíveis sobre fundo claro */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.10);
+  --shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.20);
+}
+
+/* Glow atmosférico no topo — replica o efeito do tema escuro */
+[data-theme="light"] body {
+  background-image: radial-gradient(ellipse 100% 45% at 50% -5%, rgba(29, 109, 240, 0.09) 0%, transparent 65%);
 }
 
 /* ─── Tailwind Theme Extension ──────────────────────────────── */
@@ -110,6 +142,7 @@ html {
 
 body {
   background-color: var(--bg);
+  background-image: radial-gradient(ellipse 80% 35% at 50% -8%, rgba(29, 109, 240, 0.07) 0%, transparent 60%);
   color: var(--text);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   line-height: 1.6;
@@ -137,7 +170,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--radius-full);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--border-strong);
 }
 
 /* ─── Selection ─────────────────────────────────────────────── */
@@ -160,8 +193,22 @@ h1, h2, h3, h4, h5, h6 {
   background-clip: text;
 }
 
+[data-theme="light"] .gradient-text {
+  background: linear-gradient(135deg, #0f172a 30%, #1e40af 70%, #1d6df0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .gradient-text-primary {
   background: linear-gradient(135deg, #6ea8ff 0%, #2a83ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .gradient-text-primary {
+  background: linear-gradient(135deg, #1d6df0 0%, #0b4dba 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

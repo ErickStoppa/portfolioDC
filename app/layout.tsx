@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/sections/navbar";
 import { Footer } from "@/components/sections/footer";
 import { SplashScreen } from "@/components/splash-screen";
+import { Providers } from "@/components/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,8 +61,6 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#06080f",
-  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -70,14 +69,16 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt">
+    <html lang="pt" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text)] antialiased`}
       >
-        <SplashScreen />
-        <Navbar />
-        <main className="flex-1 pt-16">{children}</main>
-        <Footer />
+        <Providers>
+          <SplashScreen />
+          <Navbar />
+          <main className="flex-1 pt-16">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
