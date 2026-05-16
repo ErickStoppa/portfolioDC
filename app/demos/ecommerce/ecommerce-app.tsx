@@ -34,7 +34,7 @@ function CartSidebar({
         aria-hidden="true"
       />
 
-      {/* Panel */}
+      {/* Painel */}
       <motion.aside
         initial={{ x: "100%" }}
         animate={{ x: 0 }}
@@ -42,14 +42,14 @@ function CartSidebar({
         transition={{ type: "spring", stiffness: 400, damping: 40 }}
         className="w-full max-w-sm bg-[#09090f] border-l border-white/8 flex flex-col h-full"
         role="dialog"
-        aria-label="Shopping cart"
+        aria-label="Carrinho de compras"
         aria-modal="true"
       >
-        {/* Header */}
+        {/* Cabeçalho */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/8">
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-4 h-4 text-[var(--primary)]" />
-            <h2 className="text-sm font-bold text-white">Your Cart</h2>
+            <h2 className="text-sm font-bold text-white">Seu Carrinho</h2>
             {items.length > 0 && (
               <span className="text-xs bg-[var(--primary)] text-white rounded-full w-5 h-5 flex items-center justify-center font-bold">
                 {items.reduce((s, i) => s + i.quantity, 0)}
@@ -59,18 +59,18 @@ function CartSidebar({
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-lg flex items-center justify-center text-white/50 hover:text-white hover:bg-white/8 transition-colors"
-            aria-label="Close cart"
+            aria-label="Fechar carrinho"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Items */}
+        {/* Itens */}
         <div className="flex-1 overflow-y-auto py-4 px-5 flex flex-col gap-4">
           {items.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center py-16">
               <ShoppingBag className="w-10 h-10 text-white/20 mb-3" />
-              <p className="text-sm text-white/40">Your cart is empty</p>
+              <p className="text-sm text-white/40">Seu carrinho está vazio</p>
             </div>
           ) : (
             items.map((item) => (
@@ -86,7 +86,7 @@ function CartSidebar({
                     <button
                       onClick={() => onQtyChange(item.id, item.quantity - 1)}
                       className="w-6 h-6 rounded-md bg-white/8 flex items-center justify-center hover:bg-white/16 transition-colors text-white"
-                      aria-label={`Decrease quantity of ${item.name}`}
+                      aria-label={`Diminuir quantidade de ${item.name}`}
                     >
                       <Minus className="w-3 h-3" />
                     </button>
@@ -94,14 +94,14 @@ function CartSidebar({
                     <button
                       onClick={() => onQtyChange(item.id, item.quantity + 1)}
                       className="w-6 h-6 rounded-md bg-white/8 flex items-center justify-center hover:bg-white/16 transition-colors text-white"
-                      aria-label={`Increase quantity of ${item.name}`}
+                      aria-label={`Aumentar quantidade de ${item.name}`}
                     >
                       <Plus className="w-3 h-3" />
                     </button>
                     <button
                       onClick={() => onRemove(item.id)}
                       className="ml-auto text-white/30 hover:text-red-400 transition-colors"
-                      aria-label={`Remove ${item.name}`}
+                      aria-label={`Remover ${item.name}`}
                     >
                       <X className="w-3.5 h-3.5" />
                     </button>
@@ -112,7 +112,7 @@ function CartSidebar({
           )}
         </div>
 
-        {/* Footer */}
+        {/* Rodapé */}
         {items.length > 0 && (
           <div className="border-t border-white/8 p-5 space-y-3">
             <div className="flex justify-between text-sm">
@@ -120,8 +120,8 @@ function CartSidebar({
               <span className="font-bold text-white">{formatCurrency(total)}</span>
             </div>
             <div className="flex justify-between text-xs text-white/30">
-              <span>Shipping</span>
-              <span>Free</span>
+              <span>Frete</span>
+              <span>Grátis</span>
             </div>
             <div className="h-px bg-white/8" />
             <div className="flex justify-between">
@@ -135,18 +135,18 @@ function CartSidebar({
               {checkedOut ? (
                 <>
                   <Check className="w-4 h-4" />
-                  Order Placed!
+                  Pedido Realizado!
                 </>
               ) : (
                 <>
-                  Checkout
+                  Finalizar Compra
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
             {checkedOut && (
               <p className="text-xs text-center text-[var(--primary)]">
-                This is a demo — no real order was placed.
+                Este é um demo — nenhum pedido real foi feito.
               </p>
             )}
           </div>
@@ -187,7 +187,7 @@ function ProductModal({ product, onClose, onAddToCart }: {
         aria-label={product.name}
         aria-modal="true"
       >
-        {/* Image */}
+        {/* Imagem */}
         <div className={`h-56 bg-gradient-to-br ${product.gradient} relative`}>
           {product.badge && (
             <span className="absolute top-4 left-4 px-2.5 py-1 rounded-full bg-[var(--primary)] text-white text-xs font-bold">
@@ -197,20 +197,20 @@ function ProductModal({ product, onClose, onAddToCart }: {
           <button
             onClick={onClose}
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/40 flex items-center justify-center text-white hover:bg-black/60 transition-colors"
-            aria-label="Close product details"
+            aria-label="Fechar detalhes do produto"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Content */}
+        {/* Conteúdo */}
         <div className="p-6">
           <p className="text-xs text-white/40 font-medium uppercase tracking-wider mb-1">{product.brand}</p>
           <h2 className="text-xl font-black text-white mb-1" style={{ fontFamily: "var(--font-outfit)" }}>{product.name}</h2>
           <div className="flex items-center gap-1.5 mb-3">
             <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
             <span className="text-sm font-semibold text-white">{product.rating}</span>
-            <span className="text-sm text-white/30">({product.reviews} reviews)</span>
+            <span className="text-sm text-white/30">({product.reviews} avaliações)</span>
           </div>
           <p className="text-sm text-white/60 leading-relaxed mb-4">{product.description}</p>
           <ul className="grid grid-cols-2 gap-1.5 mb-5">
@@ -233,9 +233,9 @@ function ProductModal({ product, onClose, onAddToCart }: {
               className="h-11 px-6 rounded-xl bg-[var(--primary)] text-white font-semibold flex items-center gap-2 hover:bg-[var(--primary-hover)] transition-all shadow-[0_0_20px_var(--primary-glow)]"
             >
               {added ? (
-                <><Check className="w-4 h-4" />Added!</>
+                <><Check className="w-4 h-4" />Adicionado!</>
               ) : (
-                <><Plus className="w-4 h-4" />Add to Cart</>
+                <><Plus className="w-4 h-4" />Adicionar ao Carrinho</>
               )}
             </button>
           </div>
@@ -246,7 +246,7 @@ function ProductModal({ product, onClose, onAddToCart }: {
 }
 
 export function EcommerceApp() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("Todos");
   const [search, setSearch] = useState("");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -254,7 +254,7 @@ export function EcommerceApp() {
 
   const filtered = useMemo(() => {
     let list = products;
-    if (activeCategory !== "All") list = list.filter((p) => p.category === activeCategory);
+    if (activeCategory !== "Todos") list = list.filter((p) => p.category === activeCategory);
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter((p) => p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q));
@@ -294,10 +294,10 @@ export function EcommerceApp() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30" />
             <input
               type="search"
-              placeholder="Search…"
+              placeholder="Buscar…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              aria-label="Search products"
+              aria-label="Buscar produtos"
               className="w-full h-8 pl-8 pr-3 rounded-lg bg-white/6 border border-white/8 text-xs text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             />
           </div>
@@ -305,7 +305,7 @@ export function EcommerceApp() {
           <button
             onClick={() => setCartOpen(true)}
             className="relative flex items-center gap-2 h-9 px-3 rounded-lg bg-white/6 border border-white/8 text-xs font-medium text-white hover:bg-white/10 transition-colors"
-            aria-label={`Cart (${totalItems} items)`}
+            aria-label={`Carrinho (${totalItems} itens)`}
           >
             <ShoppingBag className="w-4 h-4" />
             {totalItems > 0 && (
@@ -322,7 +322,7 @@ export function EcommerceApp() {
         </div>
       </nav>
 
-      {/* Category filters */}
+      {/* Filtros de categoria */}
       <div className="border-b border-white/6 bg-[#07070e]">
         <div className="max-w-6xl mx-auto px-5 py-3 flex items-center gap-2 overflow-x-auto" role="tablist">
           <Filter className="w-3.5 h-3.5 text-white/30 shrink-0" />
@@ -344,11 +344,11 @@ export function EcommerceApp() {
         </div>
       </div>
 
-      {/* Products grid */}
+      {/* Grade de produtos */}
       <main className="max-w-6xl mx-auto px-5 py-8">
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm text-white/40">
-            {filtered.length} product{filtered.length !== 1 ? "s" : ""}
+            {filtered.length} produto{filtered.length !== 1 ? "s" : ""}
           </p>
         </div>
 
@@ -365,7 +365,7 @@ export function EcommerceApp() {
                 className="group cursor-pointer"
                 onClick={() => setSelectedProduct(product)}
               >
-                {/* Image */}
+                {/* Imagem */}
                 <div className={`relative aspect-square rounded-2xl bg-gradient-to-br ${product.gradient} overflow-hidden mb-3`}>
                   {product.badge && (
                     <span className="absolute top-3 left-3 px-2 py-0.5 rounded-full bg-[var(--primary)] text-white text-[10px] font-bold">
@@ -376,7 +376,7 @@ export function EcommerceApp() {
                   <button
                     onClick={(e) => { e.stopPropagation(); addToCart(product); }}
                     className="absolute bottom-3 right-3 w-9 h-9 rounded-xl bg-[var(--primary)] flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-[var(--primary-hover)] shadow-lg"
-                    aria-label={`Add ${product.name} to cart`}
+                    aria-label={`Adicionar ${product.name} ao carrinho`}
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -403,7 +403,7 @@ export function EcommerceApp() {
         </motion.div>
       </main>
 
-      {/* Modals */}
+      {/* Modais */}
       <AnimatePresence>
         {selectedProduct && (
           <ProductModal

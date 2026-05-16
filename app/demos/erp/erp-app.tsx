@@ -9,7 +9,7 @@ import {
 import { kpis, chartData, transactions, goals } from "@/data/erp";
 import { formatCurrency } from "@/lib/utils";
 
-const DATE_RANGES = ["Last 7 days", "Last 30 days", "This Quarter", "YTD", "Last Year"];
+const DATE_RANGES = ["Últimos 7 dias", "Últimos 30 dias", "Este Trimestre", "Acumulado", "Ano Anterior"];
 
 const MAX_REVENUE = Math.max(...chartData.map((d) => d.revenue));
 
@@ -21,9 +21,28 @@ const statusStyles: Record<string, string> = {
   failed: "bg-[var(--error-light)] text-[var(--error)]",
 };
 
+const statusLabels: Record<string, string> = {
+  completed: "Concluído",
+  pending: "Pendente",
+  failed: "Falhou",
+};
+
+const filterLabels: Record<string, string> = {
+  all: "Todos",
+  income: "Receitas",
+  expense: "Despesas",
+};
+
+const sidebarItems = [
+  { Icon: LayoutDashboard, label: "Dashboard", v: "dashboard" as ErpView },
+  { Icon: FileText, label: "Transações", v: "transactions" as ErpView },
+  { Icon: BarChart2, label: "Relatórios", v: null },
+  { Icon: Settings, label: "Configurações", v: null },
+] as const;
+
 export function ErpApp() {
   const [view, setView] = useState<ErpView>("dashboard");
-  const [dateRange, setDateRange] = useState("This Quarter");
+  const [dateRange, setDateRange] = useState("Este Trimestre");
   const [typeFilter, setTypeFilter] = useState<"all" | "income" | "expense">("all");
 
   const filteredTx = transactions.filter(
@@ -34,12 +53,7 @@ export function ErpApp() {
     <div className="h-screen flex bg-[#06060f] text-white overflow-hidden">
       {/* Sidebar */}
       <aside className="hidden md:flex w-14 flex-col items-center py-4 border-r border-white/6 bg-[#08080f] gap-2">
-        {[
-          { Icon: LayoutDashboard, label: "Dashboard", v: "dashboard" as ErpView },
-          { Icon: FileText, label: "Transactions", v: "transactions" as ErpView },
-          { Icon: BarChart2, label: "Reports", v: null },
-          { Icon: Settings, label: "Settings", v: null },
-        ].map(({ Icon, label, v }) => (
+        {sidebarItems.map(({ Icon, label, v }) => (
           <button
             key={label}
             onClick={() => v && setView(v)}
@@ -56,9 +70,9 @@ export function ErpApp() {
         ))}
       </aside>
 
-      {/* Main content */}
+      {/* Conteúdo principal */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
+        {/* Cabeçalho */}
         <header className="shrink-0 flex items-center justify-between px-5 h-12 border-b border-white/6">
           <div className="flex items-center gap-3">
             <span className="text-sm font-black tracking-tight" style={{ fontFamily: "var(--font-outfit)" }}>APEX</span>
@@ -73,22 +87,22 @@ export function ErpApp() {
                     view === v ? "bg-white/10 text-white" : "text-white/40 hover:text-white"
                   }`}
                 >
-                  {v === "dashboard" ? "Dashboard" : "Transactions"}
+                  {v === "dashboard" ? "Dashboard" : "Transações"}
                 </button>
               ))}
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {/* Date range */}
+            {/* Período */}
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              aria-label="Date range"
+              aria-label="Período"
               className="h-8 px-2 rounded-lg bg-white/6 border border-white/8 text-xs text-white focus:outline-none focus:ring-1 focus:ring-[var(--primary)]"
             >
               {DATE_RANGES.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
-            <button className="w-8 h-8 rounded-lg bg-white/6 border border-white/8 flex items-center justify-center text-white/40 hover:text-white transition-colors relative" aria-label="Notifications">
+            <button className="w-8 h-8 rounded-lg bg-white/6 border border-white/8 flex items-center justify-center text-white/40 hover:text-white transition-colors relative" aria-label="Notificações">
               <Bell className="w-3.5 h-3.5" />
               <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-[var(--primary)]" aria-hidden="true" />
             </button>
@@ -118,26 +132,26 @@ export function ErpApp() {
                     </p>
                     <div className={`flex items-center gap-1 text-xs font-semibold ${kpi.positive ? "text-[var(--success)]" : "text-red-400"}`}>
                       {kpi.positive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                      {kpi.change} vs last period
+                      {kpi.change} vs período anterior
                     </div>
                   </motion.div>
                 ))}
               </div>
 
-              {/* Revenue chart */}
+              {/* Gráfico de receita */}
               <div className="rounded-2xl border border-white/8 bg-[#0c0c1e] p-5">
                 <div className="flex items-center justify-between mb-5">
                   <div>
-                    <h3 className="text-sm font-bold text-white">Revenue vs Expenses</h3>
+                    <h3 className="text-sm font-bold text-white">Receita vs Despesas</h3>
                     <p className="text-xs text-white/40">{dateRange}</p>
                   </div>
                   <div className="flex items-center gap-4 text-[10px] text-white/40">
-                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />Revenue</div>
-                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-[var(--accent)]" aria-hidden="true" />Expenses</div>
-                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-[var(--success)]" aria-hidden="true" />Profit</div>
+                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-[var(--primary)]" aria-hidden="true" />Receita</div>
+                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-[var(--accent)]" aria-hidden="true" />Despesas</div>
+                    <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-[var(--success)]" aria-hidden="true" />Lucro</div>
                   </div>
                 </div>
-                {/* Custom bar chart */}
+                {/* Gráfico de barras */}
                 <div className="flex items-end gap-3 h-40">
                   {chartData.map((d, i) => (
                     <div key={d.month} className="flex-1 flex flex-col items-center gap-1">
@@ -167,11 +181,11 @@ export function ErpApp() {
                 </div>
               </div>
 
-              {/* Bottom row: Goals + Recent transactions */}
+              {/* Linha inferior: Metas + Transações recentes */}
               <div className="grid lg:grid-cols-2 gap-5">
-                {/* Goals */}
+                {/* Metas */}
                 <div className="rounded-2xl border border-white/8 bg-[#0c0c1e] p-5">
-                  <h3 className="text-sm font-bold text-white mb-4">Goals Progress</h3>
+                  <h3 className="text-sm font-bold text-white mb-4">Progresso das Metas</h3>
                   <div className="space-y-5">
                     {goals.map((goal) => {
                       const pct = Math.min(100, Math.round((goal.current / goal.target) * 100));
@@ -195,19 +209,19 @@ export function ErpApp() {
                               className="h-full bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] rounded-full"
                             />
                           </div>
-                          <p className="text-[10px] text-white/30 mt-1 text-right">{pct}% complete</p>
+                          <p className="text-[10px] text-white/30 mt-1 text-right">{pct}% concluído</p>
                         </div>
                       );
                     })}
                   </div>
                 </div>
 
-                {/* Recent transactions */}
+                {/* Transações recentes */}
                 <div className="rounded-2xl border border-white/8 bg-[#0c0c1e] p-5">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-sm font-bold text-white">Recent Transactions</h3>
+                    <h3 className="text-sm font-bold text-white">Transações Recentes</h3>
                     <button onClick={() => setView("transactions")} className="text-[10px] text-[var(--primary)] hover:underline">
-                      View all
+                      Ver todas
                     </button>
                   </div>
                   <div className="space-y-3">
@@ -235,9 +249,9 @@ export function ErpApp() {
               </div>
             </div>
           ) : (
-            /* Transactions view */
+            /* Vista de transações */
             <div className="p-5 max-w-4xl mx-auto">
-              {/* Toolbar */}
+              {/* Barra de ferramentas */}
               <div className="flex items-center gap-3 mb-5">
                 <div className="flex gap-1 bg-white/6 border border-white/8 rounded-xl p-1">
                   {(["all", "income", "expense"] as const).map((f) => (
@@ -245,36 +259,36 @@ export function ErpApp() {
                       key={f}
                       onClick={() => setTypeFilter(f)}
                       aria-pressed={typeFilter === f}
-                      className={`px-3 py-1 rounded-lg text-xs font-medium capitalize transition-all ${
+                      className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
                         typeFilter === f ? "bg-white/12 text-white" : "text-white/40 hover:text-white"
                       }`}
                     >
-                      {f}
+                      {filterLabels[f]}
                     </button>
                   ))}
                 </div>
                 <div className="ml-auto flex gap-2">
-                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-white/6 border border-white/8 text-xs text-white/60 hover:text-white hover:bg-white/10 transition-colors" aria-label="Filter transactions">
+                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-white/6 border border-white/8 text-xs text-white/60 hover:text-white hover:bg-white/10 transition-colors" aria-label="Filtrar transações">
                     <Filter className="w-3 h-3" />
-                    Filter
+                    Filtrar
                   </button>
-                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-white/6 border border-white/8 text-xs text-white/60 hover:text-white hover:bg-white/10 transition-colors" aria-label="Export transactions">
+                  <button className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-white/6 border border-white/8 text-xs text-white/60 hover:text-white hover:bg-white/10 transition-colors" aria-label="Exportar transações">
                     <Download className="w-3 h-3" />
-                    Export
+                    Exportar
                   </button>
                 </div>
               </div>
 
-              {/* Table */}
+              {/* Tabela */}
               <div className="rounded-2xl border border-white/8 overflow-hidden">
                 <table className="w-full text-xs" role="table">
                   <thead>
                     <tr className="border-b border-white/8 bg-white/4">
-                      <th className="text-left px-4 py-3 text-white/40 font-medium">Description</th>
-                      <th className="text-left px-4 py-3 text-white/40 font-medium hidden sm:table-cell">Category</th>
-                      <th className="text-left px-4 py-3 text-white/40 font-medium hidden md:table-cell">Date</th>
+                      <th className="text-left px-4 py-3 text-white/40 font-medium">Descrição</th>
+                      <th className="text-left px-4 py-3 text-white/40 font-medium hidden sm:table-cell">Categoria</th>
+                      <th className="text-left px-4 py-3 text-white/40 font-medium hidden md:table-cell">Data</th>
                       <th className="text-left px-4 py-3 text-white/40 font-medium">Status</th>
-                      <th className="text-right px-4 py-3 text-white/40 font-medium">Amount</th>
+                      <th className="text-right px-4 py-3 text-white/40 font-medium">Valor</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -302,8 +316,8 @@ export function ErpApp() {
                         <td className="px-4 py-3 text-white/40 hidden sm:table-cell">{tx.category}</td>
                         <td className="px-4 py-3 text-white/40 hidden md:table-cell">{tx.date}</td>
                         <td className="px-4 py-3">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold capitalize ${statusStyles[tx.status]}`}>
-                            {tx.status}
+                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${statusStyles[tx.status]}`}>
+                            {statusLabels[tx.status] ?? tx.status}
                           </span>
                         </td>
                         <td className={`px-4 py-3 text-right font-black ${tx.type === "income" ? "text-[var(--success)]" : "text-red-400"}`}>
@@ -315,7 +329,7 @@ export function ErpApp() {
                 </table>
               </div>
               <p className="text-[10px] text-white/20 mt-4 text-center">
-                Showing {filteredTx.length} of {transactions.length} transactions
+                Exibindo {filteredTx.length} de {transactions.length} transações
               </p>
             </div>
           )}

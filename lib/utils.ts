@@ -13,8 +13,8 @@ export function formatNumber(n: number): string {
 
 export function formatCurrency(
   amount: number,
-  currency = "USD",
-  locale = "en-US"
+  currency = "BRL",
+  locale = "pt-BR"
 ): string {
   return new Intl.NumberFormat(locale, { style: "currency", currency }).format(amount);
 }

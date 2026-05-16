@@ -9,7 +9,7 @@ type BookingStep = "service" | "professional" | "datetime" | "confirm" | "succes
 
 const WEEK_DATES = Array.from({ length: 7 }, (_, i) => {
   const d = new Date(2024, 4, 13 + i);
-  return { day: daysOfWeek[i], date: d.getDate(), month: d.toLocaleString("en", { month: "short" }) };
+  return { day: daysOfWeek[i], date: d.getDate(), month: d.toLocaleString("pt-BR", { month: "short" }) };
 });
 
 export function BookingApp() {
@@ -49,7 +49,7 @@ export function BookingApp() {
       <header className="sticky top-0 z-20 bg-[#070710]/95 backdrop-blur-md border-b border-white/6">
         <div className="max-w-xl mx-auto px-5 h-14 flex items-center gap-4">
           {stepIndex > 0 && step !== "success" && (
-            <button onClick={prevStep} className="text-white/40 hover:text-white transition-colors" aria-label="Go back">
+            <button onClick={prevStep} className="text-white/40 hover:text-white transition-colors" aria-label="Voltar">
               <ArrowLeft className="w-4 h-4" />
             </button>
           )}
@@ -72,12 +72,12 @@ export function BookingApp() {
       <div className="max-w-xl mx-auto px-5 py-8 pb-28">
         <AnimatePresence mode="wait">
 
-          {/* Step 1: Service */}
+          {/* Etapa 1: Serviço */}
           {step === "service" && (
             <motion.div key="service" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
-              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Step 1 of 4</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Etapa 1 de 4</p>
               <h2 className="text-2xl font-black mb-6" style={{ fontFamily: "var(--font-outfit)" }}>
-                What are you looking for?
+                O que você procura?
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 {serviceCategories.map((cat) => (
@@ -105,12 +105,12 @@ export function BookingApp() {
             </motion.div>
           )}
 
-          {/* Step 2: Professional */}
+          {/* Etapa 2: Especialista */}
           {step === "professional" && (
             <motion.div key="professional" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
-              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Step 2 of 4</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Etapa 2 de 4</p>
               <h2 className="text-2xl font-black mb-6" style={{ fontFamily: "var(--font-outfit)" }}>
-                Choose your specialist
+                Escolha seu especialista
               </h2>
               <div className="flex flex-col gap-3">
                 {professionals.map((pro) => (
@@ -138,7 +138,7 @@ export function BookingApp() {
                       </div>
                     </div>
                     {!pro.available && (
-                      <span className="text-[10px] text-white/30 font-medium">Unavailable</span>
+                      <span className="text-[10px] text-white/30 font-medium">Indisponível</span>
                     )}
                     {selectedPro?.id === pro.id && (
                       <div className="w-5 h-5 rounded-full bg-[var(--primary)] flex items-center justify-center">
@@ -151,28 +151,28 @@ export function BookingApp() {
             </motion.div>
           )}
 
-          {/* Step 3: Date & Time */}
+          {/* Etapa 3: Data & Hora */}
           {step === "datetime" && (
             <motion.div key="datetime" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
-              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Step 3 of 4</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Etapa 3 de 4</p>
               <h2 className="text-2xl font-black mb-6" style={{ fontFamily: "var(--font-outfit)" }}>
-                Pick a date & time
+                Escolha data e horário
               </h2>
 
-              {/* Week calendar */}
+              {/* Calendário semanal */}
               <div className="mb-6">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-semibold text-white">May 2024</span>
+                  <span className="text-sm font-semibold text-white">Maio 2024</span>
                   <div className="flex gap-1">
-                    <button className="w-7 h-7 rounded-lg bg-white/6 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-colors" aria-label="Previous week">
+                    <button className="w-7 h-7 rounded-lg bg-white/6 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-colors" aria-label="Semana anterior">
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <button className="w-7 h-7 rounded-lg bg-white/6 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-colors" aria-label="Next week">
+                    <button className="w-7 h-7 rounded-lg bg-white/6 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-colors" aria-label="Próxima semana">
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-7 gap-1.5" role="group" aria-label="Select a date">
+                <div className="grid grid-cols-7 gap-1.5" role="group" aria-label="Selecione uma data">
                   {WEEK_DATES.map(({ day, date }) => (
                     <button
                       key={date}
@@ -191,10 +191,10 @@ export function BookingApp() {
                 </div>
               </div>
 
-              {/* Time slots */}
+              {/* Horários disponíveis */}
               <div>
-                <p className="text-sm font-semibold text-white mb-3">Available times</p>
-                <div className="grid grid-cols-3 gap-2" role="group" aria-label="Select a time">
+                <p className="text-sm font-semibold text-white mb-3">Horários disponíveis</p>
+                <div className="grid grid-cols-3 gap-2" role="group" aria-label="Selecione um horário">
                   {timeSlots.map((slot) => (
                     <button
                       key={slot.time}
@@ -217,12 +217,12 @@ export function BookingApp() {
             </motion.div>
           )}
 
-          {/* Step 4: Confirm */}
+          {/* Etapa 4: Confirmação */}
           {step === "confirm" && (
             <motion.div key="confirm" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
-              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Step 4 of 4</p>
+              <p className="text-xs text-white/40 uppercase tracking-widest mb-2">Etapa 4 de 4</p>
               <h2 className="text-2xl font-black mb-6" style={{ fontFamily: "var(--font-outfit)" }}>
-                Confirm your booking
+                Confirme seu agendamento
               </h2>
               <div className="bg-white/4 border border-white/8 rounded-2xl p-5 space-y-4 mb-6">
                 <div className="flex items-center gap-3 pb-4 border-b border-white/8">
@@ -235,9 +235,9 @@ export function BookingApp() {
                   </div>
                 </div>
                 {[
-                  { Icon: User, label: "Service", value: serviceCategories.find((s) => s.id === selectedService)?.name },
-                  { Icon: Calendar, label: "Date", value: `May ${selectedDate}, 2024` },
-                  { Icon: Clock, label: "Time", value: selectedTime },
+                  { Icon: User, label: "Serviço", value: serviceCategories.find((s) => s.id === selectedService)?.name },
+                  { Icon: Calendar, label: "Data", value: `${selectedDate} de mai. 2024` },
+                  { Icon: Clock, label: "Horário", value: selectedTime },
                 ].map(({ Icon, label, value }) => (
                   <div key={label} className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-white/8 flex items-center justify-center">
@@ -253,7 +253,7 @@ export function BookingApp() {
             </motion.div>
           )}
 
-          {/* Success */}
+          {/* Sucesso */}
           {step === "success" && (
             <motion.div
               key="success"
@@ -271,13 +271,13 @@ export function BookingApp() {
                 <Check className="w-10 h-10 text-[var(--success)]" />
               </motion.div>
               <h2 className="text-3xl font-black mb-3" style={{ fontFamily: "var(--font-outfit)" }}>
-                Booking Confirmed!
+                Agendamento Confirmado!
               </h2>
               <p className="text-white/50 text-sm leading-relaxed mb-8 max-w-xs mx-auto">
-                Your appointment with {selectedPro?.name} on May {selectedDate} at {selectedTime} is confirmed.
+                Seu agendamento com {selectedPro?.name} em {selectedDate} de mai. às {selectedTime} está confirmado.
               </p>
               <div className="bg-white/4 border border-white/8 rounded-2xl p-4 text-left max-w-xs mx-auto mb-8">
-                <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">Booking Reference</p>
+                <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">Referência do Agendamento</p>
                 <p className="text-lg font-black text-[var(--primary)]">#AUR-7291</p>
               </div>
               <button
@@ -290,15 +290,15 @@ export function BookingApp() {
                 }}
                 className="px-6 py-2.5 rounded-xl bg-white/8 text-white text-sm font-medium hover:bg-white/12 transition-colors"
               >
-                Book Another
+                Fazer Novo Agendamento
               </button>
-              <p className="text-xs text-white/20 mt-4">This is a demo — no real booking was made.</p>
+              <p className="text-xs text-white/20 mt-4">Este é um demo — nenhum agendamento real foi feito.</p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Bottom CTA */}
+      {/* Botão de ação */}
       {step !== "success" && (
         <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#070710] to-transparent pt-8">
           <div className="max-w-xl mx-auto">
@@ -307,7 +307,7 @@ export function BookingApp() {
               disabled={!canProceed()}
               className="w-full h-12 rounded-2xl bg-[var(--primary)] text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-[var(--primary-hover)] transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-[0_0_30px_var(--primary-glow)]"
             >
-              {step === "confirm" ? "Confirm Booking" : "Continue"}
+              {step === "confirm" ? "Confirmar Agendamento" : "Continuar"}
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
