@@ -6,21 +6,18 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "@/components/ui/language-switcher";
-import { useLanguage } from "@/contexts/language-context";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
-  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const navLinks = [
-    { label: t("nav", "about"),     href: "/about" },
-    { label: t("nav", "services"),  href: "/services" },
-    { label: t("nav", "portfolio"), href: "/portfolio" },
-    { label: t("nav", "demos"),     href: "/demos" },
+    { label: "Sobre",     href: "/about" },
+    { label: "Serviços",  href: "/services" },
+    { label: "Portfólio", href: "/portfolio" },
+    { label: "Demos",     href: "/demos" },
   ];
 
   useEffect(() => {
@@ -92,28 +89,24 @@ export function Navbar() {
             })}
           </ul>
 
-          {/* Right: CTAs + Language switcher */}
+          {/* Right: CTAs */}
           <div className="hidden md:flex items-center gap-2 shrink-0">
             <Button variant="secondary" size="sm" asChild>
-              <Link href="/portfolio">{t("nav", "viewWork")}</Link>
+              <Link href="/portfolio">Ver Trabalhos</Link>
             </Button>
             <Button size="sm" asChild>
               <a
                 href="mailto:contato@developmentconsulting.io"
                 className="flex items-center gap-1.5"
               >
-                {t("nav", "getInTouch")}
+                Fale Conosco
                 <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </Button>
-            <div className="ml-1 border-l border-[var(--border)] pl-3">
-              <LanguageSwitcher />
-            </div>
           </div>
 
-          {/* Mobile: language + hamburger */}
+          {/* Mobile: hamburger */}
           <div className="md:hidden flex items-center gap-2 shrink-0">
-            <LanguageSwitcher />
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="p-2 rounded-[8px] text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--bg-card)] transition-colors"
@@ -163,14 +156,14 @@ export function Navbar() {
               })}
               <div className="mt-4 flex flex-col gap-3 pt-4 border-t border-[var(--border)]">
                 <Button variant="secondary" size="lg" asChild className="w-full">
-                  <Link href="/portfolio">{t("nav", "viewWork")}</Link>
+                  <Link href="/portfolio">Ver Trabalhos</Link>
                 </Button>
                 <Button size="lg" asChild className="w-full">
                   <a
                     href="mailto:contato@developmentconsulting.io"
                     className="flex items-center justify-center gap-2"
                   >
-                    {t("nav", "getInTouch")}
+                    Fale Conosco
                     <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
                   </a>
                 </Button>

@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Outfit } from "next/font/google";
 import "./globals.css";
-import { LanguageProvider } from "@/contexts/language-context";
 import { Navbar } from "@/components/sections/navbar";
 import { Footer } from "@/components/sections/footer";
 import { SplashScreen } from "@/components/splash-screen";
@@ -76,11 +75,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${outfit.variable} min-h-screen flex flex-col bg-[var(--bg)] text-[var(--text)] antialiased`}
       >
         <SplashScreen />
-        <LanguageProvider>
-          <Navbar />
-          <main className="flex-1 pt-16">{children}</main>
-          <Footer />
-        </LanguageProvider>
+        <Navbar />
+        <main className="flex-1 pt-16">{children}</main>
+        <Footer />
       </body>
     </html>
   );

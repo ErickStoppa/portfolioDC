@@ -1,11 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useLanguage } from "@/contexts/language-context";
 
 export function AboutHero() {
-  const { t } = useLanguage();
-
   return (
     <section className="relative py-32 px-5 lg:px-8 overflow-hidden" aria-label="About hero">
       {/* Ambient glow */}
@@ -20,7 +17,7 @@ export function AboutHero() {
           transition={{ duration: 0.5 }}
           className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-5"
         >
-          {t("about", "eyebrow")}
+          Sobre a Development Consulting
         </motion.p>
 
         <motion.h1
@@ -30,9 +27,9 @@ export function AboutHero() {
           className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8"
           style={{ fontFamily: "var(--font-outfit)" }}
         >
-          {t("about", "headline1")}
+          Criamos software
           <br />
-          <span className="gradient-text">{t("about", "headline2")}</span>
+          <span className="gradient-text">que define empresas</span>
         </motion.h1>
 
         <motion.p
@@ -41,7 +38,7 @@ export function AboutHero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-xl text-[var(--text-muted)] leading-relaxed max-w-2xl"
         >
-          {t("about", "sub")}
+          A Development Consulting é um estúdio de produtos digitais premium. Fazemos parceria com empresas ambiciosas para projetar e desenvolver software que impulsiona crescimento, conquista confiança e dura.
         </motion.p>
       </div>
     </section>

@@ -1,12 +1,7 @@
-"use client";
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/language-context";
 
 export default function NotFound() {
-  const { t } = useLanguage();
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] px-5 text-center">
       <p
@@ -16,12 +11,12 @@ export default function NotFound() {
       >
         404
       </p>
-      <h1 className="text-2xl font-bold text-[var(--text)] mb-3">{t("notFound", "title")}</h1>
+      <h1 className="text-2xl font-bold text-[var(--text)] mb-3">Página não encontrada</h1>
       <p className="text-[var(--text-muted)] mb-8 max-w-sm">
-        {t("notFound", "sub")}
+        A página que você está procurando não existe ou foi movida.
       </p>
       <Button asChild>
-        <Link href="/">{t("notFound", "goHome")}</Link>
+        <Link href="/">Ir para o Início</Link>
       </Button>
     </div>
   );

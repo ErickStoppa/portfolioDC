@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/language-context";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -16,8 +15,6 @@ const fadeUp = {
 };
 
 export function Hero() {
-  const { t } = useLanguage();
-
   return (
     <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden noise" aria-label="Hero">
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -41,24 +38,24 @@ export function Hero() {
           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-card)] text-xs text-[var(--text-muted)] mb-8"
         >
           <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" aria-hidden="true" />
-          {t("hero", "eyebrow")}
+          Estúdio de engenharia de software premium
         </motion.div>
 
         <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
           className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[1.05]"
           style={{ fontFamily: "var(--font-outfit)" }}
         >
-          <span className="gradient-text">{t("hero", "line1")}</span>
+          <span className="gradient-text">Experiências de software</span>
           <br />
-          <span className="text-[var(--text)]">{t("hero", "line2")}</span>
+          <span className="text-[var(--text)]">premium e soluções</span>
           <br />
-          <span className="text-[var(--text)]">{t("hero", "line3")}</span>
+          <span className="text-[var(--text)]">digitais excepcionais</span>
         </motion.h1>
 
         <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
           className="mt-7 text-lg sm:text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed"
         >
-          {t("hero", "sub")}
+          Projetamos e desenvolvemos aplicações web, plataformas SaaS e produtos digitais de nível mundial para empresas que se recusam a ser comuns.
         </motion.p>
 
         <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}
@@ -66,13 +63,13 @@ export function Hero() {
         >
           <Button size="lg" asChild>
             <Link href="/portfolio" className="flex items-center gap-2">
-              {t("hero", "cta1")}
+              Ver Nosso Trabalho
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </Button>
           <Button variant="secondary" size="lg" asChild>
             <a href="mailto:contato@developmentconsulting.io" className="flex items-center gap-2">
-              {t("hero", "cta2")}
+              Iniciar um Projeto
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </a>
           </Button>
@@ -82,10 +79,10 @@ export function Hero() {
           className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-px border border-[var(--border)] rounded-2xl bg-[var(--border)] overflow-hidden"
         >
           {[
-            { label: t("hero", "stat1l"), value: "120+" },
-            { label: t("hero", "stat2l"), value: "99%" },
-            { label: t("hero", "stat3l"), value: "8+" },
-            { label: t("hero", "stat4l"), value: "24" },
+            { label: "Projetos Entregues",    value: "120+" },
+            { label: "Satisfação do Cliente", value: "99%" },
+            { label: "Anos de Excelência",    value: "8+" },
+            { label: "Especialistas",         value: "24" },
           ].map(({ label, value }) => (
             <div key={label} className="bg-[var(--bg-card)] px-8 py-6 text-center">
               <p className="text-3xl font-black gradient-text-primary" style={{ fontFamily: "var(--font-outfit)" }}>{value}</p>

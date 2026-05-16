@@ -2,64 +2,61 @@
 
 import { motion } from "framer-motion";
 import { Code2, Palette, BarChart3, Globe } from "lucide-react";
-import { useLanguage } from "@/contexts/language-context";
+
+const team = [
+  {
+    initials: "AR",
+    name: "Alex Reeves",
+    role: "Arquiteto Frontend Líder",
+    bio: "10 anos entregando aplicações React performáticas para fintech, saúde e e-commerce em escala.",
+    icon: Code2,
+    gradient: "from-[#1d6df0] to-[#2a83ff]",
+  },
+  {
+    initials: "MT",
+    name: "Maya Torres",
+    role: "Designer de Produto Principal",
+    bio: "Ex-líder de design em duas startups financiadas pela YC. Obcecada com design de interação e sistemas de design.",
+    icon: Palette,
+    gradient: "from-rose-500 to-orange-500",
+  },
+  {
+    initials: "JK",
+    name: "James Kim",
+    role: "Engenheiro Full-Stack",
+    bio: "Criou e escalou pipelines de dados e sistemas em tempo real para empresas atendendo milhões de usuários.",
+    icon: BarChart3,
+    gradient: "from-cyan-500 to-blue-500",
+  },
+  {
+    initials: "SC",
+    name: "Sofia Carvalho",
+    role: "Estrategista de UX",
+    bio: "Traduz pesquisa de usuário complexa em decisões de produto que melhoram mensuravelmente a retenção e a conversão.",
+    icon: Globe,
+    gradient: "from-emerald-500 to-teal-500",
+  },
+];
 
 export function AboutTeam() {
-  const { t } = useLanguage();
-
-  const team = [
-    {
-      initials: "AR",
-      name: "Alex Reeves",
-      role: t("about", "t1role"),
-      bio: t("about", "t1bio"),
-      icon: Code2,
-      gradient: "from-[#1d6df0] to-[#2a83ff]",
-    },
-    {
-      initials: "MT",
-      name: "Maya Torres",
-      role: t("about", "t2role"),
-      bio: t("about", "t2bio"),
-      icon: Palette,
-      gradient: "from-rose-500 to-orange-500",
-    },
-    {
-      initials: "JK",
-      name: "James Kim",
-      role: t("about", "t3role"),
-      bio: t("about", "t3bio"),
-      icon: BarChart3,
-      gradient: "from-cyan-500 to-blue-500",
-    },
-    {
-      initials: "SC",
-      name: "Sofia Carvalho",
-      role: t("about", "t4role"),
-      bio: t("about", "t4bio"),
-      icon: Globe,
-      gradient: "from-emerald-500 to-teal-500",
-    },
-  ];
-
   return (
     <section className="py-24 px-5 lg:px-8" aria-labelledby="team-heading">
       <div className="mx-auto max-w-7xl">
         <div className="text-center max-w-xl mx-auto mb-16">
           <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">
-            {t("about", "teamEyebrow")}
+            A Equipe
           </p>
           <h2
             id="team-heading"
             className="text-4xl sm:text-5xl font-black tracking-tight"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
-            {t("about", "teamHead1")}
+            Especialistas sênior,
             <br />
-            <span className="gradient-text">{t("about", "teamHead2")}</span>
+            <span className="gradient-text">sem juniores</span>
           </h2>
           <p className="text-[var(--text-muted)] mt-5 leading-relaxed">
-            {t("about", "teamSub")}
+            Cada pessoa da nossa equipe é uma especialista com anos de experiência em produção. Não aprendemos no seu tempo.
           </p>
         </div>
 

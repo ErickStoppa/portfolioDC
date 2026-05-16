@@ -2,20 +2,35 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-import { useLanguage } from "@/contexts/language-context";
+
+const principles = [
+  {
+    title: "Pensamento focado em engenharia",
+    description: "Tratamos a qualidade do código como um requisito do produto. A dívida técnica acumula juros — mantemos o saldo baixo tomando decisões cuidadosas desde o início.",
+  },
+  {
+    title: "Design que conquista confiança",
+    description: "Uma ótima UX não é decoração. É a diferença entre software que as pessoas usam e software que as pessoas suportam.",
+  },
+  {
+    title: "Transparência radical",
+    description: "Compartilhamos nosso raciocínio, identificamos problemas antecipadamente e nunca nos escondemos. Você sempre saberá onde seu produto está e por quê.",
+  },
+  {
+    title: "Performance como funcionalidade",
+    description: "Software lento perde usuários e receita. Instrumentamos, medimos e otimizamos sem descanso — performance é uma preocupação de primeira classe.",
+  },
+  {
+    title: "Mentalidade focada no produto",
+    description: "Não somos apenas executores. Pensamos profundamente sobre seus usuários, mercado e objetivos — e nos posicionamos quando o plano não serve a essas coisas.",
+  },
+  {
+    title: "Artesanato em cada detalhe",
+    description: "Os detalhes invisíveis — estados de carregamento, mensagens de erro, navegação por teclado — são o que separa o software premium do software que simplesmente funciona.",
+  },
+];
 
 export function AboutPhilosophy() {
-  const { t } = useLanguage();
-
-  const principles = [
-    { title: t("about", "p1title"), description: t("about", "p1desc") },
-    { title: t("about", "p2title"), description: t("about", "p2desc") },
-    { title: t("about", "p3title"), description: t("about", "p3desc") },
-    { title: t("about", "p4title"), description: t("about", "p4desc") },
-    { title: t("about", "p5title"), description: t("about", "p5desc") },
-    { title: t("about", "p6title"), description: t("about", "p6desc") },
-  ];
-
   return (
     <section className="py-24 px-5 lg:px-8 bg-[var(--bg-secondary)]" aria-labelledby="philosophy-heading">
       <div className="mx-auto max-w-7xl">
@@ -23,27 +38,27 @@ export function AboutPhilosophy() {
           {/* Left */}
           <div>
             <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">
-              {t("about", "phEyebrow")}
+              Nossa Filosofia
             </p>
             <h2
               id="philosophy-heading"
               className="text-4xl sm:text-5xl font-black tracking-tight mb-6"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              {t("about", "phHead1")}
+              Princípios que
               <br />
-              <span className="gradient-text">{t("about", "phHead2")}</span>
+              <span className="gradient-text">nunca comprometemos</span>
             </h2>
             <p className="text-[var(--text-muted)] text-lg leading-relaxed">
-              {t("about", "phSub")}
+              Trabalhamos com startups, scale-ups e grandes empresas. O trabalho que dura nunca é acidental — vem de equipes que consideram certas coisas sagradas.
             </p>
 
             <div className="mt-10 p-6 rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]">
               <p className="text-sm text-[var(--text-muted)] leading-relaxed italic">
-                {t("about", "quote")}
+                &ldquo;O melhor software é o produto de pessoas que se importam mais com o resultado do que com a entrega.&rdquo;
               </p>
               <p className="text-xs text-[var(--text-subtle)] mt-3 font-medium">
-                {t("about", "quoteAuthor")}
+                — Princípios Fundadores da Development Consulting
               </p>
             </div>
           </div>

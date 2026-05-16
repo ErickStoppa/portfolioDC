@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Search, ArrowUpRight, Play, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { demos } from "@/data";
-import { useLanguage } from "@/contexts/language-context";
 
 const CATEGORIES = ["All", "Commerce", "Food & Beverage", "B2B SaaS", "Scheduling", "Enterprise"];
 
@@ -19,7 +18,6 @@ const gradients = [
 ];
 
 export function PortfolioClient() {
-  const { t } = useLanguage();
   const [activeCategory, setActiveCategory] = useState("All");
   const [search, setSearch] = useState("");
 
@@ -55,7 +53,7 @@ export function PortfolioClient() {
             transition={{ duration: 0.4 }}
             className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-4"
           >
-            {t("portfolio", "eyebrow")}
+            Showroom de Portfólio
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -64,9 +62,9 @@ export function PortfolioClient() {
             className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
-            {t("portfolio", "headline1")}
+            Produtos reais,
             <br />
-            <span className="gradient-text">{t("portfolio", "headline2")}</span>
+            <span className="gradient-text">totalmente interativos</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 16 }}
@@ -74,7 +72,7 @@ export function PortfolioClient() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-lg text-[var(--text-muted)] max-w-xl leading-relaxed"
           >
-            {t("portfolio", "sub")}
+            Cada demo é um protótipo de produto totalmente funcional — não um mockup estático. Clique, explore e experimente a qualidade que entregamos.
           </motion.p>
         </div>
       </section>
@@ -90,16 +88,16 @@ export function PortfolioClient() {
             />
             <input
               type="search"
-              placeholder={t("portfolio", "searchPlaceholder")}
+              placeholder="Buscar demos…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              aria-label={t("portfolio", "searchPlaceholder")}
+              aria-label="Buscar demos"
               className="w-full h-9 pl-9 pr-9 rounded-[8px] bg-[var(--bg-card)] border border-[var(--border)] text-sm text-[var(--text)] placeholder:text-[var(--text-subtle)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
             />
             {search && (
               <button
                 onClick={() => setSearch("")}
-                aria-label="Clear search"
+                aria-label="Limpar busca"
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] hover:text-[var(--text)] transition-colors"
               >
                 <X className="w-3.5 h-3.5" />
@@ -111,7 +109,7 @@ export function PortfolioClient() {
           <div
             className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 flex-nowrap"
             role="tablist"
-            aria-label="Filter by category"
+            aria-label="Filtrar por categoria"
           >
             {CATEGORIES.map((cat) => (
               <button
@@ -125,7 +123,7 @@ export function PortfolioClient() {
                     : "bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)]"
                 }`}
               >
-                {cat === "All" ? t("portfolio", "all") : cat}
+                {cat === "All" ? "Todos" : cat}
               </button>
             ))}
           </div>
@@ -133,16 +131,16 @@ export function PortfolioClient() {
       </div>
 
       {/* Grid */}
-      <section className="py-12 px-5 lg:px-8 pb-28" aria-label="Demo projects">
+      <section className="py-12 px-5 lg:px-8 pb-28" aria-label="Projetos demo">
         <div className="mx-auto max-w-7xl">
           {filtered.length === 0 ? (
             <div className="text-center py-24">
-              <p className="text-[var(--text-subtle)] text-lg">{t("portfolio", "noResults")}</p>
+              <p className="text-[var(--text-subtle)] text-lg">Nenhuma demo corresponde à sua busca.</p>
               <button
                 onClick={() => { setSearch(""); setActiveCategory("All"); }}
                 className="mt-4 text-sm text-[var(--primary)] hover:underline"
               >
-                {t("portfolio", "clearFilters")}
+                Limpar filtros
               </button>
             </div>
           ) : (

@@ -1,11 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useLanguage } from "@/contexts/language-context";
 
 export function ServicesHero() {
-  const { t } = useLanguage();
-
   return (
     <section className="relative py-32 px-5 lg:px-8 overflow-hidden" aria-label="Services hero">
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
@@ -19,7 +16,7 @@ export function ServicesHero() {
           transition={{ duration: 0.5 }}
           className="text-xs font-semibold text-[var(--accent)] uppercase tracking-widest mb-5"
         >
-          {t("services", "eyebrow")}
+          O Que Oferecemos
         </motion.p>
 
         <motion.h1
@@ -29,9 +26,9 @@ export function ServicesHero() {
           className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-8"
           style={{ fontFamily: "var(--font-outfit)" }}
         >
-          {t("services", "headline1")}
+          Cada camada do
           <br />
-          <span className="gradient-text">{t("services", "headline2")}</span>
+          <span className="gradient-text">seu produto digital</span>
         </motion.h1>
 
         <motion.p
@@ -40,7 +37,7 @@ export function ServicesHero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-xl text-[var(--text-muted)] leading-relaxed max-w-2xl"
         >
-          {t("services", "sub")}
+          Da estratégia e design à engenharia e otimização de performance — cobrimos todo o espectro do que é necessário para construir software que dura e escala.
         </motion.p>
       </div>
     </section>

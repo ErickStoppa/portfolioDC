@@ -2,17 +2,15 @@
 
 import { motion } from "framer-motion";
 import { techStack } from "@/data";
-import { useLanguage } from "@/contexts/language-context";
 
 export function TechStack() {
-  const { t } = useLanguage();
   const doubled = [...techStack, ...techStack];
 
   return (
-    <section className="py-20 overflow-hidden border-y border-[var(--border-subtle)]" aria-label={t("techStack", "label")}>
+    <section className="py-20 overflow-hidden border-y border-[var(--border-subtle)]" aria-label="Construído com tecnologia líder de mercado">
       <div className="mx-auto max-w-7xl px-5 lg:px-8 mb-10 text-center">
         <p className="text-xs font-semibold text-[var(--text-subtle)] uppercase tracking-widest">
-          {t("techStack", "label")}
+          Construído com tecnologia líder de mercado
         </p>
       </div>
       <div className="relative flex" aria-hidden="true">
