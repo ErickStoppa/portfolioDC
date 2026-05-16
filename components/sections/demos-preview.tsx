@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { demos } from "@/data";
-import { useLanguage } from "@/contexts/language-context";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -25,8 +24,6 @@ const gradients = [
 ];
 
 export function DemosPreview() {
-  const { t } = useLanguage();
-
   return (
     <section className="py-28 px-5 lg:px-8 bg-[var(--bg-secondary)]" aria-labelledby="demos-heading">
       <div className="mx-auto max-w-7xl">
@@ -34,23 +31,23 @@ export function DemosPreview() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
           <div className="max-w-xl">
             <p className="text-xs font-semibold text-[var(--accent)] uppercase tracking-widest mb-3">
-              {t("demosPreview", "eyebrow")}
+              Portfólio Interativo
             </p>
             <h2
               id="demos-heading"
               className="text-4xl sm:text-5xl font-black tracking-tight"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              {t("demosPreview", "headline1")}
+              Produtos reais.
               <br />
-              <span className="gradient-text">{t("demosPreview", "headline2")}</span>
+              <span className="gradient-text">Totalmente interativos.</span>
             </h2>
           </div>
           <Link
             href="/portfolio"
             className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors group focus-visible:outline-none focus-visible:text-[var(--text)] shrink-0"
           >
-            {t("demosPreview", "viewAll")}
+            Ver todas as demos
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
           </Link>
         </div>

@@ -1,18 +1,31 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useLanguage } from "@/contexts/language-context";
+
+const steps = [
+  {
+    number: "01",
+    title: "Descoberta e Estratégia",
+    description: "Começamos entendendo seus objetivos de negócio, usuários e restrições técnicas. Cada decisão que segue é baseada em pesquisa e pensamento estratégico.",
+  },
+  {
+    number: "02",
+    title: "Design e Arquitetura",
+    description: "Projetamos o sistema do zero — componentes de UI, modelos de dados, contratos de API. As decisões são tomadas explicitamente, antes de uma linha de código ser escrita.",
+  },
+  {
+    number: "03",
+    title: "Engenharia e Iteração",
+    description: "Construímos em ciclos focados com feedback contínuo. Cada sprint entrega software funcional que você pode ver, testar e responder.",
+  },
+  {
+    number: "04",
+    title: "Entrega e Escala",
+    description: "Entregamos com pipelines de CI/CD, monitoramento e documentação em vigor. Seu produto é construído para crescer — técnica e comercialmente.",
+  },
+];
 
 export function Process() {
-  const { t } = useLanguage();
-
-  const steps = [
-    { number: "01", title: t("process", "step1title"), description: t("process", "step1desc") },
-    { number: "02", title: t("process", "step2title"), description: t("process", "step2desc") },
-    { number: "03", title: t("process", "step3title"), description: t("process", "step3desc") },
-    { number: "04", title: t("process", "step4title"), description: t("process", "step4desc") },
-  ];
-
   return (
     <section className="py-28 px-5 lg:px-8" aria-labelledby="process-heading">
       <div className="mx-auto max-w-7xl">
@@ -20,19 +33,19 @@ export function Process() {
           {/* Left */}
           <div className="lg:sticky lg:top-28">
             <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">
-              {t("process", "eyebrow")}
+              Como Trabalhamos
             </p>
             <h2
               id="process-heading"
               className="text-4xl sm:text-5xl font-black tracking-tight mb-6"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              {t("process", "headline1")}
+              Processo rigoroso.
               <br />
-              <span className="gradient-text">{t("process", "headline2")}</span>
+              <span className="gradient-text">Resultados excepcionais.</span>
             </h2>
             <p className="text-[var(--text-muted)] text-lg leading-relaxed max-w-md">
-              {t("process", "sub")}
+              Seguimos um processo testado em batalha que elimina ambiguidade, mantém as partes alinhadas e entrega software que funciona — na primeira vez.
             </p>
           </div>
 

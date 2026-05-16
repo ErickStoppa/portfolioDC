@@ -2,34 +2,31 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Globe, Code2, Briefcase } from "lucide-react";
-import { useLanguage } from "@/contexts/language-context";
+
+const footerLinks = {
+  Empresa: [
+    { label: "Sobre",     href: "/about" },
+    { label: "Serviços",  href: "/services" },
+    { label: "Portfólio", href: "/portfolio" },
+    { label: "Demos",     href: "/demos" },
+  ],
+  Serviços: [
+    { label: "Desenvolvimento Web",        href: "/services" },
+    { label: "Plataformas SaaS",           href: "/services" },
+    { label: "Design UI/UX",               href: "/services" },
+    { label: "Arquitetura Frontend",       href: "/services" },
+    { label: "Otimização de Performance",  href: "/services" },
+  ],
+  Demos: [
+    { label: "Ecommerce",              href: "/demos/ecommerce" },
+    { label: "Restaurante",            href: "/demos/restaurant" },
+    { label: "CRM Dashboard",          href: "/demos/crm" },
+    { label: "Sistema de Agendamento", href: "/demos/booking" },
+    { label: "ERP / Financeiro",       href: "/demos/erp" },
+  ],
+};
 
 export function Footer() {
-  const { t } = useLanguage();
-
-  const footerLinks = {
-    [t("footer", "company")]: [
-      { label: t("nav", "about"),     href: "/about" },
-      { label: t("nav", "services"),  href: "/services" },
-      { label: t("nav", "portfolio"), href: "/portfolio" },
-      { label: t("nav", "demos"),     href: "/demos" },
-    ],
-    [t("footer", "services")]: [
-      { label: t("footer", "webDev"),       href: "/services" },
-      { label: t("footer", "saas"),         href: "/services" },
-      { label: t("footer", "uiux"),         href: "/services" },
-      { label: t("footer", "frontendArch"), href: "/services" },
-      { label: t("footer", "perfOpt"),      href: "/services" },
-    ],
-    [t("footer", "demos")]: [
-      { label: t("footer", "ecommerce"),  href: "/demos/ecommerce" },
-      { label: t("footer", "restaurant"), href: "/demos/restaurant" },
-      { label: t("footer", "crm"),        href: "/demos/crm" },
-      { label: t("footer", "booking"),    href: "/demos/booking" },
-      { label: t("footer", "erp"),        href: "/demos/erp" },
-    ],
-  };
-
   return (
     <footer
       className="border-t border-[var(--border)] bg-[var(--bg-secondary)]"
@@ -52,13 +49,13 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
-              {t("footer", "tagline")}
+              Experiências de software premium e soluções digitais para empresas que exigem o melhor.
             </p>
             <div className="flex items-center gap-3 mt-6">
               {[
-                { Icon: Globe, label: "Website", href: "#" },
-                { Icon: Code2, label: "GitHub", href: "#" },
-                { Icon: Briefcase, label: "LinkedIn", href: "#" },
+                { Icon: Globe,    label: "Website",  href: "#" },
+                { Icon: Code2,    label: "GitHub",   href: "#" },
+                { Icon: Briefcase,label: "LinkedIn", href: "#" },
               ].map(({ Icon, label, href }) => (
                 <a
                   key={label}
@@ -97,7 +94,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[var(--text-subtle)]">
-            &copy; {new Date().getFullYear()} Development Consulting. {t("footer", "copyright")}
+            &copy; {new Date().getFullYear()} Development Consulting. Todos os direitos reservados.
           </p>
           <a
             href="mailto:contato@developmentconsulting.io"

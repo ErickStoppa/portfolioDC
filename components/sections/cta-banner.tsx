@@ -3,11 +3,8 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/language-context";
 
 export function CtaBanner() {
-  const { t } = useLanguage();
-
   return (
     <section className="py-28 px-5 lg:px-8" aria-labelledby="cta-heading">
       <div className="mx-auto max-w-4xl">
@@ -29,19 +26,19 @@ export function CtaBanner() {
           />
 
           <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-4">
-            {t("cta", "eyebrow")}
+            Pronto para construir?
           </p>
           <h2
             id="cta-heading"
             className="text-4xl sm:text-5xl font-black tracking-tight mb-5"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
-            {t("cta", "headline1")}
+            Seu próximo grande produto
             <br />
-            <span className="gradient-text">{t("cta", "headline2")}</span>
+            <span className="gradient-text">começa aqui</span>
           </h2>
           <p className="text-[var(--text-muted)] text-lg max-w-lg mx-auto leading-relaxed mb-10">
-            {t("cta", "sub")}
+            Fale conosco sobre seu projeto. Respondemos em até 24 horas com uma avaliação honesta e um caminho claro a seguir.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -50,17 +47,17 @@ export function CtaBanner() {
                 href="mailto:contato@developmentconsulting.io"
                 className="flex items-center gap-2"
               >
-                {t("cta", "cta1")}
+                Iniciar uma Conversa
                 <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
               </a>
             </Button>
             <Button variant="secondary" size="xl" asChild>
-              <a href="/portfolio">{t("cta", "cta2")}</a>
+              <a href="/portfolio">Explorar Nosso Trabalho</a>
             </Button>
           </div>
 
           <p className="mt-8 text-xs text-[var(--text-subtle)]">
-            {t("cta", "disclaimer")}
+            Sem compromisso. Conselho honesto, sempre.
           </p>
         </motion.div>
       </div>

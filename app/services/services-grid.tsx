@@ -7,7 +7,6 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { services } from "@/data";
-import { useLanguage } from "@/contexts/language-context";
 
 const iconMap: Record<string, React.ElementType> = {
   Globe, Layers, BarChart3, ShoppingBag, Code2, Palette, Zap, Target, Gauge, Monitor,
@@ -26,30 +25,27 @@ const categoryColor: Record<string, BadgeVariant> = {
   Engineering: "muted",
 };
 
-const categoryTranslationKey: Record<string, string> = {
-  Development: "cat_dev",
-  Product:     "cat_prod",
-  Analytics:   "cat_anal",
-  Commerce:    "cat_comm",
-  Architecture:"cat_arch",
-  Design:      "cat_des",
-  Engineering: "cat_eng",
-  Strategy:    "cat_str",
+const categoryLabel: Record<string, string> = {
+  Development: "Desenvolvimento",
+  Product:     "Produto",
+  Analytics:   "Analytics",
+  Commerce:    "Comércio",
+  Architecture:"Arquitetura",
+  Design:      "Design",
+  Engineering: "Engenharia",
+  Strategy:    "Estratégia",
 };
 
 export function ServicesGrid() {
-  const { t } = useLanguage();
-
   return (
     <section className="py-16 px-5 lg:px-8 pb-32" aria-labelledby="services-grid-heading">
       <div className="mx-auto max-w-7xl">
-        <h2 id="services-grid-heading" className="sr-only">Services</h2>
+        <h2 id="services-grid-heading" className="sr-only">Serviços</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {services.map((service, i) => {
             const Icon = iconMap[service.icon];
             const variant = categoryColor[service.category] ?? "muted";
-            const catKey = categoryTranslationKey[service.category];
-            const catLabel = catKey ? t("services", catKey) : service.category;
+            const label = categoryLabel[service.category] ?? service.category;
             return (
               <motion.article
                 key={service.id}
@@ -71,14 +67,14 @@ export function ServicesGrid() {
 
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-base font-bold text-[var(--text)] leading-tight">{service.title}</h3>
-                  <Badge variant={variant}>{catLabel}</Badge>
+                  <Badge variant={variant}>{label}</Badge>
                 </div>
 
                 <p className="text-sm text-[var(--text-muted)] leading-relaxed mb-5">
                   {service.description}
                 </p>
 
-                <ul className="space-y-1.5" role="list" aria-label={`${service.title} features`}>
+                <ul className="space-y-1.5" role="list" aria-label={`${service.title} funcionalidades`}>
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-center gap-2 text-xs text-[var(--text-subtle)]">
                       <span className="w-1 h-1 rounded-full bg-[var(--primary)] shrink-0" aria-hidden="true" />
