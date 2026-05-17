@@ -152,13 +152,13 @@ export const demos: Demo[] = [
   },
   {
     id: "restaurant",
-    title: "Saveur — Restaurante & Delivery",
+    title: "CAIS — Cardápio & Delivery",
     description:
-      "Plataforma moderna de pedidos com cardápio, carrinho e rastreamento de pedidos.",
+      "Cardápio digital e delivery premium com dois modos: menu visual de restaurante e pedido com carrinho em tempo real.",
     slug: "restaurant",
-    category: "Alimentação & Bebidas",
-    tags: ["Restaurante", "Gastronomia", "Pedidos", "Delivery"],
-    techStack: ["Next.js", "TypeScript", "Framer Motion"],
+    category: "Gastronomia",
+    tags: ["Restaurante", "Delivery", "Cardápio", "UX"],
+    techStack: ["Next.js", "TypeScript", "Framer Motion", "Tailwind CSS"],
     thumbnail: "/demos/restaurant.jpg",
   },
   {
