@@ -1,232 +1,293 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { orders } from "@/data/orion";
+import { CheckCircle } from "lucide-react";
+import type { PurchaseOrder, Product } from "@/data/orion";
+import { purchaseOrders, products } from "@/data/orion";
 import { formatCurrency } from "@/lib/utils";
-import { ORDER_STATUS_CONFIG, PRIORITY_CONFIG } from "../types/orion.types";
-import type { OrderStatus } from "@/data/orion";
+import { PO_STATUS_CONFIG } from "../types/orion.types";
+import type { PoFilter, StockFilter } from "../types/orion.types";
 
-type FilterStatus = OrderStatus | "todos";
+interface OperacoesTabProps {
+  filteredPOs:   PurchaseOrder[];
+  filteredStock: Product[];
+  poFilter:      PoFilter;
+  onPoFilter:    (f: PoFilter) => void;
+  poSearch:      string;
+  onPoSearch:    (s: string) => void;
+  stockFilter:   StockFilter;
+  onStockFilter: (f: StockFilter) => void;
+  stockSearch:   string;
+  onStockSearch: (s: string) => void;
+  onApprove:     (id: string) => void;
+}
 
-const STATUS_FILTERS: { id: FilterStatus; label: string }[] = [
-  { id: "todos",    label: "Todos"       },
-  { id: "producao", label: "Em Produção" },
-  { id: "pendente", label: "Pendente"    },
-  { id: "atrasado", label: "Atrasado"   },
-  { id: "concluido",label: "Concluído"  },
+const PO_FILTERS: { id: PoFilter; label: string }[] = [
+  { id: "todos",               label: "Todos"        },
+  { id: "aguardando_aprovacao",label: "Ag. Aprovação"},
+  { id: "aprovada",            label: "Aprovadas"    },
+  { id: "enviada",             label: "Enviadas"     },
+  { id: "urgente",             label: "Urgentes"     },
 ];
 
-export default function OperacoesTab() {
-  const [filter, setFilter] = useState<FilterStatus>("todos");
-  const [search, setSearch] = useState("");
+const STOCK_FILTERS: { id: StockFilter; label: string }[] = [
+  { id: "todos",          label: "Todos"       },
+  { id: "critico",        label: "Crítico"     },
+  { id: "materia_prima",  label: "Mat. Prima"  },
+  { id: "produto_acabado",label: "Prod. Acab." },
+  { id: "insumo",         label: "Insumo"      },
+  { id: "ativo",          label: "Ativo"       },
+];
 
-  const visible = orders.filter((o) => {
-    if (filter !== "todos" && o.status !== filter) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return (
-        o.id.toLowerCase().includes(q) ||
-        o.client.toLowerCase().includes(q) ||
-        o.product.toLowerCase().includes(q)
-      );
-    }
-    return true;
-  });
+export default function OperacoesTab({
+  filteredPOs, filteredStock,
+  poFilter, onPoFilter, poSearch, onPoSearch,
+  stockFilter, onStockFilter, stockSearch, onStockSearch,
+  onApprove,
+}: OperacoesTabProps) {
+  const [activeView, setActiveView] = useState<"po" | "estoque">("po");
 
-  // Summary KPIs
-  const totalValue = orders.reduce((s, o) => s + o.value, 0);
-  const atrasados = orders.filter((o) => o.status === "atrasado").length;
-  const emProducao = orders.filter((o) => o.status === "producao").length;
+  const totalPOValue = purchaseOrders.reduce((s, p) => s + p.totalValue, 0);
+  const pendingApproval = purchaseOrders.filter(p => p.status === "aguardando_aprovacao").length;
+  const criticalStock = products.filter(p => p.stock <= p.minStock).length;
 
   return (
     <div className="p-6 space-y-6 overflow-y-auto">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h2 className="text-lg font-semibold" style={{ color: "#cbd5e1" }}>
-            Ordens de Produção
-          </h2>
-          <p className="text-xs mt-0.5" style={{ color: "#475569" }}>
-            {orders.length} ordens · {emProducao} em produção · {atrasados} atrasadas
+          <h2 className="text-lg font-semibold text-[#cbd5e1]">Operações</h2>
+          <p className="text-xs mt-0.5 text-[#475569]">
+            Compras, estoque e fornecedores — Mai/2026
           </p>
         </div>
-        <div className="text-right">
-          <p className="text-[10px] uppercase tracking-wider mb-0.5" style={{ color: "#475569" }}>
-            Volume Total
-          </p>
-          <p className="text-xl font-bold font-mono" style={{ color: "#6366f1" }}>
-            {formatCurrency(totalValue)}
-          </p>
-        </div>
-      </div>
-
-      {/* Status summary pills */}
-      <div className="grid grid-cols-4 gap-3">
-        {(["producao", "pendente", "atrasado", "concluido"] as OrderStatus[]).map((s) => {
-          const cfg = ORDER_STATUS_CONFIG[s];
-          const count = orders.filter((o) => o.status === s).length;
-          const val = orders.filter((o) => o.status === s).reduce((a, o) => a + o.value, 0);
-          return (
-            <div
-              key={s}
-              className="rounded-xl border p-3 cursor-pointer transition-colors"
-              style={{
-                backgroundColor: filter === s ? cfg.bg : "#0a1220",
-                borderColor: filter === s ? cfg.color : "#1a2540",
-              }}
-              onClick={() => setFilter(filter === s ? "todos" : s)}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: cfg.color }} />
-                <span className="text-[10px]" style={{ color: cfg.color }}>{cfg.label}</span>
-              </div>
-              <p className="text-xl font-bold" style={{ color: "#cbd5e1" }}>{count}</p>
-              <p className="text-[10px] font-mono mt-0.5" style={{ color: "#475569" }}>
-                {formatCurrency(val)}
-              </p>
+        <div className="flex items-center gap-6">
+          {[
+            { label: "Volume OC",      value: formatCurrency(totalPOValue), color: "#6366f1"  },
+            { label: "Ag. Aprovação",  value: pendingApproval.toString(),   color: "#f59e0b"  },
+            { label: "Estoque Crítico",value: criticalStock.toString(),      color: "#f43f5e"  },
+          ].map(({ label, value, color }) => (
+            <div key={label} className="text-right">
+              <p className="text-[10px] uppercase tracking-wider mb-0.5 text-[#475569]">{label}</p>
+              <p className="text-base font-bold font-mono" style={{ color }}>{value}</p>
             </div>
-          );
-        })}
-      </div>
-
-      {/* Search + filter row */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar ordem, cliente, produto..."
-          className="h-8 px-3 rounded-lg border text-xs flex-1 min-w-48 outline-none"
-          style={{
-            backgroundColor: "#0a1220",
-            borderColor: "#1a2540",
-            color: "#cbd5e1",
-          }}
-        />
-        <div className="flex items-center gap-1">
-          {STATUS_FILTERS.map(({ id, label }) => (
-            <button
-              key={id}
-              onClick={() => setFilter(id)}
-              className="px-3 py-1.5 rounded-lg text-[10px] font-medium transition-colors"
-              style={{
-                backgroundColor: filter === id ? "#6366f1" : "rgba(255,255,255,0.04)",
-                color: filter === id ? "#fff" : "#475569",
-              }}
-            >
-              {label}
-            </button>
           ))}
         </div>
       </div>
 
-      {/* Orders table */}
-      <div
-        className="rounded-xl border overflow-hidden"
-        style={{ backgroundColor: "#0a1220", borderColor: "#1a2540" }}
-      >
-        <table className="w-full text-left" style={{ minWidth: 700 }}>
-          <thead>
-            <tr className="border-b" style={{ borderColor: "#1a2540" }}>
-              {["Ordem", "Cliente", "Produto", "Qty", "Valor", "Status", "Prazo", "Prioridade"].map((col) => (
-                <th
-                  key={col}
-                  className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium"
-                  style={{ color: "#475569" }}
-                >
-                  {col}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <AnimatePresence mode="popLayout">
-              {visible.map((o) => {
-                const sCfg = ORDER_STATUS_CONFIG[o.status];
-                const pCfg = PRIORITY_CONFIG[o.priority];
-                const isLate = o.daysLeft < 0;
-                const isUrgent = o.daysLeft >= 0 && o.daysLeft <= 3;
-                return (
-                  <motion.tr
-                    key={o.id}
-                    layout
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 4 }}
-                    transition={{ duration: 0.15 }}
-                    className="border-b"
-                    style={{ borderColor: "#1a2540" }}
-                  >
-                    <td className="px-4 py-3 text-[10px] font-mono" style={{ color: "#475569" }}>
-                      {o.id}
-                    </td>
-                    <td className="px-4 py-3 text-xs" style={{ color: "#cbd5e1" }}>
-                      {o.client}
-                    </td>
-                    <td className="px-4 py-3 text-[10px]" style={{ color: "#94a3b8" }}>
-                      <div>{o.product}</div>
-                      <div style={{ color: "#334155", fontSize: "9px" }}>{o.productLine}</div>
-                    </td>
-                    <td className="px-4 py-3 text-xs font-mono" style={{ color: "#94a3b8" }}>
-                      {o.qty.toLocaleString("pt-BR")}
-                    </td>
-                    <td className="px-4 py-3 text-xs font-mono font-semibold" style={{ color: "#6366f1" }}>
-                      {formatCurrency(o.value)}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className="text-[10px] font-medium px-2 py-0.5 rounded-full"
-                        style={{ backgroundColor: sCfg.bg, color: sCfg.color }}
-                      >
-                        {sCfg.label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="text-[10px]" style={{ color: isLate ? "#f43f5e" : isUrgent ? "#f59e0b" : "#94a3b8" }}>
-                        {o.delivery}
-                      </div>
-                      <div
-                        className="text-[9px] font-mono mt-0.5"
-                        style={{ color: isLate ? "#f43f5e" : isUrgent ? "#f59e0b" : "#475569" }}
-                      >
-                        {isLate
-                          ? `${Math.abs(o.daysLeft)}d atrasado`
-                          : `${o.daysLeft}d restantes`}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <span
-                        className="text-[10px] font-medium px-2 py-0.5 rounded-full"
-                        style={{ backgroundColor: pCfg.bg, color: pCfg.color }}
-                      >
-                        {o.priority.charAt(0).toUpperCase() + o.priority.slice(1)}
-                      </span>
-                    </td>
-                  </motion.tr>
-                );
-              })}
-            </AnimatePresence>
-          </tbody>
-        </table>
-
-        {visible.length === 0 && (
-          <div className="py-12 text-center">
-            <p className="text-sm" style={{ color: "#475569" }}>Nenhuma ordem encontrada</p>
-          </div>
-        )}
-
-        <div
-          className="flex items-center justify-between px-4 py-3 border-t text-[10px]"
-          style={{ borderColor: "#1a2540" }}
-        >
-          <span style={{ color: "#475569" }}>
-            {visible.length} de {orders.length} ordens
-          </span>
-          <span className="font-mono" style={{ color: "#6366f1" }}>
-            {formatCurrency(visible.reduce((s, o) => s + o.value, 0))} em exibição
-          </span>
-        </div>
+      {/* View toggle */}
+      <div className="flex items-center gap-1 border-b border-[#1a2540]">
+        {([["po", "Ordens de Compra"], ["estoque", "Estoque"]] as const).map(([id, label]) => (
+          <button
+            key={id}
+            onClick={() => setActiveView(id)}
+            className="px-4 py-2.5 text-xs font-medium transition-colors border-b-2 -mb-px"
+            style={{
+              borderColor: activeView === id ? "#6366f1" : "transparent",
+              color: activeView === id ? "#cbd5e1" : "#475569",
+            }}
+          >
+            {label}
+          </button>
+        ))}
       </div>
+
+      {/* Purchase Orders View */}
+      {activeView === "po" && (
+        <>
+          <div className="flex items-center gap-3 flex-wrap">
+            <input
+              value={poSearch}
+              onChange={e => onPoSearch(e.target.value)}
+              placeholder="Buscar fornecedor ou OC..."
+              className="orion-input h-8 px-3 text-xs flex-1 min-w-48"
+            />
+            <div className="flex items-center gap-1 flex-wrap">
+              {PO_FILTERS.map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => onPoFilter(f.id)}
+                  className={`orion-pill-filter ${poFilter === f.id ? "orion-pill-active" : ""}`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="orion-card overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left" style={{ minWidth: 720 }}>
+                <thead>
+                  <tr className="border-b border-[#1a2540]">
+                    {["OC","Fornecedor","Categoria","Itens","Valor","Status","Entrega","Prioridade",""].map(col => (
+                      <th key={col} className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredPOs.map(po => {
+                    const cfg = PO_STATUS_CONFIG[po.status];
+                    const isPending = po.status === "aguardando_aprovacao";
+                    const isUrgent  = po.priority === "urgente" || po.priority === "critica";
+                    return (
+                      <tr key={po.id} className="orion-table-row">
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">{po.id}</td>
+                        <td className="px-4 py-3">
+                          <p className="text-xs text-[#cbd5e1]">{po.supplierName}</p>
+                          <p className="text-[10px] text-[#475569]">{po.requestedBy}</p>
+                        </td>
+                        <td className="px-4 py-3 text-[10px] text-[#94a3b8]">{po.category}</td>
+                        <td className="px-4 py-3 text-xs font-mono text-[#94a3b8]">{po.items}</td>
+                        <td className="px-4 py-3 text-xs font-mono font-semibold text-[#6366f1]">
+                          {formatCurrency(po.totalValue)}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`orion-badge text-[10px] ${cfg.color} ${cfg.bg}`}>{cfg.label}</span>
+                        </td>
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">
+                          {po.expectedDelivery.split("-").reverse().join("/")}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className="text-[10px] font-medium px-1.5 py-0.5 rounded capitalize"
+                            style={{
+                              backgroundColor: isUrgent ? "#f43f5e22" : "#ffffff0a",
+                              color: isUrgent ? "#f43f5e" : "#475569",
+                            }}
+                          >
+                            {po.priority}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          {isPending && (
+                            <button
+                              onClick={() => onApprove(po.id)}
+                              className="flex items-center gap-1 text-[10px] text-[#22c55e] hover:text-green-300 transition-colors"
+                            >
+                              <CheckCircle size={12} />
+                              Aprovar
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {filteredPOs.length === 0 && (
+              <div className="py-10 text-center">
+                <p className="text-sm text-[#475569]">Nenhuma OC encontrada</p>
+              </div>
+            )}
+            <div className="px-5 py-3 border-t border-[#1a2540] text-[10px] text-[#475569]">
+              {filteredPOs.length} ordens · {formatCurrency(filteredPOs.reduce((s, p) => s + p.totalValue, 0))} em exibição
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Stock View */}
+      {activeView === "estoque" && (
+        <>
+          <div className="flex items-center gap-3 flex-wrap">
+            <input
+              value={stockSearch}
+              onChange={e => onStockSearch(e.target.value)}
+              placeholder="Buscar produto ou SKU..."
+              className="orion-input h-8 px-3 text-xs flex-1 min-w-48"
+            />
+            <div className="flex items-center gap-1 flex-wrap">
+              {STOCK_FILTERS.map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => onStockFilter(f.id)}
+                  className={`orion-pill-filter ${stockFilter === f.id ? "orion-pill-active" : ""}`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="orion-card overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left" style={{ minWidth: 720 }}>
+                <thead>
+                  <tr className="border-b border-[#1a2540]">
+                    {["SKU","Produto","Categoria","Estoque","Mínimo","Status","Custo Unit.","Localização"].map(col => (
+                      <th key={col} className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStock.map(p => {
+                    const isCritical = p.stock <= p.minStock;
+                    const stockPct   = Math.min((p.stock / p.maxStock) * 100, 100);
+                    return (
+                      <tr key={p.id} className="orion-table-row">
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">{p.sku}</td>
+                        <td className="px-4 py-3">
+                          <p className="text-xs text-[#cbd5e1]">{p.name}</p>
+                          <p className="text-[10px] text-[#475569]">últ. mov. {p.lastMovement.split("-").reverse().join("/")}</p>
+                        </td>
+                        <td className="px-4 py-3 text-[10px] text-[#94a3b8] capitalize">
+                          {p.category.replace("_", " ")}
+                        </td>
+                        <td className="px-4 py-3">
+                          <p className="text-xs font-mono font-semibold" style={{ color: isCritical ? "#f43f5e" : "#cbd5e1" }}>
+                            {p.stock.toLocaleString("pt-BR")} {p.unit}
+                          </p>
+                          <div className="mt-1 h-1 w-16 rounded-full overflow-hidden bg-[#1a2540]">
+                            <div
+                              className="h-full rounded-full"
+                              style={{
+                                width: `${stockPct}%`,
+                                backgroundColor: isCritical ? "#f43f5e" : stockPct < 50 ? "#f59e0b" : "#22c55e",
+                              }}
+                            />
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">
+                          {p.minStock.toLocaleString("pt-BR")}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span
+                            className="orion-badge text-[10px]"
+                            style={{
+                              color: isCritical ? "#f43f5e" : "#22c55e",
+                              backgroundColor: isCritical ? "#f43f5e22" : "#22c55e22",
+                            }}
+                          >
+                            {isCritical ? "Crítico" : "OK"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">
+                          {formatCurrency(p.unitCost)}
+                        </td>
+                        <td className="px-4 py-3 text-[10px] text-[#475569]">{p.location}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {filteredStock.length === 0 && (
+              <div className="py-10 text-center">
+                <p className="text-sm text-[#475569]">Nenhum produto encontrado</p>
+              </div>
+            )}
+            <div className="px-5 py-3 border-t border-[#1a2540] text-[10px] text-[#475569]">
+              {filteredStock.length} produtos exibidos
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

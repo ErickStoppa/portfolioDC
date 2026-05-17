@@ -1,126 +1,104 @@
 "use client";
 
-import { monthlyData } from "@/data/orion";
+import { budgetLines } from "@/data/orion";
 import { formatCurrency } from "@/lib/utils";
+import { DEPT_CONFIG } from "../types/orion.types";
 
 export default function BudgetVsActual() {
-  const maxVal = Math.max(...monthlyData.flatMap((d) => [d.gross, d.budget]));
+  const revenues = budgetLines.filter((_, i) => i < 8);
+  const expenses = budgetLines.filter((_, i) => i >= 8);
 
-  return (
-    <div
-      className="rounded-xl border overflow-hidden"
-      style={{ backgroundColor: "#0a1220", borderColor: "#1a2540" }}
-    >
-      <div className="px-5 py-4 border-b" style={{ borderColor: "#1a2540" }}>
-        <h3 className="text-sm font-semibold" style={{ color: "#cbd5e1" }}>
-          Realizado vs. Orçado
-        </h3>
-        <p className="text-[10px] mt-0.5" style={{ color: "#475569" }}>
-          Receita Bruta vs. Budget — Jun/24–Mai/25
+  const maxBudgeted = Math.max(...budgetLines.map(b => Math.abs(b.budgeted)));
+
+  function Section({ items, title, color }: { items: typeof budgetLines; title: string; color: string }) {
+    return (
+      <div>
+        <p className="text-[10px] uppercase tracking-wider text-[#475569] px-5 py-2 border-b border-[#1a2540]">
+          {title}
         </p>
-      </div>
-
-      <div className="p-5 space-y-2.5">
-        {/* Column headers */}
-        <div
-          className="grid text-[10px] uppercase tracking-wider pb-2 border-b"
-          style={{
-            gridTemplateColumns: "5rem 1fr 90px 90px 60px",
-            color: "#475569",
-            borderColor: "#1a2540",
-          }}
-        >
-          <span>Mês</span>
-          <span>Realizado vs. Budget</span>
-          <span className="text-right">Realizado</span>
-          <span className="text-right">Budget</span>
-          <span className="text-right">Δ%</span>
-        </div>
-
-        {monthlyData.map((d) => {
-          const actualPct = (d.gross / maxVal) * 100;
-          const budgetPct = (d.budget / maxVal) * 100;
-          const delta = ((d.gross - d.budget) / d.budget) * 100;
-          const deltaPos = delta >= 0;
-          const isLastMonth = d.month === "Mai/25";
-
+        {items.map(b => {
+          const budgetPct = (Math.abs(b.budgeted) / maxBudgeted) * 100;
+          const actualPct = (Math.abs(b.actual) / maxBudgeted) * 100;
+          const ahead = b.variance > 0;
+          const deptCfg = DEPT_CONFIG[b.dept];
           return (
-            <div
-              key={d.month}
-              className="grid items-center gap-2"
-              style={{ gridTemplateColumns: "5rem 1fr 90px 90px 60px" }}
-            >
-              <span
-                className="text-[10px]"
-                style={{ color: isLastMonth ? "#cbd5e1" : "#475569", fontWeight: isLastMonth ? 600 : 400 }}
-              >
-                {d.month}
-              </span>
-
+            <div key={b.category} className="px-5 py-3 border-b border-[#1a2540] last:border-b-0">
+              <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center gap-2">
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-medium ${deptCfg.bg} ${deptCfg.color}`}>
+                    {deptCfg.label}
+                  </span>
+                  <span className="text-[11px] text-[#94a3b8]">{b.category}</span>
+                </div>
+                <div className="flex items-center gap-3 text-[10px]">
+                  <span className="font-mono text-[#475569]">{formatCurrency(b.budgeted)}</span>
+                  <span className="font-mono font-semibold" style={{ color }}>
+                    {formatCurrency(b.actual)}
+                  </span>
+                  <span
+                    className="font-mono font-bold w-14 text-right"
+                    style={{ color: ahead ? "#22c55e" : "#f43f5e" }}
+                  >
+                    {ahead ? "+" : ""}{b.variancePct.toFixed(1)}%
+                  </span>
+                </div>
+              </div>
               {/* Dual bar */}
               <div className="space-y-0.5">
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#1a2540" }}>
+                <div className="h-1 rounded-full overflow-hidden bg-[#1a2540]">
+                  <div className="h-full rounded-full bg-[#334155]" style={{ width: `${budgetPct}%` }} />
+                </div>
+                <div className="h-1 rounded-full overflow-hidden bg-[#1a2540]">
                   <div
                     className="h-full rounded-full transition-all"
-                    style={{ width: `${actualPct}%`, backgroundColor: deltaPos ? "#22c55e" : "#f43f5e" }}
-                  />
-                </div>
-                <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "#1a2540" }}>
-                  <div
-                    className="h-full rounded-full"
-                    style={{ width: `${budgetPct}%`, backgroundColor: "#334155" }}
+                    style={{ width: `${actualPct}%`, backgroundColor: color + "cc" }}
                   />
                 </div>
               </div>
-
-              <span
-                className="text-right text-[10px] font-mono"
-                style={{ color: isLastMonth ? "#cbd5e1" : "#475569" }}
-              >
-                {formatCurrency(d.gross)}
-              </span>
-              <span
-                className="text-right text-[10px] font-mono"
-                style={{ color: "#334155" }}
-              >
-                {formatCurrency(d.budget)}
-              </span>
-              <span
-                className="text-right text-[10px] font-mono font-semibold"
-                style={{ color: deltaPos ? "#22c55e" : "#f43f5e" }}
-              >
-                {deltaPos ? "+" : ""}{delta.toFixed(1)}%
-              </span>
             </div>
           );
         })}
       </div>
+    );
+  }
+
+  const totalBudRev = revenues.reduce((s, b) => s + b.budgeted, 0);
+  const totalActRev = revenues.reduce((s, b) => s + b.actual, 0);
+  const totalBudExp = expenses.reduce((s, b) => s + b.budgeted, 0);
+  const totalActExp = expenses.reduce((s, b) => s + b.actual, 0);
+
+  return (
+    <div className="orion-card overflow-hidden">
+      <div className="px-5 py-4 border-b border-[#1a2540]">
+        <h3 className="text-sm font-semibold text-[#cbd5e1]">Realizado vs. Budget — Mai/2026</h3>
+        <p className="text-[10px] mt-0.5 text-[#475569]">Receitas e Despesas por categoria</p>
+      </div>
+
+      <Section items={revenues} title="Receitas" color="#22c55e" />
+      <Section items={expenses} title="Despesas" color="#f43f5e" />
 
       {/* Summary footer */}
-      <div
-        className="flex items-center justify-between px-5 py-3 border-t text-[10px]"
-        style={{ borderColor: "#1a2540" }}
-      >
-        <div className="flex items-center gap-4">
-          {[
-            { color: "#22c55e", label: "Acima do budget" },
-            { color: "#334155", label: "Budget" },
-          ].map(({ color, label }) => (
-            <div key={label} className="flex items-center gap-1.5">
-              <div className="w-2 h-1.5 rounded-full" style={{ backgroundColor: color }} />
-              <span style={{ color: "#475569" }}>{label}</span>
-            </div>
-          ))}
+      <div className="px-5 py-4 border-t border-[#1a2540] grid grid-cols-2 gap-4">
+        <div>
+          <p className="text-[10px] uppercase tracking-wider text-[#475569] mb-1">Receita Total</p>
+          <p className="text-sm font-bold font-mono text-[#22c55e]">{formatCurrency(totalActRev)}</p>
+          <p className="text-[10px] text-[#475569] font-mono mt-0.5">
+            vs. orçado {formatCurrency(totalBudRev)} ·{" "}
+            <span style={{ color: totalActRev >= totalBudRev ? "#22c55e" : "#f43f5e" }}>
+              {totalActRev >= totalBudRev ? "+" : ""}{(((totalActRev - totalBudRev) / totalBudRev) * 100).toFixed(1)}%
+            </span>
+          </p>
         </div>
-        <span style={{ color: "#475569" }}>
-          Média:{" "}
-          <span className="font-mono" style={{ color: "#22c55e" }}>
-            +{(
-              (monthlyData.reduce((s, d) => s + ((d.gross - d.budget) / d.budget) * 100, 0) /
-                monthlyData.length)
-            ).toFixed(1)}%
-          </span>
-        </span>
+        <div>
+          <p className="text-[10px] uppercase tracking-wider text-[#475569] mb-1">Despesa Total</p>
+          <p className="text-sm font-bold font-mono text-[#f43f5e]">{formatCurrency(totalActExp)}</p>
+          <p className="text-[10px] text-[#475569] font-mono mt-0.5">
+            vs. orçado {formatCurrency(totalBudExp)} ·{" "}
+            <span style={{ color: totalActExp <= totalBudExp ? "#22c55e" : "#f43f5e" }}>
+              {totalActExp >= totalBudExp ? "+" : ""}{(((totalActExp - totalBudExp) / totalBudExp) * 100).toFixed(1)}%
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );

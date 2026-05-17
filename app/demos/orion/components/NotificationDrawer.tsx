@@ -1,183 +1,112 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { X } from "lucide-react";
-import { ALERT_CONFIG } from "../types/orion.types";
-import { alerts } from "@/data/orion";
+import { useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, CheckCircle2, Info, AlertTriangle, ShieldAlert, type LucideIcon } from "lucide-react";
+import type { OrionAlert } from "@/data/orion";
+import { SEVERITY_CONFIG } from "../types/orion.types";
 import { useEscKey, useFocusTrap } from "../hooks/hooks";
 
+const ICON_MAP: Record<string, LucideIcon> = { Info, AlertTriangle, ShieldAlert };
+
 interface NotificationDrawerProps {
+  alerts: OrionAlert[];
   onClose: () => void;
+  onResolve: (id: string) => void;
 }
 
-export default function NotificationDrawer({ onClose }: NotificationDrawerProps) {
-  const [dismissed, setDismissed] = useState<Set<string>>(new Set());
-  const drawerRef = useRef<HTMLDivElement>(null);
-
+export function NotificationDrawer({ alerts, onClose, onResolve }: NotificationDrawerProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
   useEscKey(onClose);
-  useFocusTrap(drawerRef, true);
+  useFocusTrap(panelRef, true);
 
-  const visible = alerts.filter((a) => !dismissed.has(a.id));
-
-  const dismiss = (id: string) => {
-    setDismissed((prev) => new Set([...prev, id]));
-  };
+  const unresolved = alerts.filter(a => !a.resolved);
 
   return (
     <>
       <motion.div
-        className="fixed inset-0 z-40"
-        style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/40 z-40"
         onClick={onClose}
       />
-
       <motion.div
-        ref={drawerRef}
-        className="fixed right-0 top-0 bottom-0 z-50 flex flex-col"
-        style={{
-          width: "20rem",
-          backgroundColor: "#080f20",
-          borderLeft: "1px solid #1a2540",
-        }}
-        initial={{ x: "100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "100%" }}
-        transition={{ type: "spring", stiffness: 260, damping: 24 }}
+        ref={panelRef}
+        initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+        transition={{ type: "spring", stiffness: 340, damping: 38 }}
+        className="fixed right-0 top-0 bottom-0 z-50 w-[380px] bg-[#080f20] border-l border-[#1a2540] flex flex-col overflow-hidden"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Notificações"
       >
-        <div
-          className="flex items-center justify-between px-5 shrink-0"
-          style={{
-            height: "3.5rem",
-            borderBottom: "1px solid #1a2540",
-          }}
-        >
-          <span className="text-sm font-semibold" style={{ color: "#cbd5e1" }}>
-            Notificações
-          </span>
+        {/* Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#1a2540] shrink-0">
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-[#cbd5e1]">Notificações</h2>
+            {unresolved.length > 0 && (
+              <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                {unresolved.length}
+              </span>
+            )}
+          </div>
           <button
             onClick={onClose}
-            className="flex items-center justify-center rounded-md transition-colors"
-            style={{ width: "1.5rem", height: "1.5rem", color: "#475569" }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.color = "#cbd5e1";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.color = "#475569";
-            }}
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-[#475569] hover:text-[#cbd5e1] hover:bg-white/5 transition-colors"
           >
             <X size={14} />
           </button>
         </div>
 
-        <div
-          className="flex-1 overflow-y-auto"
-          style={{ borderBottom: "1px solid #1a2540" }}
-        >
-          {visible.map((alert) => {
-            const config = ALERT_CONFIG[alert.severity];
-            return (
-              <div
-                key={alert.id}
-                className="relative flex items-start gap-3 p-4"
-                style={{
-                  borderBottom: "1px solid #1a2540",
-                  backgroundColor: !alert.read ? config.bg : "transparent",
-                }}
-              >
-                <div
-                  className="rounded-full flex-shrink-0 mt-1"
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    backgroundColor: config.color,
-                  }}
-                />
-                <div className="flex-1 min-w-0 pr-5">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className="text-xs font-semibold truncate"
-                      style={{ color: "#cbd5e1" }}
-                    >
-                      {alert.title}
-                    </span>
-                    {alert.severity === "critico" && (
-                      <span
-                        className="text-white font-bold rounded px-1 flex-shrink-0"
-                        style={{
-                          fontSize: "9px",
-                          backgroundColor: "#f43f5e",
-                          letterSpacing: "0.05em",
-                        }}
-                      >
-                        CRÍTICO
-                      </span>
-                    )}
-                  </div>
-                  <p
-                    className="mt-0.5 line-clamp-2"
-                    style={{ fontSize: "11px", color: "#475569" }}
-                  >
-                    {alert.message}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span style={{ fontSize: "10px", color: "#1e293b" }}>
-                      {alert.time}
-                    </span>
-                    <span
-                      className="rounded px-1 py-0.5"
-                      style={{
-                        fontSize: "9px",
-                        color: "#475569",
-                        backgroundColor: "rgba(71,85,105,0.15)",
-                      }}
-                    >
-                      {alert.module}
-                    </span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => dismiss(alert.id)}
-                  className="absolute top-3 right-3 flex items-center justify-center rounded transition-colors"
-                  style={{ color: "#475569" }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.color = "#cbd5e1";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLButtonElement).style.color = "#475569";
-                  }}
-                >
-                  <X size={12} />
-                </button>
+        {/* Alert list */}
+        <div className="flex-1 overflow-y-auto py-3">
+          <AnimatePresence initial={false}>
+            {alerts.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-16 gap-2">
+                <CheckCircle2 size={32} className="text-green-400" />
+                <p className="text-sm text-[#475569]">Tudo limpo por aqui.</p>
               </div>
-            );
-          })}
-
-          {visible.length === 0 && (
-            <div className="flex items-center justify-center h-32">
-              <p className="text-xs" style={{ color: "#475569" }}>
-                Nenhuma notificação
-              </p>
-            </div>
-          )}
-        </div>
-
-        <div className="p-4 shrink-0">
-          <button
-            className="text-xs transition-colors"
-            style={{ color: "#6366f1" }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.textDecoration = "underline";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.textDecoration = "none";
-            }}
-          >
-            Marcar todas como lidas
-          </button>
+            ) : (
+              alerts.map(alert => {
+                const cfg = SEVERITY_CONFIG[alert.severity];
+                const Icon = ICON_MAP[cfg.icon];
+                return (
+                  <motion.div
+                    key={alert.id}
+                    layout
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden"
+                  >
+                    <div
+                      className={`mx-3 mb-2 p-4 rounded-xl border ${cfg.bg} ${cfg.border} ${alert.resolved ? "opacity-40" : ""}`}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`mt-0.5 ${cfg.color}`}>
+                          {Icon && <Icon size={15} />}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-xs font-semibold ${cfg.color}`}>{alert.title}</p>
+                          <p className="text-[11px] text-[#94a3b8] mt-1 leading-relaxed">{alert.description}</p>
+                          <div className="flex items-center justify-between mt-2">
+                            <span className="text-[10px] text-[#475569]">{alert.time}</span>
+                            {!alert.resolved && (
+                              <button
+                                onClick={() => onResolve(alert.id)}
+                                className="text-[10px] text-[#475569] hover:text-[#cbd5e1] underline transition-colors"
+                              >
+                                Marcar como lida
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
     </>

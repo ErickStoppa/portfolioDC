@@ -1,72 +1,61 @@
-export type { ActivityType, OrderStatus, AlertSeverity, EmployeeStatus,
-  MonthlyData, ProductLine, PlLine, CashFlowItem, AgingBucket,
-  BankAccount, Activity, Alert, Order, Employee, DeptData,
+export type {
+  OrionTab, OrionDept, PoStatus, TxStatus, TxType,
+  PlLine, BankAccount, CashFlowItem, FxRate, Transaction,
+  Product, PurchaseOrder, Supplier, Employee, BudgetLine,
+  OrionAlert, ActivityItem, MonthlyMetric,
 } from "@/data/orion";
 
-export type OrionTab   = "overview" | "financeiro" | "tesouraria" | "analytics" | "operacoes" | "pessoas";
-export type Period     = "dia" | "mes" | "trimestre" | "ano";
-export type PlView     = "dre" | "fluxo";
-export type AgingType  = "receber" | "pagar";
-export type FxBase     = "USD" | "EUR";
-export type AnalMetric = "receita" | "margem" | "budget";
+import type { PoStatus, TxStatus, OrionDept, OrionTab } from "@/data/orion";
 
-// ── Nav ───────────────────────────────────────────────────────────────────
-export const NAV_ITEMS: Array<{ id: OrionTab; label: string; icon: string }> = [
-  { id: "overview",   label: "Visão Geral", icon: "LayoutDashboard" },
-  { id: "financeiro", label: "Financeiro",  icon: "DollarSign"      },
-  { id: "tesouraria", label: "Tesouraria",  icon: "Landmark"        },
-  { id: "analytics",  label: "Analytics",   icon: "BarChart3"       },
-  { id: "operacoes",  label: "Operações",   icon: "Factory"         },
-  { id: "pessoas",    label: "Pessoas",     icon: "Users"           },
+export const NAV_ITEMS: Array<{
+  id: OrionTab;
+  label: string;
+  icon: string;
+  badge?: "alerts" | "stockCritical";
+}> = [
+  { id: "overview",   label: "Visão Geral", icon: "LayoutDashboard", badge: "alerts"        },
+  { id: "financeiro", label: "Financeiro",  icon: "FileText"                                 },
+  { id: "tesouraria", label: "Tesouraria",  icon: "Landmark"                                 },
+  { id: "analytics",  label: "Analytics",   icon: "TrendingUp"                               },
+  { id: "operacoes",  label: "Operações",   icon: "Package",         badge: "stockCritical"  },
+  { id: "pessoas",    label: "Pessoas",     icon: "Users"                                    },
 ];
 
-export const PERIOD_OPTIONS: Array<{ value: Period; label: string }> = [
-  { value: "dia",       label: "Hoje"       },
-  { value: "mes",       label: "Este Mês"   },
-  { value: "trimestre", label: "Trimestre"  },
-  { value: "ano",       label: "Ano"        },
-];
+export const PO_STATUS_CONFIG: Record<PoStatus, { label: string; color: string; bg: string; dot: string }> = {
+  rascunho:             { label: "Rascunho",       color: "text-slate-400",  bg: "bg-slate-400/10",  dot: "bg-slate-400"  },
+  aguardando_aprovacao: { label: "Ag. Aprovação",  color: "text-amber-400",  bg: "bg-amber-400/10",  dot: "bg-amber-400"  },
+  aprovada:             { label: "Aprovada",        color: "text-blue-400",   bg: "bg-blue-400/10",   dot: "bg-blue-400"   },
+  enviada:              { label: "Enviada",         color: "text-violet-400", bg: "bg-violet-400/10", dot: "bg-violet-400" },
+  recebida_parcial:     { label: "Receb. Parcial",  color: "text-amber-400",  bg: "bg-amber-400/10",  dot: "bg-amber-400"  },
+  recebida:             { label: "Recebida",        color: "text-green-400",  bg: "bg-green-400/10",  dot: "bg-green-400"  },
+  cancelada:            { label: "Cancelada",       color: "text-red-400",    bg: "bg-red-400/10",    dot: "bg-red-400"    },
+};
 
-// ── Config objects ────────────────────────────────────────────────────────
-export const ORDER_STATUS_CONFIG = {
-  producao:  { label: "Em Produção", color: "#38bdf8", bg: "rgba(56,189,248,0.1)"  },
-  pendente:  { label: "Pendente",    color: "#f59e0b", bg: "rgba(245,158,11,0.1)"  },
-  concluido: { label: "Concluído",   color: "#22c55e", bg: "rgba(34,197,94,0.1)"   },
-  atrasado:  { label: "Atrasado",    color: "#f43f5e", bg: "rgba(244,63,94,0.1)"   },
-} as const;
+export const TX_STATUS_CONFIG: Record<TxStatus, { label: string; color: string; bg: string }> = {
+  pago:      { label: "Pago",      color: "text-green-400", bg: "bg-green-400/10" },
+  pendente:  { label: "Pendente",  color: "text-amber-400", bg: "bg-amber-400/10" },
+  vencido:   { label: "Vencido",   color: "text-red-400",   bg: "bg-red-400/10"   },
+  cancelado: { label: "Cancelado", color: "text-slate-400", bg: "bg-slate-400/10" },
+};
 
-export const ALERT_CONFIG = {
-  critico: { color: "#f43f5e", bg: "rgba(244,63,94,0.08)",   icon: "AlertCircle"   },
-  atencao: { color: "#f59e0b", bg: "rgba(245,158,11,0.08)",  icon: "AlertTriangle" },
-  info:    { color: "#38bdf8", bg: "rgba(56,189,248,0.08)",  icon: "Info"          },
-} as const;
+export const SEVERITY_CONFIG: Record<string, { icon: string; color: string; bg: string; border: string }> = {
+  info:     { icon: "Info",         color: "text-sky-400",   bg: "bg-sky-400/8",   border: "border-sky-400/20"   },
+  warning:  { icon: "AlertTriangle",color: "text-amber-400", bg: "bg-amber-400/8", border: "border-amber-400/20" },
+  critical: { icon: "ShieldAlert",  color: "text-red-400",   bg: "bg-red-400/8",   border: "border-red-400/20"   },
+};
 
-export const ACTIVITY_CONFIG = {
-  pagamento:   { icon: "ArrowUpRight",   color: "#f43f5e" },
-  recebimento: { icon: "ArrowDownLeft",  color: "#22c55e" },
-  nota_fiscal: { icon: "FileText",       color: "#6366f1" },
-  contrato:    { icon: "FileCheck",      color: "#38bdf8" },
-  alerta:      { icon: "AlertTriangle",  color: "#f59e0b" },
-  aprovacao:   { icon: "CheckCircle2",   color: "#22c55e" },
-} as const;
+export const DEPT_CONFIG: Record<OrionDept, { label: string; color: string; bg: string; icon: string }> = {
+  diretoria:  { label: "Diretoria",  color: "text-violet-400", bg: "bg-violet-400/10", icon: "Crown"      },
+  financeiro: { label: "Financeiro", color: "text-green-400",  bg: "bg-green-400/10",  icon: "Wallet"     },
+  tecnologia: { label: "Tecnologia", color: "text-blue-400",   bg: "bg-blue-400/10",   icon: "Monitor"    },
+  operacoes:  { label: "Operações",  color: "text-amber-400",  bg: "bg-amber-400/10",  icon: "Settings2"  },
+  comercial:  { label: "Comercial",  color: "text-sky-400",    bg: "bg-sky-400/10",    icon: "TrendingUp" },
+  logistica:  { label: "Logística",  color: "text-cyan-400",   bg: "bg-cyan-400/10",   icon: "Truck"      },
+  rh:         { label: "RH",         color: "text-pink-400",   bg: "bg-pink-400/10",   icon: "Users"      },
+};
 
-export const PRIORITY_CONFIG = {
-  alta:  { color: "#f43f5e", bg: "rgba(244,63,94,0.1)"  },
-  media: { color: "#f59e0b", bg: "rgba(245,158,11,0.1)" },
-  baixa: { color: "#475569", bg: "rgba(71,85,105,0.1)"  },
-} as const;
-
-export const EMPLOYEE_STATUS_CONFIG = {
-  ativo:     { label: "Ativo",     color: "#22c55e", bg: "rgba(34,197,94,0.1)"  },
-  ferias:    { label: "Férias",    color: "#38bdf8", bg: "rgba(56,189,248,0.1)" },
-  afastado:  { label: "Afastado", color: "#f59e0b", bg: "rgba(245,158,11,0.1)" },
-} as const;
-
-export const PL_TYPE_CONFIG = {
-  receita:   { color: "#22c55e",  bold: true,  indent: 0 },
-  deducao:   { color: "#f43f5e", bold: false, indent: 1 },
-  subtotal:  { color: "#cbd5e1", bold: true,  indent: 0 },
-  custo:     { color: "#f43f5e", bold: false, indent: 1 },
-  despesa:   { color: "#f43f5e", bold: false, indent: 1 },
-  resultado: { color: "#6366f1", bold: true,  indent: 0 },
-} as const;
+export type PlFilter    = "anual" | "trimestral" | "mensal";
+export type TxFilter    = "todos" | "receita" | "despesa" | "vencido" | "pendente";
+export type StockFilter = "todos" | "critico" | "materia_prima" | "produto_acabado" | "insumo" | "ativo";
+export type PoFilter    = "todos" | "aguardando_aprovacao" | "aprovada" | "enviada" | "urgente";
+export type RhFilter    = "todos" | OrionDept;

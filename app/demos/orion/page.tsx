@@ -1,16 +1,10 @@
-import type { Metadata } from "next";
+"use client";
 import { BrowserShell } from "@/components/demos/browser-shell";
-import OrionApp from "./orion-app";
+import { OrionApp } from "./orion-app";
 
-export const metadata: Metadata = {
-  title: "ORION — ERP & Financial Intelligence | Demo",
-  description:
-    "ERP premium para manufatura com DRE, tesouraria, analytics de produto, gestão de ordens e RH — Nexum Indústria S.A.",
-};
-
-export default function OrionPage() {
+export default function Page() {
   return (
-    <BrowserShell url="orion.erp.nexum.com.br" title="ORION ERP">
+    <BrowserShell title="ORION ERP" url="orion.nexum.com.br/overview" backHref="/demos">
       <OrionApp />
     </BrowserShell>
   );

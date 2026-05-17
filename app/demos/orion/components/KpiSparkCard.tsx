@@ -1,82 +1,65 @@
 "use client";
 
+import { type ComponentType } from "react";
 import * as LucideIcons from "lucide-react";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+
+const ACCENT_HEX: Record<string, string> = {
+  green:  "#22c55e",
+  red:    "#f43f5e",
+  indigo: "#6366f1",
+  amber:  "#f59e0b",
+  sky:    "#38bdf8",
+  violet: "#8b5cf6",
+};
 
 interface KpiSparkCardProps {
   title: string;
   value: string;
-  change: string;
-  changePositive: boolean;
-  subtitle: string;
-  sparkData: number[];
-  sparkColor: string;
+  change: number;
+  trend: "up" | "down" | "neutral";
+  trendGood: boolean;
+  sparkline: number[];
   icon: string;
+  accentColor: "green" | "red" | "indigo" | "amber" | "sky" | "violet";
+  subtitle?: string;
   onClick?: () => void;
 }
 
-const Icons = LucideIcons as unknown as Record<string, React.ComponentType<{ className?: string; size?: number; style?: React.CSSProperties }>>;
-
 function Sparkline({ data, color }: { data: number[]; color: string }) {
-  const w = 72;
-  const h = 28;
-  const n = data.length;
-
+  if (data.length < 2) return null;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
-
+  const n = data.length;
   const pts = data.map((v, i) => {
-    const x = (i / (n - 1)) * w;
-    const y = h - ((v - min) / range) * (h - 4) - 0;
-    return { x, y };
+    const x = ((i / (n - 1)) * 78 + 1).toFixed(1);
+    const y = (30 - ((v - min) / range) * 28).toFixed(1);
+    return `${x},${y}`;
   });
-
-  const polyPoints = pts.map((p) => `${p.x},${p.y}`).join(" ");
-
-  const areaPoints = [
-    `0,${h}`,
-    ...pts.map((p) => `${p.x},${p.y}`),
-    `${w},${h}`,
-  ].join(" ");
-
-  const gradId = `sg-${color.replace("#", "")}`;
-
+  const poly = pts.join(" ");
+  const area = `M ${pts[0]} ${pts.slice(1).map(p => `L ${p}`).join(" ")} L 80,32 L 0,32 Z`;
   return (
-    <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} fill="none">
-      <defs>
-        <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity={0.25} />
-          <stop offset="100%" stopColor={color} stopOpacity={0} />
-        </linearGradient>
-      </defs>
-      <polygon points={areaPoints} fill={`url(#${gradId})`} />
-      <polyline
-        points={polyPoints}
-        fill="none"
-        stroke={color}
-        strokeWidth={1.5}
-        strokeLinejoin="round"
-        strokeLinecap="round"
-      />
+    <svg viewBox="0 0 80 32" width="80" height="32">
+      <path d={area} fill={color} fillOpacity="0.08" />
+      <polyline points={poly} fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-export default function KpiSparkCard({
-  title,
-  value,
-  change,
-  changePositive,
-  subtitle,
-  sparkData,
-  sparkColor,
-  icon,
-  onClick,
+export function KpiSparkCard({
+  title, value, change, trend, trendGood, sparkline,
+  icon, accentColor, subtitle, onClick,
 }: KpiSparkCardProps) {
-  const Icon = Icons[icon];
+  const Icon = (LucideIcons as unknown as Record<string, ComponentType<{ className?: string; size?: number; style?: React.CSSProperties }>>)[icon];
+  const hex = ACCENT_HEX[accentColor];
+
+  const isGood = (trendGood && trend === "up") || (!trendGood && trend === "down");
+  const isBad  = (trendGood && trend === "down") || (!trendGood && trend === "up");
+  const pillColor = isGood ? "#22c55e" : isBad ? "#f43f5e" : "#94a3b8";
+  const TrendIcon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
 
   return (
     <motion.div
@@ -84,54 +67,42 @@ export default function KpiSparkCard({
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       className={cn(
-        "p-5 rounded-xl border",
-        onClick && "cursor-pointer"
+        "orion-card orion-card-hover p-5 relative overflow-hidden",
+        onClick && "cursor-pointer",
       )}
-      style={{ backgroundColor: "#0a1220", borderColor: "#1a2540" }}
     >
-      {/* Row 1: icon + title */}
-      <div className="flex items-center gap-1.5 mb-3">
-        {Icon && (
-          <Icon size={16} style={{ color: "#475569", flexShrink: 0 }} />
-        )}
-        <span
-          className="uppercase tracking-widest font-medium"
-          style={{ fontSize: "10px", color: "#475569" }}
-        >
-          {title}
-        </span>
+      {/* Bg radial glow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: `radial-gradient(circle at 90% 110%, ${hex}0d 0%, transparent 60%)` }}
+      />
+
+      {/* Row 1 */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 rounded-lg" style={{ backgroundColor: hex + "22" }}>
+            {Icon && <Icon size={14} className="" style={{ color: hex } as React.CSSProperties} />}
+          </div>
+          <span className="text-[10px] uppercase tracking-widest text-[#475569] font-medium">{title}</span>
+        </div>
       </div>
 
-      {/* Row 2: value + sparkline */}
-      <div className="flex items-end justify-between mb-3">
-        <span
-          className="text-2xl font-bold tabular-nums leading-none"
-          style={{ color: "#cbd5e1" }}
-        >
-          {value}
-        </span>
-        <Sparkline data={sparkData} color={sparkColor} />
+      {/* Row 2 */}
+      <div className="flex items-end justify-between gap-2">
+        <p className="text-[26px] font-bold text-white tabular-nums leading-none">{value}</p>
+        <Sparkline data={sparkline} color={hex} />
       </div>
 
-      {/* Row 3: change badge + subtitle */}
-      <div className="flex items-center gap-2">
+      {/* Row 3 */}
+      <div className="flex items-center gap-2 mt-2.5">
         <span
-          className="flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium"
-          style={{
-            backgroundColor: changePositive
-              ? "rgba(34,197,94,0.1)"
-              : "rgba(244,63,94,0.1)",
-            color: changePositive ? "#22c55e" : "#f43f5e",
-          }}
+          className="flex items-center gap-1 text-[11px] font-semibold px-1.5 py-0.5 rounded-full"
+          style={{ backgroundColor: pillColor + "22", color: pillColor }}
         >
-          {changePositive ? (
-            <TrendingUp size={11} />
-          ) : (
-            <TrendingDown size={11} />
-          )}
-          {change}
+          <TrendIcon size={10} />
+          {change > 0 ? "+" : ""}{change.toFixed(1)}%
         </span>
-        <span style={{ fontSize: "11px", color: "#475569" }}>{subtitle}</span>
+        {subtitle && <span className="text-[11px] text-[#475569]">{subtitle}</span>}
       </div>
     </motion.div>
   );

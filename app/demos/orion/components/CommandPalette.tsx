@@ -1,137 +1,104 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Search, LayoutDashboard, DollarSign, Landmark, BarChart3, Factory, Users, type LucideIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Search, LayoutDashboard, FileText, Landmark, TrendingUp, Package, Users,
+  type LucideIcon,
+} from "lucide-react";
 import { NAV_ITEMS, type OrionTab } from "../types/orion.types";
 import { useEscKey, useFocusTrap } from "../hooks/hooks";
 
 const ICON_MAP: Record<string, LucideIcon> = {
-  LayoutDashboard,
-  DollarSign,
-  Landmark,
-  BarChart3,
-  Factory,
-  Users,
+  LayoutDashboard, FileText, Landmark, TrendingUp, Package, Users,
 };
 
 interface CommandPaletteProps {
   onClose: () => void;
-  onNavigate: (tab: OrionTab) => void;
+  onNav: (tab: OrionTab) => void;
 }
 
-export default function CommandPalette({ onClose, onNavigate }: CommandPaletteProps) {
+export function CommandPalette({ onClose, onNav }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
+  const [hovered, setHovered] = useState(0);
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEscKey(onClose);
   useFocusTrap(panelRef, true);
 
-  const filtered = query.trim()
-    ? NAV_ITEMS.filter((item) =>
-        item.label.toLowerCase().includes(query.toLowerCase())
-      )
-    : NAV_ITEMS;
+  const filtered = NAV_ITEMS.filter(n =>
+    n.label.toLowerCase().includes(query.toLowerCase())
+  );
+
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") { e.preventDefault(); setHovered(h => Math.min(h + 1, filtered.length - 1)); }
+    if (e.key === "ArrowUp")   { e.preventDefault(); setHovered(h => Math.max(h - 1, 0)); }
+    if (e.key === "Enter" && filtered[hovered]) { onNav(filtered[hovered].id); }
+  };
 
   return (
-    <div
-      className="fixed inset-0 flex items-start justify-center z-50"
-      style={{
-        paddingTop: "20vh",
-        backgroundColor: "rgba(0,0,0,0.6)",
-        backdropFilter: "blur(4px)",
-      }}
-      onClick={onClose}
-    >
-      <div
-        ref={panelRef}
-        className="w-full rounded-xl overflow-hidden shadow-2xl"
-        style={{
-          maxWidth: "28rem",
-          backgroundColor: "#080f20",
-          border: "1px solid #1a2540",
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div
-          className="flex items-center px-4 gap-3"
-          style={{
-            height: "3rem",
-            borderBottom: "1px solid #1a2540",
-          }}
+    <>
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+        onClick={onClose}
+      />
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
+        <motion.div
+          ref={panelRef}
+          initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+          className="w-full max-w-lg bg-[#0a1220] border border-[#1a2540] rounded-xl shadow-2xl overflow-hidden"
+          onKeyDown={handleKey}
         >
-          <Search size={16} style={{ color: "#475569", flexShrink: 0 }} />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar módulo, ação..."
-            autoFocus
-            className="flex-1 bg-transparent text-sm outline-none"
-            style={{
-              color: "#cbd5e1",
-            }}
-          />
-        </div>
+          {/* Input */}
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-[#1a2540]">
+            <Search size={18} className="text-[#475569] shrink-0" />
+            <input
+              autoFocus
+              value={query}
+              onChange={e => { setQuery(e.target.value); setHovered(0); }}
+              placeholder="Navegar para..."
+              className="flex-1 bg-transparent text-[15px] text-white placeholder-[#475569] outline-none border-none"
+            />
+            <kbd className="text-[10px] text-[#475569] bg-[#1a2540] px-1.5 py-0.5 rounded font-mono">ESC</kbd>
+          </div>
 
-        <div className="overflow-y-auto py-2" style={{ maxHeight: "18rem" }}>
-          {filtered.length > 0 ? (
-            <>
-              <p
-                className="px-4 py-2 uppercase tracking-widest"
-                style={{ fontSize: "10px", color: "#475569" }}
-              >
-                Módulos
-              </p>
-              {filtered.map((item) => {
-                const Icon = ICON_MAP[item.icon];
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => {
-                      onNavigate(item.id);
-                      onClose();
-                    }}
-                    className="flex items-center gap-3 w-full px-4 py-2.5 text-left transition-colors"
-                    style={{ color: "#94a3b8" }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-                        "rgba(255,255,255,0.04)";
-                      (e.currentTarget as HTMLButtonElement).style.color = "#cbd5e1";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
-                      (e.currentTarget as HTMLButtonElement).style.color = "#94a3b8";
-                    }}
-                  >
-                    {Icon && <Icon size={16} style={{ flexShrink: 0 }} />}
-                    <span className="text-sm flex-1">{item.label}</span>
-                    <span style={{ color: "#475569" }}>→</span>
-                  </button>
-                );
-              })}
-            </>
-          ) : (
-            <p
-              className="text-center py-8"
-              style={{ color: "#475569", fontSize: "14px" }}
-            >
-              Nenhum resultado
-            </p>
-          )}
-        </div>
+          {/* Results */}
+          <div className="py-2">
+            {filtered.map((item, i) => {
+              const Icon = ICON_MAP[item.icon];
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => onNav(item.id)}
+                  onMouseEnter={() => setHovered(i)}
+                  className="w-full flex items-center gap-3 px-5 py-3 text-left transition-colors"
+                  style={{ backgroundColor: hovered === i ? "#0d1628" : "transparent" }}
+                >
+                  {Icon && <Icon size={16} className={hovered === i ? "text-indigo-400" : "text-[#475569]"} />}
+                  <span className={`text-sm ${hovered === i ? "text-white" : "text-[#94a3b8]"}`}>
+                    {item.label}
+                  </span>
+                  {hovered === i && (
+                    <kbd className="ml-auto text-[10px] text-[#475569] bg-[#1a2540] px-1.5 py-0.5 rounded font-mono">↵</kbd>
+                  )}
+                </button>
+              );
+            })}
+            {filtered.length === 0 && (
+              <p className="px-5 py-4 text-sm text-[#475569]">Nenhum módulo encontrado.</p>
+            )}
+          </div>
 
-        <div
-          className="flex items-center gap-4 px-4 py-2"
-          style={{
-            borderTop: "1px solid #1a2540",
-            fontSize: "10px",
-            color: "#475569",
-          }}
-        >
-          <span>↵ navegar</span>
-          <span>⎋ fechar</span>
-        </div>
+          {/* Footer */}
+          <div className="px-4 py-2 border-t border-[#1a2540] text-[11px] text-[#334155] flex gap-4">
+            <span>↑↓ navegar</span>
+            <span>↵ selecionar</span>
+            <span>ESC fechar</span>
+          </div>
+        </motion.div>
       </div>
-    </div>
+    </>
   );
 }

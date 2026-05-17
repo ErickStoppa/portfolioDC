@@ -3,126 +3,129 @@
 import { cashFlowItems } from "@/data/orion";
 import { formatCurrency } from "@/lib/utils";
 
-const BAR_HEIGHT = 32;
-const GAP = 12;
-const LABEL_W = 200;
-const BAR_AREA = 340;
-const PADDING = 16;
+const W = 560;
+const H = 160;
+const PAD = { t: 8, r: 8, b: 28, l: 8 };
+const CHART_W = W - PAD.l - PAD.r;
+const CHART_H = H - PAD.t - PAD.b;
+
+// Show first 15 days as dual bars (inflows green / outflows red)
+const DAYS = cashFlowItems.slice(0, 15);
 
 export default function CashFlowWaterfall() {
-  const maxVal = Math.max(...cashFlowItems.map((i) => Math.abs(i.value)));
-
-  // Compute running baseline for waterfall
-  let running = 0;
-  const bars = cashFlowItems.map((item) => {
-    const isEdge = item.type === "start" || item.type === "end";
-    const barW = (Math.abs(item.value) / maxVal) * (BAR_AREA - PADDING * 2);
-    const color =
-      isEdge
-        ? "#6366f1"
-        : item.type === "in"
-        ? "#22c55e"
-        : "#f43f5e";
-    const offset = isEdge ? 0 : item.type === "in" ? running : running;
-    const offsetPx = isEdge ? 0 : (offset / maxVal) * (BAR_AREA - PADDING * 2);
-
-    const result = { item, barW, offsetPx, color, isEdge };
-    if (!isEdge) {
-      running += item.value;
-    }
-    return result;
-  });
-
-  const svgH = cashFlowItems.length * (BAR_HEIGHT + GAP) + GAP;
+  const maxFlow = Math.max(...DAYS.flatMap(d => [d.inflows, d.outflows]));
+  const barW = CHART_W / DAYS.length;
+  const halfW = barW * 0.34;
 
   return (
-    <div
-      className="rounded-xl border overflow-hidden"
-      style={{ backgroundColor: "#0a1220", borderColor: "#1a2540" }}
-    >
-      <div className="px-5 py-4 border-b" style={{ borderColor: "#1a2540" }}>
-        <h3 className="text-sm font-semibold" style={{ color: "#cbd5e1" }}>
-          Fluxo de Caixa — Mai/2025
-        </h3>
-        <p className="text-[10px] mt-0.5" style={{ color: "#475569" }}>
-          Demonstrativo de entradas e saídas do período
-        </p>
+    <div className="orion-card overflow-hidden">
+      <div className="px-5 py-4 border-b border-[#1a2540]">
+        <h3 className="text-sm font-semibold text-[#cbd5e1]">Fluxo Diário — Mai/2026</h3>
+        <p className="text-[10px] mt-0.5 text-[#475569]">Entradas e saídas dos próximos 15 dias</p>
       </div>
 
       <div className="p-5 overflow-x-auto">
-        <svg
-          width="100%"
-          viewBox={`0 0 ${LABEL_W + BAR_AREA} ${svgH}`}
-          style={{ minWidth: 480 }}
-        >
-          {bars.map(({ item, barW, offsetPx, color, isEdge }, i) => {
-            const y = GAP + i * (BAR_HEIGHT + GAP);
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ minWidth: 400 }}>
+          {/* Grid */}
+          {[0, 0.5, 1].map(f => {
+            const y = PAD.t + f * CHART_H;
+            const val = maxFlow * (1 - f);
             return (
-              <g key={item.label}>
-                {/* Label */}
-                <text
-                  x={LABEL_W - 8}
-                  y={y + BAR_HEIGHT / 2 + 4}
-                  textAnchor="end"
-                  fill={isEdge ? "#cbd5e1" : "#94a3b8"}
-                  fontSize={isEdge ? "11" : "10"}
-                  fontWeight={isEdge ? "600" : "400"}
-                >
-                  {item.label}
-                </text>
+              <g key={f}>
+                <line x1={PAD.l} y1={y} x2={PAD.l + CHART_W} y2={y} stroke="#1a2540" strokeWidth="1" />
+                {f < 1 && (
+                  <text x={PAD.l} y={y - 2} fill="#334155" fontSize="7" fontFamily="monospace">
+                    {(val / 1000).toFixed(0)}k
+                  </text>
+                )}
+              </g>
+            );
+          })}
 
-                {/* Connector line (not for first) */}
-                {!isEdge && i > 0 && (
-                  <line
-                    x1={LABEL_W + offsetPx + (item.type === "out" ? barW : 0)}
-                    y1={y - GAP / 2}
-                    x2={LABEL_W + offsetPx + (item.type === "out" ? barW : 0)}
-                    y2={y}
-                    stroke="#1a2540"
-                    strokeWidth="1"
-                    strokeDasharray="3 3"
+          {/* Bars */}
+          {DAYS.map((d, i) => {
+            const cx = PAD.l + i * barW + barW / 2;
+            const inH = maxFlow > 0 ? (d.inflows / maxFlow) * CHART_H : 0;
+            const outH = maxFlow > 0 ? (d.outflows / maxFlow) * CHART_H : 0;
+            const isWeekend = new Date(d.date).getDay() === 0 || new Date(d.date).getDay() === 6;
+
+            return (
+              <g key={d.date}>
+                {/* Weekend shade */}
+                {isWeekend && (
+                  <rect
+                    x={cx - barW / 2} y={PAD.t}
+                    width={barW} height={CHART_H}
+                    fill="#ffffff06"
                   />
                 )}
 
-                {/* Bar */}
-                <rect
-                  x={LABEL_W + (isEdge ? 0 : offsetPx)}
-                  y={y}
-                  width={isEdge ? barW : barW}
-                  height={BAR_HEIGHT}
-                  rx="4"
-                  fill={color + (isEdge ? "cc" : "88")}
-                  stroke={color}
-                  strokeWidth="1"
-                />
+                {/* Inflow bar */}
+                {d.inflows > 0 && (
+                  <rect
+                    x={cx - halfW * 2 - 1} y={PAD.t + CHART_H - inH}
+                    width={halfW * 1.8} height={inH}
+                    rx={2} fill="#22c55e99"
+                  />
+                )}
 
-                {/* Value label */}
+                {/* Outflow bar */}
+                {d.outflows > 0 && (
+                  <rect
+                    x={cx + 1} y={PAD.t + CHART_H - outH}
+                    width={halfW * 1.8} height={outH}
+                    rx={2} fill="#f43f5e99"
+                  />
+                )}
+
+                {/* Event dot */}
+                {d.label && (
+                  <circle cx={cx} cy={PAD.t + 4} r={2.5} fill="#f59e0b" />
+                )}
+
+                {/* X label */}
                 <text
-                  x={LABEL_W + (isEdge ? 0 : offsetPx) + barW + 8}
-                  y={y + BAR_HEIGHT / 2 + 4}
-                  fill={isEdge ? "#cbd5e1" : color}
-                  fontSize="10"
-                  fontWeight={isEdge ? "600" : "400"}
-                  fontFamily="monospace"
+                  x={cx} y={H - 8}
+                  textAnchor="middle" fill={isWeekend ? "#1e2d40" : "#334155"}
+                  fontSize="7"
                 >
-                  {item.type === "out" ? "-" : ""}
-                  {formatCurrency(Math.abs(item.value))}
+                  {d.date.slice(8)}
                 </text>
               </g>
             );
           })}
         </svg>
 
-        {/* Legend */}
-        <div className="flex items-center gap-4 mt-3 pt-3 border-t" style={{ borderColor: "#1a2540" }}>
+        {/* Summary row */}
+        <div className="grid grid-cols-3 gap-4 mt-3 pt-3 border-t border-[#1a2540]">
           {[
-            { color: "#6366f1", label: "Saldo" },
-            { color: "#22c55e", label: "Entrada" },
-            { color: "#f43f5e", label: "Saída" },
+            { label: "Total Entradas", value: DAYS.reduce((s, d) => s + d.inflows, 0), color: "#22c55e" },
+            { label: "Total Saídas",   value: DAYS.reduce((s, d) => s + d.outflows, 0), color: "#f43f5e" },
+            {
+              label: "Saldo Líquido",
+              value: DAYS.reduce((s, d) => s + d.inflows - d.outflows, 0),
+              color: "#38bdf8",
+            },
+          ].map(({ label, value, color }) => (
+            <div key={label}>
+              <p className="text-[10px] uppercase tracking-wider mb-0.5 text-[#475569]">{label}</p>
+              <p className="text-sm font-bold font-mono" style={{ color }}>
+                {value >= 0 ? "+" : ""}{formatCurrency(Math.abs(value))}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Legend */}
+        <div className="flex items-center gap-4 mt-2">
+          {[
+            { color: "#22c55e", label: "Entradas" },
+            { color: "#f43f5e", label: "Saídas" },
+            { color: "#f59e0b", label: "Evento relevante" },
           ].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: color }} />
-              <span className="text-[10px]" style={{ color: "#475569" }}>{label}</span>
+              <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: color + "99" }} />
+              <span className="text-[10px] text-[#475569]">{label}</span>
             </div>
           ))}
         </div>

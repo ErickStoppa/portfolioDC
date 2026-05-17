@@ -396,3 +396,39 @@ h1, h2, h3, h4, h5, h6 {
   50%       { opacity: 0.6; transform: scale(1.4); }
 }
 .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+
+/* ─── ORION ERP ──────────────────────────────────────────────────────────── */
+:root {
+  --orion-bg:           #030711;
+  --orion-surface:      #080f20;
+  --orion-card:         #0a1220;
+  --orion-card-alt:     #0d1628;
+  --orion-border:       #1a2540;
+  --orion-accent:       #6366f1;
+  --orion-accent-glow:  rgba(99,102,241,0.15);
+  --orion-green:        #22c55e;
+  --orion-red:          #f43f5e;
+  --orion-amber:        #f59e0b;
+  --orion-sky:          #38bdf8;
+  --orion-text:         #cbd5e1;
+  --orion-muted:        #475569;
+}
+.orion-card { background: var(--orion-card); border: 1px solid var(--orion-border); border-radius: 12px; }
+.orion-card-hover { transition: border-color 150ms, box-shadow 150ms; }
+.orion-card-hover:hover { border-color: rgba(99,102,241,0.3); box-shadow: 0 0 0 1px rgba(99,102,241,0.1), 0 4px 24px rgba(0,0,0,0.4); }
+.orion-nav-item { display:flex; align-items:center; gap:10px; padding:8px 12px; border-radius:8px; font-size:13px; font-weight:500; color:var(--orion-muted); transition:all 150ms; cursor:pointer; position:relative; }
+.orion-nav-item:hover { color:var(--orion-text); background:rgba(255,255,255,0.04); }
+.orion-nav-active { color:#a5b4fc; background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.2); }
+.orion-badge { display:inline-flex; align-items:center; gap:6px; padding:2px 8px; border-radius:99px; font-size:11px; font-weight:600; }
+.orion-input { background:var(--orion-card); border:1px solid var(--orion-border); border-radius:8px; padding:7px 12px; font-size:13px; color:var(--orion-text); transition:border-color 150ms; outline:none; width:100%; }
+.orion-input:focus { border-color:rgba(99,102,241,0.5); }
+.orion-input::placeholder { color:var(--orion-muted); }
+.orion-pill-filter { padding:5px 14px; border-radius:99px; border:1px solid transparent; font-size:12px; font-weight:500; cursor:pointer; color:var(--orion-muted); transition:all 150ms; }
+.orion-pill-filter:hover { color:var(--orion-text); background:rgba(255,255,255,0.05); }
+.orion-pill-active { color:#a5b4fc; background:rgba(99,102,241,0.12); border-color:rgba(99,102,241,0.25); }
+.orion-table-row { border-bottom:1px solid var(--orion-border); transition:background 100ms; }
+.orion-table-row:hover { background:var(--orion-card-alt); }
+@keyframes orion-shimmer { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+.orion-skeleton { background:linear-gradient(90deg,#0d1628 25%,#141f35 50%,#0d1628 75%); background-size:200% 100%; animation:orion-shimmer 1.5s infinite; border-radius:6px; }
+@keyframes orion-pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+.orion-dot-pulse { animation:orion-pulse 2s ease-in-out infinite; }

@@ -1,121 +1,63 @@
 "use client";
 
-import { Bell, Search } from "lucide-react";
-import { NAV_ITEMS, PERIOD_OPTIONS, type OrionTab, type Period } from "../types/orion.types";
+import { Bell, Search, ChevronRight } from "lucide-react";
+import { NAV_ITEMS, type OrionTab } from "../types/orion.types";
 
 interface TopBarProps {
   activeTab: OrionTab;
-  period: Period;
-  onPeriodChange: (p: Period) => void;
-  onCmdOpen: () => void;
+  onCommandOpen: () => void;
   onNotifOpen: () => void;
-  unreadCount: number;
+  alertCount: number;
 }
 
-export default function TopBar({
-  activeTab,
-  period,
-  onPeriodChange,
-  onCmdOpen,
-  onNotifOpen,
-  unreadCount,
-}: TopBarProps) {
-  const activeItem = NAV_ITEMS.find((item) => item.id === activeTab);
+export function TopBar({ activeTab, onCommandOpen, onNotifOpen, alertCount }: TopBarProps) {
+  const activeItem = NAV_ITEMS.find(n => n.id === activeTab);
 
   return (
-    <header
-      className="h-14 shrink-0 flex items-center px-6 gap-4 z-10"
-      style={{
-        borderBottom: "1px solid #1a2540",
-        backgroundColor: "rgba(8,15,32,0.9)",
-        backdropFilter: "blur(12px)",
-      }}
-    >
-      <div className="flex items-center flex-1 min-w-0">
-        <span className="text-xs" style={{ color: "#475569" }}>
-          Orion
-        </span>
-        <span className="mx-1.5 text-xs" style={{ color: "#1e293b" }}>
-          /
-        </span>
-        <span className="text-xs font-medium truncate" style={{ color: "#cbd5e1" }}>
-          {activeItem?.label ?? activeTab}
-        </span>
+    <header className="h-14 shrink-0 flex items-center justify-between px-6 gap-4 bg-[#080f20]/80 backdrop-blur-md border-b border-[#1a2540] z-10">
+      {/* Left: breadcrumb */}
+      <div className="flex items-center gap-1.5 text-sm">
+        <span className="text-[#475569]">ORION</span>
+        <ChevronRight size={14} className="text-[#334155]" />
+        <span className="text-[#cbd5e1] font-medium">{activeItem?.label ?? "—"}</span>
       </div>
 
-      <div className="hidden md:flex items-center gap-1">
-        {PERIOD_OPTIONS.map((opt) => (
-          <button
-            key={opt.value}
-            onClick={() => onPeriodChange(opt.value)}
-            className="text-xs px-3 py-1.5 rounded-lg transition-colors"
-            style={{
-              backgroundColor:
-                period === opt.value ? "#6366f1" : "rgba(255,255,255,0.04)",
-              color: period === opt.value ? "#ffffff" : "#475569",
-            }}
-          >
-            {opt.label}
-          </button>
-        ))}
-      </div>
+      {/* Center: search */}
+      <button
+        onClick={onCommandOpen}
+        className="hidden md:flex items-center gap-2 w-48 orion-input cursor-pointer text-left"
+      >
+        <Search size={14} className="text-[#475569] shrink-0" />
+        <span className="text-[#475569] text-sm flex-1">Busca rápida...</span>
+        <kbd className="text-[10px] bg-[#1a2540] text-[#475569] px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+      </button>
 
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onCmdOpen}
-          className="hidden md:flex items-center gap-2 px-3 rounded-lg h-8"
-          style={{
-            width: "8rem",
-            backgroundColor: "#0a1220",
-            border: "1px solid #1a2540",
-            color: "#475569",
-          }}
-        >
-          <Search size={12} />
-          <span className="text-xs flex-1 text-left">Buscar...</span>
-          <kbd style={{ fontSize: "10px", color: "#475569" }}>⌘K</kbd>
-        </button>
-
+      {/* Right */}
+      <div className="flex items-center gap-3">
+        {/* Bell */}
         <button
           onClick={onNotifOpen}
-          className="relative flex items-center justify-center rounded-lg transition-colors"
-          style={{ width: "2rem", height: "2rem", color: "#475569" }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor =
-              "rgba(255,255,255,0.04)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent";
-          }}
+          className="relative w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/5 transition-colors text-[#475569] hover:text-[#cbd5e1]"
         >
           <Bell size={16} />
-          {unreadCount > 0 && (
-            <span
-              className="absolute flex items-center justify-center rounded-full text-white font-bold"
-              style={{
-                top: "2px",
-                right: "2px",
-                width: "14px",
-                height: "14px",
-                fontSize: "9px",
-                backgroundColor: "#f43f5e",
-              }}
-            >
-              {unreadCount > 9 ? "9+" : unreadCount}
+          {alertCount > 0 && (
+            <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-red-500 rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+              {alertCount}
             </span>
           )}
         </button>
 
-        <div
-          className="flex items-center justify-center rounded-full text-white font-bold flex-shrink-0"
-          style={{
-            backgroundColor: "#6366f1",
-            width: "2rem",
-            height: "2rem",
-            fontSize: "10px",
-          }}
-        >
-          RM
+        <div className="h-5 w-px bg-[#1a2540]" />
+
+        {/* Avatar */}
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">
+            MA
+          </div>
+          <div className="hidden lg:block">
+            <p className="text-sm text-[#cbd5e1] leading-none">Marcelo Andrade</p>
+            <p className="text-[10px] text-[#475569] mt-0.5">CEO</p>
+          </div>
         </div>
       </div>
     </header>

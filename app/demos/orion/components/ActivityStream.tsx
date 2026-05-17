@@ -1,101 +1,55 @@
-import * as LucideIcons from "lucide-react";
-import { ACTIVITY_CONFIG } from "../types/orion.types";
-import type { Activity } from "@/data/orion";
+import type { ActivityItem } from "@/data/orion";
 import { formatCurrency } from "@/lib/utils";
 
 interface ActivityStreamProps {
-  activities: Activity[];
+  activities: ActivityItem[];
 }
 
-const Icons = LucideIcons as unknown as Record<
-  string,
-  React.ComponentType<{ size?: number; style?: React.CSSProperties }>
->;
-
-export default function ActivityStream({ activities }: ActivityStreamProps) {
-  const visible = activities.slice(0, 8);
+export function ActivityStream({ activities }: ActivityStreamProps) {
+  const items = activities.slice(0, 10);
 
   return (
-    <div
-      className="rounded-xl overflow-hidden border"
-      style={{ backgroundColor: "#0a1220", borderColor: "#1a2540" }}
-    >
-      {/* Header */}
-      <div
-        className="px-5 py-3.5 flex items-center justify-between border-b"
-        style={{ borderColor: "#1a2540" }}
-      >
-        <span className="text-sm font-semibold" style={{ color: "#cbd5e1" }}>
-          Feed de Atividades
-        </span>
-        <div className="flex items-center gap-1.5">
-          <span
-            className="w-2 h-2 rounded-full animate-pulse"
-            style={{ backgroundColor: "#22c55e", display: "inline-block" }}
-          />
-          <span style={{ fontSize: "11px", color: "#475569" }}>Tempo Real</span>
-        </div>
+    <div className="orion-card p-5">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-semibold text-[#cbd5e1]">Atividade Recente</h3>
+        <span className="text-[10px] text-[#475569] bg-[#0d1628] px-2 py-0.5 rounded-full">Hoje</span>
       </div>
 
-      {/* List */}
-      <div className="divide-y" style={{ borderColor: "#1a2540" }}>
-        {visible.map((activity) => {
-          const cfg = ACTIVITY_CONFIG[activity.type];
-          const Icon = Icons[cfg.icon];
-          const hasAmount = activity.amount !== undefined;
-          const isPositive = hasAmount && (activity.amount ?? 0) > 0;
+      <div className="relative overflow-y-auto max-h-[280px]">
+        {/* Timeline line */}
+        <div className="absolute left-3 top-0 bottom-0 w-px bg-[#1a2540]" />
 
-          return (
-            <div
-              key={activity.id}
-              className="flex items-start gap-3 px-5 py-3 transition-colors"
-              style={{ borderColor: "#1a2540" }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLDivElement).style.backgroundColor =
-                  "rgba(255,255,255,0.02)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLDivElement).style.backgroundColor = "transparent";
-              }}
-            >
-              {/* Icon container */}
+        <div className="space-y-0">
+          {items.map((item) => (
+            <div key={item.id} className="pl-8 pr-2 py-2.5 relative">
+              {/* Dot */}
               <div
-                className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: `${cfg.color}18` }}
-              >
-                {Icon && <Icon size={14} style={{ color: cfg.color }} />}
-              </div>
+                className="absolute left-2 top-3.5 w-2.5 h-2.5 rounded-full border-2 border-[#080f20] -translate-x-[1px]"
+                style={{ backgroundColor: item.color }}
+              />
 
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium" style={{ color: "#cbd5e1" }}>
-                  {activity.title}
-                </p>
-                <p className="mt-0.5" style={{ fontSize: "10px", color: "#475569" }}>
-                  {activity.description}
-                  {activity.description && activity.user && " · "}
-                  {activity.user}
-                </p>
-              </div>
-
-              {/* Right side */}
-              <div className="flex flex-col items-end gap-0.5 flex-shrink-0">
-                {hasAmount && (
-                  <span
-                    className="text-xs tabular-nums font-mono"
-                    style={{ color: isPositive ? "#22c55e" : "#f43f5e" }}
-                  >
-                    {isPositive ? "+" : ""}
-                    {formatCurrency(activity.amount!)}
-                  </span>
-                )}
-                <span style={{ fontSize: "10px", color: "#475569" }}>
-                  {activity.time}
-                </span>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-[#94a3b8] leading-snug">
+                    <span className="font-semibold text-[#cbd5e1]">{item.actor}</span>
+                    {" "}{item.action}
+                  </p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    {item.amount !== undefined && (
+                      <span
+                        className="text-[10px] font-mono font-semibold"
+                        style={{ color: item.amount >= 0 ? "#22c55e" : "#f43f5e" }}
+                      >
+                        {item.amount >= 0 ? "+" : ""}{formatCurrency(Math.abs(item.amount))}
+                      </span>
+                    )}
+                  </div>
+                </div>
+                <span className="text-[10px] text-[#475569] shrink-0 mt-0.5">{item.time}</span>
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
       </div>
     </div>
   );
