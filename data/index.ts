@@ -165,11 +165,11 @@ export const demos: Demo[] = [
     id: "crm",
     title: "Nexus — CRM & Dashboard de Vendas",
     description:
-      "CRM empresarial com pipeline Kanban, gráficos de analytics e gestão de leads.",
+      "CRM bancário com 5 abas interativas: Dashboard com KPIs e gráficos SVG, gestão de clientes, pipeline Kanban, relatórios de performance e ranking de equipe.",
     slug: "crm",
     category: "B2B SaaS",
-    tags: ["CRM", "Dashboard", "Vendas", "Analytics"],
-    techStack: ["Next.js", "TypeScript", "Recharts", "Zustand"],
+    tags: ["CRM", "Dashboard", "Kanban", "Analytics", "Banking"],
+    techStack: ["Next.js", "TypeScript", "Framer Motion", "SVG Charts"],
     thumbnail: "/demos/crm.jpg",
   },
   {
