@@ -184,15 +184,15 @@ export const demos: Demo[] = [
     thumbnail: "/demos/booking.jpg",
   },
   {
-    id: "erp",
-    title: "Apex — ERP & Analytics Financeiro",
+    id: "orion",
+    title: "ORION — ERP & Financial Intelligence",
     description:
-      "Dashboard premium de operações financeiras com KPIs, gráficos e gestão de transações.",
-    slug: "erp",
+      "ERP premium para manufatura com DRE, fluxo de caixa, tesouraria multi-banco, analytics por linha de produto, ordens de produção e gestão de pessoas.",
+    slug: "orion",
     category: "Enterprise",
-    tags: ["ERP", "Finanças", "Analytics", "Dashboard"],
-    techStack: ["Next.js", "TypeScript", "Recharts", "Zustand"],
-    thumbnail: "/demos/erp.jpg",
+    tags: ["ERP", "Finanças", "Analytics", "Tesouraria", "Manufatura"],
+    techStack: ["Next.js", "TypeScript", "Framer Motion", "SVG Charts"],
+    thumbnail: "/demos/orion.jpg",
   },
 ];
 
