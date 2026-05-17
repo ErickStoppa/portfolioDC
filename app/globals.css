@@ -348,3 +348,51 @@ h1, h2, h3, h4, h5, h6 {
 .group:hover .menu-card-line {
   width: 100%;
 }
+
+/* ── Nexus CRM tokens ── */
+@theme {
+  --color-crm-bg:      #070b14;
+  --color-crm-card:    #0c1220;
+  --color-crm-hover:   #111827;
+  --color-crm-border:  rgba(255,255,255,0.06);
+  --color-crm-accent:  #3b82f6;
+  --color-crm-cyan:    #06b6d4;
+  --color-crm-emerald: #10b981;
+  --color-crm-amber:   #f59e0b;
+  --color-crm-rose:    #f43f5e;
+}
+
+/* Sidebar nav item active */
+.crm-nav-active {
+  background: rgba(59,130,246,0.12);
+  color: #3b82f6;
+  border-right: 2px solid #3b82f6;
+}
+
+/* Table row hover */
+.crm-row:hover { background: rgba(255,255,255,0.025); }
+.crm-row { transition: background 120ms ease; cursor: pointer; }
+
+/* KPI card glow on hover */
+.kpi-card:hover {
+  box-shadow: 0 0 0 1px rgba(59,130,246,0.3), 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* Chart bar hover */
+.chart-bar { transition: opacity 150ms ease, filter 150ms ease; }
+.chart-bar:hover { opacity: 1 !important; filter: brightness(1.2); }
+
+/* Pipeline card */
+.pipeline-card:hover {
+  border-color: rgba(59,130,246,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.pipeline-card { transition: border-color 150ms, transform 200ms, box-shadow 200ms; }
+
+/* Notification dot pulse */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.4); }
+}
+.pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
