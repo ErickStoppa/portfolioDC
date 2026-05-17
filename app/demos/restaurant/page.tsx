@@ -3,16 +3,13 @@ import { BrowserShell } from "@/components/demos/browser-shell";
 import { RestaurantApp } from "./restaurant-app";
 
 export const metadata: Metadata = {
-  title: "Saveur Restaurant Demo",
-  description: "Interactive restaurant ordering demo with menu, cart, and order tracking.",
+  title: "CAIS — Restaurante | Demo",
+  description: "Cardápio digital e delivery premium de restaurante contemporâneo.",
 };
 
-export default function RestaurantDemoPage() {
+export default function RestaurantPage() {
   return (
-    <BrowserShell
-      title="Saveur — Restaurant & Delivery"
-      url="saveur.app/menu"
-    >
+    <BrowserShell url="cais.com.br" title="CAIS Restaurante">
       <RestaurantApp />
     </BrowserShell>
   );
