@@ -306,3 +306,22 @@ h1, h2, h3, h4, h5, h6 {
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: var(--radius);
 }
+
+/* ─── Marquee ────────────────────────────────────────────────── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+  display: flex;
+}
+
+/* ─── Scrollbar hide ─────────────────────────────────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
