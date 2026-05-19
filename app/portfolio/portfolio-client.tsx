@@ -2,28 +2,25 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
-import { Search, ArrowUpRight, Play, X } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { demos } from "@/data";
+import { GuideBanner } from "./components/GuideBanner";
+import { FilterBar }   from "./components/FilterBar";
+import { DemoCard }    from "./components/DemoCard";
 
-const CATEGORIES = ["All", "Commerce", "Food & Beverage", "B2B SaaS", "Scheduling", "Enterprise"];
-
-const gradients = [
-  "from-blue-600/20 via-blue-500/10 to-blue-400/20",
-  "from-rose-500/20 via-orange-500/10 to-amber-500/20",
-  "from-sky-500/20 via-blue-500/10 to-blue-600/20",
-  "from-emerald-500/20 via-teal-500/10 to-cyan-500/20",
-  "from-amber-500/20 via-yellow-500/10 to-lime-500/20",
+// Derive categories from data so the list is always in sync
+const ALL_LABEL = "Todos";
+const CATEGORIES = [
+  ALL_LABEL,
+  ...Array.from(new Set(demos.map((d) => d.category))),
 ];
 
 export function PortfolioClient() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState(ALL_LABEL);
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
     let list = demos;
-    if (activeCategory !== "All") {
+    if (activeCategory !== ALL_LABEL) {
       list = list.filter((d) => d.category === activeCategory);
     }
     if (search.trim()) {
@@ -32,7 +29,7 @@ export function PortfolioClient() {
         (d) =>
           d.title.toLowerCase().includes(q) ||
           d.description.toLowerCase().includes(q) ||
-          d.tags.some((tag) => tag.toLowerCase().includes(q))
+          d.tags.some((t) => t.toLowerCase().includes(q))
       );
     }
     return list;
@@ -40,176 +37,111 @@ export function PortfolioClient() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <section className="relative py-28 px-5 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-[var(--primary)] opacity-[0.05] blur-[100px] rounded-full" />
-        </div>
+      {/* ── Hero ──────────────────────────────────────────────────────── */}
+      <section className="relative py-24 px-5 lg:px-8 overflow-hidden">
+        {/* Ambient glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[360px] rounded-full pointer-events-none"
+          aria-hidden="true"
+          style={{
+            background: "radial-gradient(ellipse, var(--primary-glow) 0%, transparent 70%)",
+            opacity: 0.35,
+          }}
+        />
 
-        <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-7xl relative">
           <motion.p
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-4"
           >
-            Showroom de Portfólio
+            Demos Interativos
           </motion.p>
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mb-6"
+            transition={{ duration: 0.55, delay: 0.08, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+            className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.07] mb-5"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
             Produtos reais,
             <br />
             <span className="gradient-text">totalmente interativos</span>
           </motion.h1>
+
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-lg text-[var(--text-muted)] max-w-xl leading-relaxed"
+            transition={{ duration: 0.45, delay: 0.18 }}
+            className="text-base text-[var(--text-muted)] max-w-lg leading-relaxed mb-8"
           >
-            Cada demo é um protótipo de produto totalmente funcional — não um mockup estático. Clique, explore e experimente a qualidade que entregamos.
+            Cada demo é um protótipo de produto completo — não um mockup estático.
+            Navegue, filtre e experimente a qualidade que entregamos.
           </motion.p>
+
+          {/* Guide banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.28 }}
+          >
+            <GuideBanner demoCount={demos.length} />
+          </motion.div>
         </div>
       </section>
 
-      {/* Filters + Search */}
-      <div className="sticky top-16 z-30 bg-[var(--bg)] border-b border-[var(--border)] py-4 px-5 lg:px-8">
-        <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          {/* Search */}
-          <div className="relative flex-1 min-w-0 max-w-xs">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-subtle)]"
-              aria-hidden="true"
-            />
-            <input
-              type="search"
-              placeholder="Buscar demos…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              aria-label="Buscar demos"
-              className="w-full h-9 pl-9 pr-9 rounded-[8px] bg-[var(--bg-card)] border border-[var(--border)] text-sm text-[var(--text)] placeholder:text-[var(--text-subtle)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
-            />
-            {search && (
-              <button
-                onClick={() => setSearch("")}
-                aria-label="Limpar busca"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-subtle)] hover:text-[var(--text)] transition-colors"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
+      {/* ── Sticky filter bar ─────────────────────────────────────────── */}
+      <FilterBar
+        search={search}
+        onSearch={setSearch}
+        categories={CATEGORIES}
+        activeCategory={activeCategory}
+        onCategory={setActiveCategory}
+        totalVisible={filtered.length}
+        totalAll={demos.length}
+      />
 
-          {/* Category pills */}
-          <div
-            className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 flex-nowrap"
-            role="tablist"
-            aria-label="Filtrar por categoria"
-          >
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                role="tab"
-                aria-selected={activeCategory === cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-                  activeCategory === cat
-                    ? "bg-[var(--primary)] text-white shadow-[0_0_16px_var(--primary-glow)]"
-                    : "bg-[var(--bg-card)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--border-strong)]"
-                }`}
-              >
-                {cat === "All" ? "Todos" : cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Grid */}
-      <section className="py-12 px-5 lg:px-8 pb-28" aria-label="Projetos demo">
+      {/* ── Grid ──────────────────────────────────────────────────────── */}
+      <section className="py-10 px-5 lg:px-8 pb-28" aria-label="Demos interativos">
         <div className="mx-auto max-w-7xl">
+
           {filtered.length === 0 ? (
-            <div className="text-center py-24">
-              <p className="text-[var(--text-subtle)] text-lg">Nenhuma demo corresponde à sua busca.</p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-28"
+            >
+              <p className="text-4xl mb-4" aria-hidden="true">🔍</p>
+              <p className="text-[var(--text-subtle)] text-base font-medium">
+                Nenhum demo corresponde à sua busca.
+              </p>
               <button
-                onClick={() => { setSearch(""); setActiveCategory("All"); }}
-                className="mt-4 text-sm text-[var(--primary)] hover:underline"
+                onClick={() => { setSearch(""); setActiveCategory(ALL_LABEL); }}
+                className="mt-4 text-sm text-[var(--primary)] hover:text-[var(--primary-bright)] hover:underline transition-colors"
               >
                 Limpar filtros
               </button>
-            </div>
+            </motion.div>
           ) : (
             <AnimatePresence mode="popLayout">
               <motion.div
                 layout
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
               >
                 {filtered.map((demo, i) => (
-                  <motion.article
-                    key={demo.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3, delay: i * 0.04 }}
-                  >
-                    <Link
-                      href={`/demos/${demo.slug}`}
-                      className="group block rounded-2xl border border-[var(--border)] bg-[var(--bg-card)] overflow-hidden hover:border-[var(--border-strong)] hover:shadow-[0_8px_40px_rgba(0,0,0,0.35)] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)]"
-                    >
-                      {/* Thumbnail */}
-                      <div
-                        className={`h-52 bg-gradient-to-br ${gradients[i % gradients.length]} relative flex items-center justify-center overflow-hidden`}
-                      >
-                        {/* Fake UI preview dots */}
-                        <div className="absolute inset-3 rounded-xl border border-white/5 bg-white/5 backdrop-blur-sm" aria-hidden="true" />
-                        <div
-                          className="relative w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 group-hover:scale-110 transition-transform duration-300"
-                        >
-                          <Play className="w-5 h-5 text-white ml-0.5" aria-hidden="true" />
-                        </div>
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-5">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Badge variant="accent">{demo.category}</Badge>
-                          {demo.tags.slice(0, 1).map((tag) => (
-                            <Badge key={tag} variant="muted">{tag}</Badge>
-                          ))}
-                        </div>
-                        <div className="flex items-start justify-between gap-2">
-                          <div>
-                            <h3 className="text-sm font-bold text-[var(--text)] leading-tight group-hover:text-[var(--primary)] transition-colors duration-200">
-                              {demo.title}
-                            </h3>
-                            <p className="text-xs text-[var(--text-subtle)] mt-1.5 leading-relaxed line-clamp-2">
-                              {demo.description}
-                            </p>
-                          </div>
-                          <div className="shrink-0 w-8 h-8 rounded-[8px] border border-[var(--border)] flex items-center justify-center text-[var(--text-subtle)] group-hover:border-[var(--primary)] group-hover:text-[var(--primary)] transition-all duration-200">
-                            <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
-                          </div>
-                        </div>
-                        {/* Tech stack */}
-                        <div className="flex flex-wrap gap-1 mt-3 pt-3 border-t border-[var(--border-subtle)]">
-                          {demo.techStack.map((tech) => (
-                            <span key={tech} className="text-[10px] text-[var(--text-subtle)] px-2 py-0.5 rounded bg-[var(--bg-secondary)]">
-                              {tech}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </Link>
-                  </motion.article>
+                  <DemoCard key={demo.id} demo={demo} index={i} />
                 ))}
               </motion.div>
             </AnimatePresence>
+          )}
+
+          {/* Bottom count */}
+          {filtered.length > 0 && (
+            <p className="mt-12 text-center text-xs text-[var(--text-faint)]">
+              {filtered.length} demo{filtered.length !== 1 ? "s" : ""} disponíve{filtered.length !== 1 ? "is" : "l"}
+            </p>
           )}
         </div>
       </section>

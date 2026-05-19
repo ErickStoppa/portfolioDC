@@ -19,10 +19,9 @@ export function Navbar() {
   useEffect(() => { setMounted(true); }, []);
 
   const navLinks = [
-    { label: "Sobre",     href: "/about" },
-    { label: "Serviços",  href: "/services" },
-    { label: "Portfólio", href: "/portfolio" },
-    { label: "Demos",     href: "/demos" },
+    { label: "Sobre",    href: "/about"      },
+    { label: "Serviços", href: "/services"   },
+    { label: "Demos",    href: "/portfolio"  },
   ];
 
   useEffect(() => {
