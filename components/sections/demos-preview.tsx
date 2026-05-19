@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,36 @@ const gradients = [
   "from-emerald-500/20 to-teal-500/20",
   "from-amber-500/20 to-yellow-500/20",
 ];
+
+function useCountUp(target: number, duration = 1.2) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref as React.RefObject<Element>, { once: true });
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = target / (duration * 60);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(timer); return; }
+      setCount(Math.floor(start));
+    }, 1000 / 60);
+    return () => clearInterval(timer);
+  }, [inView, target, duration]);
+
+  return { count, ref };
+}
+
+function StatCounter({ target, suffix = "", label }: { target: number; suffix?: string; label: string }) {
+  const { count, ref } = useCountUp(target);
+  return (
+    <div ref={ref} className="text-center">
+      <p className="text-3xl font-bold text-[var(--text)] tabular-nums">{count}{suffix}</p>
+      <p className="text-sm text-[var(--text-muted)] mt-1">{label}</p>
+    </div>
+  );
+}
 
 export function DemosPreview() {
   return (
@@ -50,6 +81,22 @@ export function DemosPreview() {
             Ver todas as demos
             <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
           </Link>
+        </div>
+
+        {/* Metrics strip */}
+        <div className="flex flex-wrap justify-center gap-8 mb-10 text-center">
+          <StatCounter target={5} label="demos interativas" />
+          <StatCounter target={6} label="linguagens de UI" />
+          <StatCounter target={100} suffix="%" label="funcional no mobile" />
+          <div className="text-center">
+            <p className="text-3xl font-bold text-[var(--text)] tabular-nums">
+              0{" "}
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full border border-[var(--border)] text-[var(--text-muted)] bg-[var(--bg-card)] align-middle">
+                SVG puro
+              </span>
+            </p>
+            <p className="text-sm text-[var(--text-muted)] mt-1">dependências de gráfico</p>
+          </div>
         </div>
 
         {/* Featured large card */}
