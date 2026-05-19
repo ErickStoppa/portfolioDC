@@ -61,7 +61,7 @@ export function ReportsTab({ period, onPeriodChange, chartType, onChartTypeChang
   const sorted = [...teamMembers].sort((a, b) => b.revenueActual - a.revenueActual);
 
   return (
-    <div className="p-6 space-y-6 overflow-y-auto">
+    <div className="p-3 sm:p-6 space-y-6 overflow-y-auto">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -100,7 +100,7 @@ export function ReportsTab({ period, onPeriodChange, chartType, onChartTypeChang
       </div>
 
       {/* KPI mini-cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-[#0c1220] border border-[rgba(255,255,255,0.06)] rounded-xl p-4">
           <p className="text-[10px] text-[#475569] uppercase tracking-wider mb-1">Receita Acumulada</p>
           <p className="text-2xl font-bold text-[#f1f5f9]">{PERIOD_REVENUE[period]}</p>

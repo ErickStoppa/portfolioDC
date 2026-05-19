@@ -39,7 +39,7 @@ export function TeamTab({ selectedMember, onSelectMember }: TeamTabProps) {
   const top3 = sorted.slice(0, 3);
 
   return (
-    <div className="p-6">
+    <div className="p-3 sm:p-6">
       {/* Header */}
       <div className="mb-6">
         <h2 className="text-lg font-semibold text-[#f1f5f9]">Equipe Comercial</h2>
@@ -47,7 +47,7 @@ export function TeamTab({ selectedMember, onSelectMember }: TeamTabProps) {
       </div>
 
       {/* Top 3 podium */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
         {top3.map((m, i) => {
           const pct = (m.revenueActual / m.revenueTarget) * 100;
           return (

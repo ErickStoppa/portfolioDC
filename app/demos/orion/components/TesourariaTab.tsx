@@ -63,7 +63,7 @@ export default function TesourariaTab({ bankAccounts, cashFlowItems, fxRates, se
     : BANK_MOVES.filter(m => m.bankId === moveFilter);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-6">
       {/* ROW 1: Consolidated position */}
       <div className="orion-card p-4 flex items-center justify-between gap-6 flex-wrap">
         <div>
@@ -100,11 +100,11 @@ export default function TesourariaTab({ bankAccounts, cashFlowItems, fxRates, se
       </div>
 
       {/* ROW 3: Cash projection (2/3) + FX widget (1/3) */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
           <CashProjectionChart items={cashFlowItems} />
         </div>
-        <div className="col-span-1">
+        <div className="lg:col-span-1">
           <FxWidget rates={fxRates} />
         </div>
       </div>

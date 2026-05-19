@@ -42,7 +42,7 @@ export function ClientsTab({
   sort, onSort, onSelectClient,
 }: ClientsTabProps) {
   return (
-    <div className="p-6">
+    <div className="p-3 sm:p-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -93,8 +93,8 @@ export function ClientsTab({
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-[rgba(255,255,255,0.06)] overflow-hidden mt-4">
-        <table className="w-full text-left">
+      <div className="rounded-xl border border-[rgba(255,255,255,0.06)] overflow-x-auto mt-4">
+        <table className="w-full text-left" style={{ minWidth: 700 }}>
           <thead>
             <tr>
               {COLS.map(({ label, field }) => (

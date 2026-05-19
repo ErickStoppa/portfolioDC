@@ -135,7 +135,7 @@ export default function BudgetVsActual({ budgetLines }: Props) {
         </div>
 
         {/* Summary row */}
-        <div className="grid grid-cols-3 gap-3 mt-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
           {[
             { label: "Orçado",    val: totalBudRev - totalBudExp, color: "#475569" },
             { label: "Realizado", val: totalActRev - totalActExp, color: "#cbd5e1" },

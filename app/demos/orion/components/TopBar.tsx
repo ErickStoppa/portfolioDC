@@ -8,13 +8,16 @@ interface TopBarProps {
   onCommandOpen: () => void;
   onNotifOpen: () => void;
   alertCount: number;
+  onTabChange?: (tab: OrionTab) => void;
 }
 
-export function TopBar({ activeTab, onCommandOpen, onNotifOpen, alertCount }: TopBarProps) {
+export function TopBar({ activeTab, onCommandOpen, onNotifOpen, alertCount, onTabChange }: TopBarProps) {
   const activeItem = NAV_ITEMS.find(n => n.id === activeTab);
 
   return (
-    <header className="h-14 shrink-0 flex items-center justify-between px-6 gap-4 bg-[#080f20]/80 backdrop-blur-md border-b border-[#1a2540] z-10">
+    <header className="shrink-0 bg-[#080f20]/80 backdrop-blur-md border-b border-[#1a2540] z-10">
+      {/* Main bar */}
+      <div className="h-14 flex items-center justify-between px-4 sm:px-6 gap-4">
       {/* Left: breadcrumb */}
       <div className="flex items-center gap-1.5 text-sm">
         <span className="text-[#475569]">ORION</span>
@@ -60,6 +63,26 @@ export function TopBar({ activeTab, onCommandOpen, onNotifOpen, alertCount }: To
           </div>
         </div>
       </div>
+      </div>
+
+      {/* Mobile nav tabs — visible only on small screens (sidebar is hidden md:flex) */}
+      {onTabChange && (
+        <div className="flex md:hidden overflow-x-auto gap-1 px-3 pb-2 scrollbar-hide">
+          {NAV_ITEMS.map(item => (
+            <button
+              key={item.id}
+              onClick={() => onTabChange(item.id)}
+              className={`shrink-0 px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
+                activeTab === item.id
+                  ? "bg-indigo-600/20 text-indigo-400 border border-indigo-500/30"
+                  : "text-[#475569] hover:text-[#94a3b8] hover:bg-white/4"
+              }`}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+      )}
     </header>
   );
 }

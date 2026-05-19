@@ -61,7 +61,7 @@ export function OverviewTab({
   const infoCount      = activeAlerts.filter(a => a.severity === "info" && !a.resolved).length;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-6">
       {/* AlertBanner */}
       <AlertBanner alerts={activeAlerts} onNavigate={onNotifOpen} />
 

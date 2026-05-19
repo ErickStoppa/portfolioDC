@@ -43,7 +43,7 @@ export function CommandPalette({ onClose, onNav }: CommandPaletteProps) {
         className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
         onClick={onClose}
       />
-      <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh] px-4">
+      <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] sm:pt-[20vh] px-3 sm:px-4">
         <motion.div
           ref={panelRef}
           initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -20, opacity: 0 }}

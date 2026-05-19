@@ -172,29 +172,34 @@ export function BookingApp() {
                     </button>
                   </div>
                 </div>
-                <div className="grid grid-cols-7 gap-1.5" role="group" aria-label="Selecione uma data">
-                  {WEEK_DATES.map(({ day, date }) => (
-                    <button
-                      key={date}
-                      onClick={() => setSelectedDate(date)}
-                      aria-pressed={selectedDate === date}
-                      className={`flex flex-col items-center py-2.5 rounded-xl transition-all text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
-                        selectedDate === date
-                          ? "bg-[var(--primary)] text-white"
-                          : "bg-white/4 hover:bg-white/8 text-white/60"
-                      }`}
-                    >
-                      <span className="text-[10px] font-medium mb-1">{day}</span>
-                      <span className="text-sm font-black">{date}</span>
-                    </button>
-                  ))}
+                <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+                  <div className="grid grid-cols-7 gap-1.5 min-w-[320px]" role="group" aria-label="Selecione uma data">
+                    {WEEK_DATES.map(({ day, date }) => (
+                      <button
+                        key={date}
+                        onClick={() => setSelectedDate(date)}
+                        aria-pressed={selectedDate === date}
+                        className={`flex flex-col items-center py-2 sm:py-2.5 rounded-xl transition-all text-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] ${
+                          selectedDate === date
+                            ? "bg-[var(--primary)] text-white"
+                            : "bg-white/4 hover:bg-white/8 text-white/60"
+                        }`}
+                      >
+                        <span className="text-[10px] font-medium mb-1">
+                          <span className="hidden sm:inline">{day}</span>
+                          <span className="sm:hidden">{day.charAt(0)}</span>
+                        </span>
+                        <span className="text-sm font-black">{date}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {/* Horários disponíveis */}
               <div>
                 <p className="text-sm font-semibold text-white mb-3">Horários disponíveis</p>
-                <div className="grid grid-cols-3 gap-2" role="group" aria-label="Selecione um horário">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2" role="group" aria-label="Selecione um horário">
                   {timeSlots.map((slot) => (
                     <button
                       key={slot.time}

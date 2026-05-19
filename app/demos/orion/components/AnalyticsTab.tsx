@@ -76,7 +76,7 @@ export default function AnalyticsTab({ monthlyMetrics, budgetLines, transactions
   ).join(" ");
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -147,14 +147,14 @@ export default function AnalyticsTab({ monthlyMetrics, budgetLines, transactions
 
       {/* SEÇÃO 3: Two-column charts (when not active via tabs — show both for context) */}
       {metric === "receita" && (
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <MarginBarChart monthlyMetrics={monthlyMetrics} />
           <BudgetVsActual budgetLines={budgetLines} />
         </div>
       )}
 
       {/* SEÇÃO 4: Segment analysis */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Segment table */}
         <div className="orion-card overflow-hidden">
           <div className="px-5 py-4 border-b border-[#1a2540]">

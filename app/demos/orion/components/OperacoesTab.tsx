@@ -96,7 +96,7 @@ export default function OperacoesTab({
   const handleApprove = useCallback((id: string) => onApproveOrder(id), [onApproveOrder]);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-6">
       {/* Page header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -125,7 +125,7 @@ export default function OperacoesTab({
       {view === "estoque" && (
         <>
           {/* Stock KPIs */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { label: "Valor Total Estoque",  val: formatCurrency(stockValue), color: "#6366f1" },
               { label: "SKUs Críticos",         val: criticalCount.toString(),   color: "#f43f5e" },
@@ -226,7 +226,7 @@ export default function OperacoesTab({
       {view === "po" && (
         <>
           {/* PO KPIs */}
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
               { label: "OCs em Aberto",    val: openPOs.toString(),          color: "#6366f1"  },
               { label: "Valor em Aberto",   val: formatCurrency(openPOValue), color: "#38bdf8"  },

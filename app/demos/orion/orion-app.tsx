@@ -85,7 +85,8 @@ export function OrionApp() {
 
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <TopBar activeTab={activeTab} onCommandOpen={() => setCommandOpen(true)}
-          onNotifOpen={() => setNotifOpen(o => !o)} alertCount={activeAlertsCount} />
+          onNotifOpen={() => setNotifOpen(o => !o)} alertCount={activeAlertsCount}
+          onTabChange={handleTabChange} />
 
         <main className="flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">

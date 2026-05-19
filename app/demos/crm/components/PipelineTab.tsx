@@ -27,7 +27,7 @@ export function PipelineTab({ deals, managerFilter, onManagerFilter, onSelectDea
     : [...PIPELINE_STAGES];
 
   return (
-    <div className="p-6">
+    <div className="p-3 sm:p-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>

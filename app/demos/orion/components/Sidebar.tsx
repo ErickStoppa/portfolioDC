@@ -31,7 +31,7 @@ export function Sidebar({
     <motion.aside
       animate={{ width: collapsed ? 60 : 220 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="flex flex-col h-full bg-[#080f20] border-r border-[#1a2540] shrink-0 overflow-hidden"
+      className="hidden md:flex flex-col h-full bg-[#080f20] border-r border-[#1a2540] shrink-0 overflow-hidden"
     >
       {/* Logo */}
       <button

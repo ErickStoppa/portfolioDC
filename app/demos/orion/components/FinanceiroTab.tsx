@@ -124,7 +124,7 @@ export default function FinanceiroTab({
   );
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-6">
       {/* ── Page header ──────────────────────────────────────────────────────── */}
       <div>
         <h2 className="text-lg font-semibold text-[#cbd5e1]">Gestão Financeira</h2>
@@ -166,11 +166,11 @@ export default function FinanceiroTab({
       />
 
       {/* ── SEÇÃO 3: CashFlow (2/3) + Aging (1/3) ────────────────────────────── */}
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
           <CashFlowWaterfall items={cashFlowItems} />
         </div>
-        <div className="col-span-1 flex flex-col">
+        <div className="lg:col-span-1 flex flex-col">
           <AgingPanel transactions={agingTx} />
         </div>
       </div>

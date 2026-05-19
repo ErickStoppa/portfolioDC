@@ -76,7 +76,7 @@ export default function PessoasTab({
   const costPerHead = totalFolha / (allEmployees.length || 1);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-3 sm:p-6 space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
@@ -103,7 +103,7 @@ export default function PessoasTab({
       </div>
 
       {/* SEÇÃO 2: Dept cards (grid-cols-7, compact) */}
-      <div className="grid grid-cols-4 lg:grid-cols-7 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
         {deptStats.map(({ dept, count, payroll, avgPerf: dp, cfg }) => (
           <button
             key={dept}

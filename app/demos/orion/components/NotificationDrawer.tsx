@@ -33,7 +33,7 @@ export function NotificationDrawer({ alerts, onClose, onResolve }: NotificationD
         ref={panelRef}
         initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
         transition={{ type: "spring", stiffness: 340, damping: 38 }}
-        className="fixed right-0 top-0 bottom-0 z-50 w-[380px] bg-[#080f20] border-l border-[#1a2540] flex flex-col overflow-hidden"
+        className="fixed right-0 top-0 bottom-0 z-50 w-full sm:max-w-[380px] bg-[#080f20] border-l border-[#1a2540] flex flex-col overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Notificações"
