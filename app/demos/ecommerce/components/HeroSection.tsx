@@ -29,7 +29,7 @@ export function HeroSection({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-5xl md:text-6xl font-black text-white leading-[1.05] font-display"
+            className="text-3xl sm:text-5xl md:text-6xl font-black text-white leading-[1.05] font-display"
           >
             Crafted for those who
             <br />

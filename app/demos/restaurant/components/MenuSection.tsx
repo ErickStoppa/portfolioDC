@@ -14,8 +14,8 @@ export function MenuSection({
   return (
     <section id="menu-section" className="max-w-4xl mx-auto px-5">
       {/* Header */}
-      <div className="text-center py-16">
-        <h2 className="text-3xl font-black text-white font-display">Nossa Carta</h2>
+      <div className="text-center py-10 md:py-16">
+        <h2 className="text-2xl sm:text-3xl font-black text-white font-display">Nossa Carta</h2>
         <p className="text-sm text-white/40 mt-2">
           Uma curadoria que celebra o melhor do mar e da terra
         </p>

@@ -78,24 +78,27 @@ export function DeliverySection({
 
         {/* Filters row */}
         <div className="flex flex-col gap-3 mb-6">
-          <div className="flex items-center gap-3">
-            {/* Filter pills */}
-            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide flex-1">
-              {ALL_FILTERS.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => onFilterChange(f)}
-                  className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                    activeFilter === f
-                      ? "bg-white text-black font-semibold"
-                      : "border border-white/20 text-white/60 hover:text-white hover:border-white/40"
-                  }`}
-                  aria-pressed={activeFilter === f}
-                >
-                  {FILTER_LABELS[f]}
-                </button>
-              ))}
-            </div>
+          {/* Pills — full-width scrollable row on all sizes */}
+          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
+            {ALL_FILTERS.map((f) => (
+              <button
+                key={f}
+                onClick={() => onFilterChange(f)}
+                className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  activeFilter === f
+                    ? "bg-white text-black font-semibold"
+                    : "border border-white/20 text-white/60 hover:text-white hover:border-white/40"
+                }`}
+                aria-pressed={activeFilter === f}
+              >
+                {FILTER_LABELS[f]}
+              </button>
+            ))}
+          </div>
+
+          {/* Sort + count — same row, stacks below pills */}
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm text-white/40">{dishes.length} pratos disponíveis</p>
 
             {/* Sort dropdown */}
             <div className="relative shrink-0">
@@ -114,9 +117,6 @@ export function DeliverySection({
               <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/40 pointer-events-none" />
             </div>
           </div>
-
-          {/* Count */}
-          <p className="text-sm text-white/40">{dishes.length} pratos disponíveis</p>
         </div>
 
         {/* Grid */}
