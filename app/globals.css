@@ -295,6 +295,29 @@ h1, h2, h3, h4, h5, h6 {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
+/* ─── Portfolio / Demos Page ─────────────────────────────── */
+@keyframes portfolio-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+.demo-card-art-float {
+  animation: portfolio-float 4s ease-in-out infinite;
+}
+
+@keyframes portfolio-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+.live-dot { animation: portfolio-blink 1.8s ease-in-out infinite; }
+
+/* Line clamp utility */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }

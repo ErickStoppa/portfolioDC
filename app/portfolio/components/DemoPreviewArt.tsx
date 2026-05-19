@@ -1,308 +1,301 @@
-/**
- * DemoPreviewArt — unique per-demo SVG composition that hints at
- * what lives inside without being a screenshot.
- */
+"use client";
+
+import React from "react";
+import { Monitor, ShoppingCart, Utensils, BarChart3, Calendar, TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  slug: string;
+  demoId:     string;
   className?: string;
 }
 
-// ── Ecommerce (Luxe) ─────────────────────────────────────────────────────────
+/* ─── Per-demo art components ────────────────────────────────── */
+
 function EcommerceArt() {
   return (
-    <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      {/* Background subtle grid */}
-      <rect width="320" height="200" fill="#0d1117" />
-      {/* Large product card */}
-      <rect x="28" y="24" width="120" height="152" rx="10" fill="#18213a" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
-      {/* Product image placeholder */}
-      <rect x="36" y="32" width="104" height="80" rx="7" fill="rgba(29,109,240,0.12)" />
-      <circle cx="88" cy="72" r="20" fill="rgba(29,109,240,0.18)" />
-      <circle cx="88" cy="72" r="12" fill="rgba(29,109,240,0.3)" />
-      {/* Price tag */}
-      <rect x="36" y="122" width="52" height="16" rx="4" fill="rgba(29,109,240,0.2)" />
-      <rect x="36" y="142" width="82" height="8" rx="3" fill="rgba(255,255,255,0.06)" />
-      <rect x="36" y="154" width="62" height="8" rx="3" fill="rgba(255,255,255,0.04)" />
-      {/* Add to cart button */}
-      <rect x="36" y="168" width="104" height="22" rx="6" fill="rgba(29,109,240,0.8)" />
-      <rect x="70" y="175" width="56" height="8" rx="3" fill="rgba(255,255,255,0.6)" />
+    <div className="absolute inset-0 bg-gradient-to-br from-[#0d0d1a] to-[#07070e]">
+      {/* Ambient blobs */}
+      <div className="absolute -top-8 -right-8 w-48 h-48 rounded-full bg-purple-500/15 blur-3xl" />
+      <div className="absolute bottom-0 -left-8 w-32 h-32 rounded-full bg-indigo-500/10 blur-2xl" />
 
-      {/* Second card (smaller, slightly behind) */}
-      <rect x="164" y="40" width="110" height="136" rx="10" fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-      <rect x="172" y="48" width="94" height="68" rx="6" fill="rgba(251,146,60,0.1)" />
-      <circle cx="219" cy="82" r="18" fill="rgba(251,146,60,0.15)" />
-      <circle cx="219" cy="82" r="10" fill="rgba(251,146,60,0.25)" />
-      <rect x="172" y="126" width="44" height="14" rx="3" fill="rgba(251,146,60,0.2)" />
-      <rect x="172" y="144" width="80" height="7" rx="3" fill="rgba(255,255,255,0.05)" />
-      <rect x="172" y="156" width="62" height="7" rx="3" fill="rgba(255,255,255,0.04)" />
-      <rect x="172" y="168" width="94" height="20" rx="6" fill="rgba(251,146,60,0.35)" />
+      {/* Navbar mock */}
+      <div className="absolute top-5 left-4 right-4 h-6 bg-white/5 rounded-lg flex items-center px-2 gap-2">
+        <div className="w-12 h-2 rounded bg-white/20" />
+        <div className="flex-1" />
+        <div className="w-6 h-2 rounded bg-white/10" />
+        <div className="w-6 h-2 rounded bg-white/10" />
+        <div className="w-6 h-2 rounded bg-purple-400/30" />
+      </div>
 
-      {/* Color swatches row */}
-      {[0,1,2,3].map((i) => (
-        <circle key={i} cx={28 + i * 14} cy={185} r={5}
-          fill={["#1d6df0","#f43f5e","#22c55e","#f59e0b"][i]} fillOpacity="0.75" />
-      ))}
+      {/* Product cards */}
+      <div className="absolute top-16 left-4 right-4 flex gap-2 items-end">
+        <div className="flex-1 h-[72px] rounded-lg bg-white/6 border border-white/8 flex flex-col justify-between p-2">
+          <div className="w-6 h-6 rounded bg-purple-400/20" />
+          <div>
+            <div className="w-8 h-1.5 rounded bg-white/20 mb-1" />
+            <div className="w-10 h-1.5 rounded bg-purple-400/40" />
+          </div>
+        </div>
+        {/* Card 2 — featured */}
+        <div className="flex-1 h-[90px] rounded-xl bg-white/10 border border-purple-400/20 flex flex-col justify-between p-2 -mt-2">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-400/30 to-indigo-400/30" />
+          <div>
+            <div className="w-10 h-1.5 rounded bg-white/30 mb-1" />
+            <span className="text-[9px] text-purple-300/70 font-mono">R$ 299</span>
+          </div>
+        </div>
+        <div className="flex-1 h-[72px] rounded-lg bg-white/6 border border-white/8 flex flex-col justify-between p-2">
+          <div className="w-6 h-6 rounded bg-indigo-400/20" />
+          <div>
+            <div className="w-8 h-1.5 rounded bg-white/20 mb-1" />
+            <div className="w-10 h-1.5 rounded bg-indigo-400/30" />
+          </div>
+        </div>
+      </div>
 
-      {/* Cart badge top-right */}
-      <rect x="274" y="14" width="32" height="22" rx="6" fill="rgba(29,109,240,0.25)" stroke="rgba(29,109,240,0.4)" strokeWidth="1" />
-      <circle cx="298" cy="10" r="7" fill="#1d6df0" />
-      <text x="298" y="14" textAnchor="middle" fill="white" fontSize="8" fontWeight="bold">2</text>
-    </svg>
+      {/* Color swatches */}
+      <div className="absolute bottom-6 left-4 flex gap-1.5">
+        {["bg-purple-400/50", "bg-rose-400/40", "bg-slate-400/40", "bg-amber-400/40"].map((c, i) => (
+          <div key={i} className={cn("w-3 h-3 rounded-full border border-white/10", c)} />
+        ))}
+      </div>
+
+      {/* Cart badge */}
+      <div className="absolute top-4 right-4 opacity-30">
+        <ShoppingCart size={20} className="text-white" />
+        <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-purple-400 text-[6px] flex items-center justify-center text-white font-bold">
+          3
+        </div>
+      </div>
+    </div>
   );
 }
 
-// ── Restaurant (CAIS) ────────────────────────────────────────────────────────
 function RestaurantArt() {
   return (
-    <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <rect width="320" height="200" fill="#0d1117" />
-      {/* Plate */}
-      <circle cx="160" cy="100" r="68" fill="rgba(251,146,60,0.06)" stroke="rgba(251,146,60,0.15)" strokeWidth="1.5" />
-      <circle cx="160" cy="100" r="52" fill="rgba(251,146,60,0.04)" stroke="rgba(251,146,60,0.1)" strokeWidth="1" />
-      {/* Food blobs on plate */}
-      <ellipse cx="148" cy="96" rx="22" ry="14" fill="rgba(234,179,8,0.35)" />
-      <ellipse cx="172" cy="104" rx="18" ry="12" fill="rgba(239,68,68,0.3)" />
-      <ellipse cx="155" cy="110" rx="14" ry="9" fill="rgba(34,197,94,0.35)" />
-      <circle cx="168" cy="90" r="10" fill="rgba(251,146,60,0.4)" />
-      {/* Fork left */}
-      <rect x="72" y="60" width="3" height="80" rx="1.5" fill="rgba(255,255,255,0.2)" />
-      <rect x="67" y="60" width="3" height="28" rx="1.5" fill="rgba(255,255,255,0.2)" />
-      <rect x="77" y="60" width="3" height="28" rx="1.5" fill="rgba(255,255,255,0.2)" />
-      <rect x="72" y="60" width="3" height="4" rx="1" fill="rgba(255,255,255,0.2)" />
-      {/* Knife right */}
-      <rect x="245" y="60" width="3" height="80" rx="1.5" fill="rgba(255,255,255,0.2)" />
-      <path d="M245 60 Q252 68 248 88 L245 88 Z" fill="rgba(255,255,255,0.12)" />
+    <div className="absolute inset-0 bg-gradient-to-br from-[#0a0805] to-[#111008]">
+      {/* Bloom */}
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 w-40 h-24 rounded-full bg-amber-500/12 blur-2xl" />
 
-      {/* Menu card top-left */}
-      <rect x="14" y="16" width="80" height="52" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
-      <rect x="22" y="24" width="50" height="6" rx="3" fill="rgba(251,146,60,0.5)" />
-      <rect x="22" y="34" width="64" height="4" rx="2" fill="rgba(255,255,255,0.08)" />
-      <rect x="22" y="42" width="52" height="4" rx="2" fill="rgba(255,255,255,0.06)" />
-      <rect x="22" y="50" width="58" height="4" rx="2" fill="rgba(255,255,255,0.06)" />
-      <rect x="22" y="58" width="40" height="4" rx="2" fill="rgba(255,255,255,0.04)" />
+      {/* Utensils watermark */}
+      <div className="absolute bottom-4 right-4 opacity-25">
+        <Utensils size={40} className="text-amber-400" />
+      </div>
 
-      {/* Delivery badge top-right */}
-      <rect x="226" y="16" width="80" height="32" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
-      <rect x="234" y="24" width="16" height="16" rx="4" fill="rgba(34,197,94,0.2)" />
-      <rect x="255" y="26" width="42" height="5" rx="2" fill="rgba(255,255,255,0.1)" />
-      <rect x="255" y="34" width="30" height="5" rx="2" fill="rgba(34,197,94,0.3)" />
+      {/* Menu cards */}
+      <div className="absolute top-6 left-4 right-4 flex flex-col gap-2">
+        {[
+          { price: "R$ 87",  h: "h-10" },
+          { price: "R$ 64",  h: "h-9"  },
+          { price: "R$ 189", h: "h-10" },
+        ].map(({ price, h }, i) => (
+          <div
+            key={i}
+            className={cn(
+              h,
+              "flex items-center gap-2 pl-3 pr-3 rounded-r-lg",
+              "border-l-2 border-amber-500/60 bg-white/5"
+            )}
+          >
+            <div className="flex-1">
+              <div className="w-20 h-1.5 rounded bg-white/20 mb-1" />
+              <div className="w-12 h-1.5 rounded bg-white/10" />
+            </div>
+            <span className="text-[9px] text-amber-400/60 font-mono">{price}</span>
+          </div>
+        ))}
+      </div>
 
-      {/* Status chip bottom */}
-      <rect x="108" y="168" width="104" height="22" rx="11" fill="rgba(34,197,94,0.12)" stroke="rgba(34,197,94,0.25)" strokeWidth="1" />
-      <circle cx="122" cy="179" r="4" fill="#22c55e" />
-      <rect x="130" y="174" width="72" height="10" rx="3" fill="rgba(255,255,255,0.1)" />
-    </svg>
-  );
-}
-
-// ── CRM / Nexus ───────────────────────────────────────────────────────────────
-function CrmArt() {
-  const bars = [62, 82, 54, 96, 70, 88, 44];
-  return (
-    <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <rect width="320" height="200" fill="#0d1117" />
-      {/* Sidebar */}
-      <rect x="0" y="0" width="52" height="200" fill="#18213a" />
-      {[0,1,2,3,4].map((i) => (
-        <rect key={i} x="12" y={24 + i * 28} width="28" height="18" rx="5"
-          fill={i === 0 ? "rgba(29,109,240,0.3)" : "rgba(255,255,255,0.04)"} />
-      ))}
-
-      {/* Main panel */}
-      <rect x="60" y="8" width="252" height="184" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-
-      {/* KPI row */}
-      {[0,1,2].map((i) => (
-        <g key={i}>
-          <rect x={68 + i * 84} y="16" width="76" height="40" rx="6" fill="rgba(29,109,240,0.08)" stroke="rgba(29,109,240,0.12)" strokeWidth="1" />
-          <rect x={75 + i * 84} y="23" width="40" height="7" rx="3" fill="rgba(29,109,240,0.4)" />
-          <rect x={75 + i * 84} y="34" width="56" height="14" rx="3" fill="rgba(255,255,255,0.08)" />
-        </g>
-      ))}
-
-      {/* Bar chart */}
-      {bars.map((h, i) => (
-        <rect key={i}
-          x={68 + i * 33} y={128 - h}
-          width="24" height={h}
-          rx="4"
-          fill={i === 4 ? "#1d6df0" : "rgba(29,109,240,0.25)"}
-        />
-      ))}
-      {/* Line chart overlay */}
-      <polyline
-        points={bars.map((h, i) => `${80 + i * 33},${130 - h * 0.52}`).join(" ")}
-        fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round"
-      />
-
-      {/* Mini table */}
-      {[0,1,2].map((i) => (
-        <g key={i}>
-          <rect x="68" y={140 + i * 14} width="236" height="12" rx="3"
-            fill={i % 2 === 0 ? "rgba(255,255,255,0.03)" : "transparent"} />
-          <rect x="72" y={143 + i * 14} width="48" height="6" rx="2" fill="rgba(255,255,255,0.1)" />
-          <rect x="130" y={143 + i * 14} width="32" height="6" rx="2" fill="rgba(34,197,94,0.25)" />
-          <rect x="176" y={143 + i * 14} width="64" height="6" rx="2" fill="rgba(255,255,255,0.06)" />
-          <circle cx="294" cy={146 + i * 14} r="4"
-            fill={["rgba(34,197,94,0.4)","rgba(251,146,60,0.4)","rgba(29,109,240,0.4)"][i]} />
-        </g>
-      ))}
-
-      {/* X axis */}
-      <line x1="68" y1="130" x2="304" y2="130" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-    </svg>
-  );
-}
-
-// ── Booking / Aura ────────────────────────────────────────────────────────────
-function BookingArt() {
-  const days = ["S","T","Q","Q","S"];
-  const slots = [
-    [false, true,  false],
-    [true,  false, true ],
-    [false, false, true ],
-    [true,  true,  false],
-    [false, true,  false],
-  ];
-  return (
-    <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <rect width="320" height="200" fill="#0d1117" />
-
-      {/* Calendar card */}
-      <rect x="24" y="16" width="176" height="168" rx="12" fill="#18213a" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
-
-      {/* Month header */}
-      <rect x="32" y="24" width="80" height="12" rx="4" fill="rgba(29,109,240,0.4)" />
-      <rect x="166" y="26" width="8" height="8" rx="2" fill="rgba(255,255,255,0.1)" />
-      <rect x="152" y="26" width="8" height="8" rx="2" fill="rgba(255,255,255,0.1)" />
-
-      {/* Day headers */}
-      {days.map((d, i) => (
-        <text key={d} x={48 + i * 30} y={54} textAnchor="middle"
-          fill="rgba(255,255,255,0.25)" fontSize="8" fontWeight="600">{d}</text>
-      ))}
-
-      {/* Calendar grid */}
-      {slots.map((row, ri) =>
-        row.map((booked, ci) => (
-          <rect
-            key={`${ri}-${ci}`}
-            x={33 + ci * 54} y={60 + ri * 24}
-            width={46} height={18} rx="5"
-            fill={booked ? "rgba(29,109,240,0.3)" : "rgba(255,255,255,0.03)"}
-            stroke={booked ? "rgba(29,109,240,0.5)" : "rgba(255,255,255,0.04)"}
-            strokeWidth="1"
+      {/* Plate circles */}
+      <div className="absolute bottom-6 left-4 flex gap-3 items-center">
+        {[48, 36, 40].map((s, i) => (
+          <div
+            key={i}
+            style={{ width: s, height: s }}
+            className="rounded-full bg-amber-400/15 border border-amber-400/20"
           />
-        ))
-      )}
-
-      {/* Selected slot highlight */}
-      <rect x="87" y="108" width="46" height="18" rx="5" fill="rgba(29,109,240,0.8)" />
-      <rect x="92" y="113" width="36" height="8" rx="3" fill="rgba(255,255,255,0.4)" />
-
-      {/* Clock legend */}
-      <rect x="32" y="162" width="160" height="14" rx="4" fill="rgba(29,109,240,0.08)" />
-      <rect x="38" y="165" width="60" height="8" rx="3" fill="rgba(29,109,240,0.3)" />
-      <rect x="110" y="165" width="48" height="8" rx="3" fill="rgba(255,255,255,0.08)" />
-
-      {/* Appointment detail card */}
-      <rect x="212" y="16" width="96" height="108" rx="10" fill="#18213a" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
-      <circle cx="236" cy="42" r="14" fill="rgba(29,109,240,0.2)" />
-      <rect x="236" y="36" width="2" height="8" rx="1" fill="rgba(29,109,240,0.7)" />
-      <rect x="234" y="42" width="4" height="2" rx="1" fill="rgba(29,109,240,0.7)" />
-      <rect x="222" y="62" width="60" height="7" rx="3" fill="rgba(255,255,255,0.12)" />
-      <rect x="222" y="73" width="44" height="6" rx="3" fill="rgba(29,109,240,0.3)" />
-      <rect x="222" y="83" width="60" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
-      <rect x="222" y="92" width="48" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
-      <rect x="222" y="108" width="60" height="22" rx="6" fill="rgba(29,109,240,0.8)" />
-
-      {/* Status pills */}
-      <rect x="212" y="134" width="96" height="24" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-      <circle cx="224" cy="146" r="5" fill="#22c55e" fillOpacity="0.7" />
-      <rect x="233" y="142" width="62" height="8" rx="3" fill="rgba(255,255,255,0.08)" />
-
-      <rect x="212" y="164" width="96" height="20" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-      <rect x="220" y="168" width="36" height="8" rx="3" fill="rgba(251,146,60,0.3)" />
-      <rect x="260" y="168" width="40" height="8" rx="3" fill="rgba(255,255,255,0.06)" />
-    </svg>
+        ))}
+      </div>
+    </div>
   );
 }
 
-// ── ORION ERP ────────────────────────────────────────────────────────────────
-function OrionArt() {
-  const wBars = [
-    { x: 56,  w: 40, up: true  },
-    { x: 104, w: 48, up: true  },
-    { x: 160, w: 30, up: false },
-    { x: 198, w: 52, up: true  },
-    { x: 258, w: 24, up: false },
-  ];
+function CrmArt() {
   return (
-    <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-      <rect width="320" height="200" fill="#0d1117" />
+    <div className="absolute inset-0 bg-gradient-to-br from-[#070b14] to-[#040810]">
+      {/* Bloom */}
+      <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-blue-500/10 blur-3xl" />
 
-      {/* Top KPI strip */}
-      {[0,1,2,3].map((i) => (
-        <g key={i}>
-          <rect x={8 + i * 78} y="8" width="70" height="36" rx="7"
-            fill="#18213a" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-          <rect x={14 + i * 78} y="14" width="36" height="5" rx="2"
-            fill="rgba(255,255,255,0.08)" />
-          <rect x={14 + i * 78} y="22" width="50" height="14" rx="3"
-            fill={["rgba(29,109,240,0.3)","rgba(34,197,94,0.3)","rgba(56,189,248,0.3)","rgba(167,139,250,0.3)"][i]} />
-        </g>
-      ))}
+      {/* BarChart watermark */}
+      <div className="absolute bottom-3 right-3 opacity-20">
+        <BarChart3 size={44} className="text-blue-400" />
+      </div>
 
-      {/* Waterfall chart */}
-      <rect x="8" y="50" width="208" height="96" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-      {/* Baseline */}
-      <line x1="16" y1="114" x2="208" y2="114" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-      {wBars.map((b, i) => (
-        <rect
-          key={i}
-          x={b.x - 16} y={b.up ? 114 - b.w : 114}
-          width="28" height={b.w} rx="3"
-          fill={b.up ? "rgba(34,197,94,0.45)" : "rgba(244,63,94,0.45)"}
-        />
-      ))}
-      {/* Balance line */}
-      <polyline
-        points="48,82 96,70 144,86 192,60 240,76"
-        fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round"
-      />
+      {/* KPI card */}
+      <div className="absolute top-5 left-4 bg-white/6 border border-white/8 rounded-lg px-3 py-2">
+        <div className="text-[9px] text-blue-300/60 font-mono mb-0.5">Receita Acum.</div>
+        <div className="text-[11px] text-blue-200/80 font-semibold font-mono">R$ 1.2M</div>
+      </div>
 
-      {/* Right panel: DRE table */}
-      <rect x="222" y="50" width="90" height="96" rx="8" fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-      <rect x="228" y="56" width="78" height="7" rx="3" fill="rgba(255,255,255,0.08)" />
-      {[0,1,2,3,4,5].map((i) => (
-        <g key={i}>
-          <rect x="228" y={68 + i * 12} width="48" height="6" rx="2"
-            fill="rgba(255,255,255,0.06)" />
-          <rect x="282" y={68 + i * 12} width="28" height="6" rx="2"
-            fill={i === 4 ? "rgba(34,197,94,0.3)" : "rgba(255,255,255,0.05)"} />
-        </g>
-      ))}
-      <rect x="228" y="136" width="78" height="8" rx="3" fill="rgba(29,109,240,0.2)" />
+      {/* Second KPI */}
+      <div className="absolute top-5 right-4 bg-white/6 border border-white/8 rounded-lg px-3 py-2">
+        <div className="text-[9px] text-emerald-300/60 font-mono mb-0.5">Fechamentos</div>
+        <div className="text-[11px] text-emerald-200/80 font-semibold font-mono">+48</div>
+      </div>
 
-      {/* Bottom: bank pills */}
-      {["Itaú","Bradesco","Caixa"].map((name, i) => (
-        <g key={name}>
-          <rect x={8 + i * 108} y="152" width="100" height="40" rx="8"
-            fill="#18213a" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-          <rect x={14 + i * 108} y="158" width="32" height="10" rx="3"
-            fill={["rgba(236,112,0,0.3)","rgba(204,0,0,0.3)","rgba(0,92,169,0.3)"][i]} />
-          <rect x={14 + i * 108} y="172" width="60" height="12" rx="3"
-            fill="rgba(255,255,255,0.05)" />
-          <rect x={78 + i * 108} y="174" width="24" height="8" rx="2"
-            fill={["rgba(34,197,94,0.3)","rgba(244,63,94,0.3)","rgba(34,197,94,0.3)"][i]} />
-        </g>
-      ))}
-    </svg>
+      {/* Chart bars */}
+      <div className="absolute bottom-10 left-4 right-4 flex items-end gap-1.5 h-16">
+        {[32, 56, 42, 64, 48, 70, 52].map((h, i) => (
+          <div
+            key={i}
+            style={{ height: `${h}%` }}
+            className={cn(
+              "flex-1 rounded-sm",
+              i === 5 ? "bg-blue-400/60" : "bg-blue-500/25"
+            )}
+          />
+        ))}
+      </div>
+
+      {/* Table rows */}
+      <div className="absolute bottom-4 left-4 right-4 flex flex-col gap-1">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="h-1.5 bg-white/5 rounded" />
+        ))}
+      </div>
+    </div>
   );
 }
 
-// ── Dispatcher ────────────────────────────────────────────────────────────────
+function BookingArt() {
+  const markedSlots = new Set([2, 5, 8, 13, 17]);
+  return (
+    <div className="absolute inset-0 bg-gradient-to-br from-[#08060f] to-[#0a0812]">
+      {/* Bloom */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-28 rounded-full bg-violet-500/12 blur-2xl" />
+
+      {/* Calendar watermark */}
+      <div className="absolute bottom-4 right-4 opacity-20">
+        <Calendar size={40} className="text-violet-400" />
+      </div>
+
+      {/* Calendar header */}
+      <div className="absolute top-5 left-4 right-4">
+        <div className="flex items-center justify-between mb-2.5 px-1">
+          <div className="w-14 h-2 rounded bg-white/20" />
+          <div className="flex gap-1">
+            <div className="w-4 h-4 rounded bg-white/6 border border-white/8" />
+            <div className="w-4 h-4 rounded bg-white/6 border border-white/8" />
+          </div>
+        </div>
+
+        {/* Grid 5×4 */}
+        <div className="grid grid-cols-5 gap-1">
+          {Array.from({ length: 20 }, (_, i) => (
+            <div
+              key={i}
+              className={cn(
+                "h-7 rounded-md flex items-center justify-center",
+                markedSlots.has(i)
+                  ? "bg-violet-500/40 border border-violet-400/30"
+                  : "bg-white/6 border border-white/5"
+              )}
+            >
+              {markedSlots.has(i) && (
+                <div className="w-1 h-1 rounded-full bg-violet-300/70" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Time slot pills */}
+      <div className="absolute bottom-5 left-4 flex gap-1.5">
+        {["09:00", "11:30", "14:00"].map((t) => (
+          <div
+            key={t}
+            className="px-2 py-0.5 rounded-full bg-violet-400/18 border border-violet-400/25"
+          >
+            <span className="text-[9px] text-violet-300/70 font-mono">{t}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function OrionArt() {
+  return (
+    <div className="absolute inset-0 bg-gradient-to-br from-[#030711] to-[#060d1c]">
+      {/* Bloom */}
+      <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-indigo-600/10 blur-3xl" />
+
+      {/* TrendingUp watermark */}
+      <div className="absolute bottom-3 right-3 opacity-20">
+        <TrendingUp size={40} className="text-indigo-400" />
+      </div>
+
+      {/* Sidebar */}
+      <div className="absolute top-0 left-0 bottom-0 w-10 bg-indigo-900/30 border-r border-white/5 flex flex-col items-center py-4 gap-3">
+        <div className="w-5 h-5 rounded bg-indigo-400/30" />
+        {[0, 1, 2, 3].map((i) => (
+          <div key={i} className="w-4 h-4 rounded-sm bg-white/6" />
+        ))}
+      </div>
+
+      {/* KPI strip */}
+      <div className="absolute top-5 left-14 right-4 flex gap-1.5">
+        {[
+          { label: "Receita",  val: "R$ 4.2M", color: "text-indigo-300/70"  },
+          { label: "EBITDA",   val: "18.3%",   color: "text-emerald-300/60" },
+        ].map(({ label, val, color }) => (
+          <div
+            key={label}
+            className="flex-1 bg-white/5 border border-white/8 rounded-lg px-2 py-1.5"
+          >
+            <div className="text-[8px] text-white/30 mb-0.5">{label}</div>
+            <div className={cn("text-[10px] font-mono font-semibold", color)}>{val}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Waterfall bars */}
+      <div className="absolute top-20 left-14 right-4 flex items-end gap-1 h-14">
+        {[55, 75, 40, 65, 50, 80, 35].map((h, i) => (
+          <div
+            key={i}
+            style={{ height: `${h}%` }}
+            className={cn(
+              "flex-1 rounded-sm",
+              i % 3 === 0 ? "bg-indigo-400/40"
+              : i % 3 === 1 ? "bg-emerald-400/30"
+              : "bg-rose-400/25"
+            )}
+          />
+        ))}
+      </div>
+
+      {/* DRE table rows */}
+      <div className="absolute bottom-4 left-14 right-4 flex flex-col gap-1">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="flex gap-2 items-center">
+            <div className="flex-1 h-1.5 bg-white/5 rounded" />
+            <div className="w-8 h-1.5 bg-indigo-400/20 rounded" />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function FallbackArt() {
+  return (
+    <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-card)] to-[var(--bg)] flex items-center justify-center">
+      <Monitor size={32} className="text-[var(--text-subtle)]" aria-hidden="true" />
+    </div>
+  );
+}
+
 const ART_MAP: Record<string, () => React.ReactElement> = {
   ecommerce:  EcommerceArt,
   restaurant: RestaurantArt,
@@ -311,18 +304,13 @@ const ART_MAP: Record<string, () => React.ReactElement> = {
   orion:      OrionArt,
 };
 
-export function DemoPreviewArt({ slug, className }: Props) {
-  const Art = ART_MAP[slug];
-  if (!Art) {
-    // Fallback: generic shimmer
-    return (
-      <div className={className} aria-hidden="true"
-        style={{ background: "linear-gradient(135deg, #18213a 0%, #1d6df015 50%, #18213a 100%)" }} />
-    );
-  }
+/* ─── Main export ────────────────────────────────────────────── */
+
+export function DemoPreviewArt({ demoId, className }: Props) {
+  const ArtComponent = ART_MAP[demoId] ?? FallbackArt;
   return (
-    <div className={className} aria-hidden="true">
-      <Art />
+    <div className={cn("relative w-full h-full overflow-hidden", className)}>
+      <ArtComponent />
     </div>
   );
 }

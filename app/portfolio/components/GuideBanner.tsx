@@ -1,68 +1,85 @@
 "use client";
 
-import { useState } from "react";
-import { X, Zap } from "lucide-react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface Props {
-  demoCount: number;
-}
+const STORAGE_KEY = "portfolio-guide-dismissed";
 
-export function GuideBanner({ demoCount }: Props) {
+export function GuideBanner() {
   const [dismissed, setDismissed] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+      setDismissed(true);
+    }
+  }, []);
+
+  function handleDismiss() {
+    setDismissed(true);
+    localStorage.setItem(STORAGE_KEY, "true");
+  }
+
+  // Avoid hydration mismatch — don't render until we've read localStorage
+  if (!mounted) return null;
 
   return (
     <AnimatePresence>
       {!dismissed && (
         <motion.div
-          initial={{ opacity: 0, y: -8, scale: 0.99 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-          className={cn(
-            "relative flex items-start sm:items-center gap-3 px-4 py-3.5 rounded-xl",
-            "border border-[var(--border-brand)] bg-[var(--primary-haze)]"
-          )}
+          initial={{ opacity: 0, y: -16, height: "auto" }}
+          animate={{ opacity: 1, y: 0, height: "auto" }}
+          exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+          className="overflow-hidden"
         >
-          {/* Icon */}
-          <div className="shrink-0 w-8 h-8 rounded-lg bg-[var(--primary-light)] flex items-center justify-center">
-            <Zap className="w-4 h-4 text-[var(--primary)]" aria-hidden="true" />
-          </div>
-
-          {/* Text */}
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[var(--text)]">
-              Demos ao vivo — não são mockups
-            </p>
-            <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-relaxed">
-              Cada um dos{" "}
-              <span className="text-[var(--primary)] font-medium">{demoCount} demos</span>{" "}
-              é um produto funcional completo. Clique em qualquer card para explorar —
-              navegue, filtre, preencha formulários. Tudo funciona de verdade.
-            </p>
-          </div>
-
-          {/* Chips */}
-          <div className="hidden sm:flex items-center gap-2 shrink-0">
-            {["100% interativo", "Sem login"].map((chip) => (
-              <span
-                key={chip}
-                className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[var(--border-brand)] text-[var(--primary)]"
-              >
-                {chip}
-              </span>
-            ))}
-          </div>
-
-          {/* Dismiss */}
-          <button
-            onClick={() => setDismissed(true)}
-            aria-label="Fechar aviso"
-            className="shrink-0 p-1 rounded-md text-[var(--text-subtle)] hover:text-[var(--text)] hover:bg-[var(--bg-card)] transition-colors"
+          <div
+            className={cn(
+              "w-full flex items-center gap-4 px-5 py-3.5",
+              "bg-[var(--primary-haze)] border border-[var(--border-brand)]",
+              "rounded-[var(--radius-lg)]"
+            )}
           >
-            <X className="w-3.5 h-3.5" />
-          </button>
+            {/* Icon */}
+            <Sparkles
+              size={18}
+              className="shrink-0 text-[var(--primary)]"
+              aria-hidden="true"
+            />
+
+            {/* Text */}
+            <p className="flex-1 min-w-0 text-sm text-[var(--text-muted)] leading-relaxed">
+              Estas são demos interativas de sites reais.{" "}
+              <span className="font-semibold text-[var(--primary)]">
+                Clique em qualquer card para entrar e explorar à vontade.
+              </span>
+            </p>
+
+            {/* Animated arrow hint */}
+            <motion.div
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              aria-hidden="true"
+            >
+              <ChevronRight size={14} className="text-[var(--primary)] shrink-0" />
+            </motion.div>
+
+            {/* Dismiss */}
+            <button
+              onClick={handleDismiss}
+              aria-label="Fechar aviso"
+              className={cn(
+                "shrink-0 p-1.5 rounded-full",
+                "text-[var(--text-muted)] hover:text-[var(--text)]",
+                "hover:bg-[var(--bg-card)] transition-colors"
+              )}
+            >
+              <X size={13} />
+            </button>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

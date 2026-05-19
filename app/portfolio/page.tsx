@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { PortfolioClient } from "./portfolio-client";
 
 export const metadata: Metadata = {
-  title: "Portfolio",
+  title: "Demos — Portfólio",
   description:
-    "Explore our interactive portfolio of premium web applications, SaaS platforms, and digital products. Fully functional demos you can try live.",
+    "Explore demos interativas de sites e aplicações desenvolvidas. Cada projeto é funcional — navegue, filtre e experimente de verdade.",
 };
 
 export default function PortfolioPage() {
