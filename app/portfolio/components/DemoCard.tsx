@@ -48,7 +48,7 @@ export function DemoCard({ demo, index, featured = false }: Props) {
             <DemoPreviewArt demoId={demo.id} className="absolute inset-0" />
 
             {/* Gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-card)] via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
             {/* Category pill — top left */}
             <div className="absolute top-3 left-3">
@@ -82,7 +82,7 @@ export function DemoCard({ demo, index, featured = false }: Props) {
                   <div
                     className={cn(
                       "flex items-center gap-2.5",
-                      "bg-white/95 backdrop-blur-md text-[var(--bg)]",
+                      "bg-white/95 backdrop-blur-md text-gray-900",
                       "font-semibold text-sm rounded-full shadow-xl",
                       featured ? "px-6 py-3" : "px-5 py-2.5"
                     )}
