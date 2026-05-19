@@ -9,11 +9,12 @@ import { DemoPreviewArt } from "./DemoPreviewArt";
 import type { Demo } from "@/types";
 
 interface Props {
-  demo:  Demo;
-  index: number;
+  demo:     Demo;
+  index:    number;
+  featured?: boolean;
 }
 
-export function DemoCard({ demo, index }: Props) {
+export function DemoCard({ demo, index, featured = false }: Props) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -43,7 +44,7 @@ export function DemoCard({ demo, index }: Props) {
           )}
         >
           {/* ── Preview area ──────────────────────────────────────── */}
-          <div className="relative h-52 overflow-hidden">
+          <div className={cn("relative overflow-hidden", featured ? "h-72 sm:h-80" : "h-52")}>
             <DemoPreviewArt demoId={demo.id} className="absolute inset-0" />
 
             {/* Gradient overlay */}
@@ -82,7 +83,8 @@ export function DemoCard({ demo, index }: Props) {
                     className={cn(
                       "flex items-center gap-2.5",
                       "bg-white/95 backdrop-blur-md text-[var(--bg)]",
-                      "font-semibold text-sm px-5 py-2.5 rounded-full shadow-xl"
+                      "font-semibold text-sm rounded-full shadow-xl",
+                      featured ? "px-6 py-3" : "px-5 py-2.5"
                     )}
                   >
                     <Play size={14} className="fill-current" aria-hidden="true" />
@@ -114,8 +116,9 @@ export function DemoCard({ demo, index }: Props) {
             <div className="flex items-start justify-between gap-2 mb-2">
               <h3
                 className={cn(
-                  "font-bold text-[var(--text)] text-[15px] leading-tight",
-                  "group-hover:text-[var(--primary)] transition-colors"
+                  "font-bold text-[var(--text)] leading-tight",
+                  "group-hover:text-[var(--primary)] transition-colors",
+                  featured ? "text-xl sm:text-2xl" : "text-[15px]"
                 )}
               >
                 {demo.title}
@@ -133,13 +136,13 @@ export function DemoCard({ demo, index }: Props) {
             </div>
 
             {/* Description */}
-            <p className="text-[var(--text-muted)] text-[13px] leading-relaxed mb-4 line-clamp-2">
+            <p className={cn("text-[var(--text-muted)] text-[13px] leading-relaxed mb-4", featured ? "line-clamp-3" : "line-clamp-2")}>
               {demo.description}
             </p>
 
             {/* Tags */}
             <div className="flex flex-wrap gap-1.5 mb-4">
-              {demo.tags.slice(0, 4).map((tag) => (
+              {demo.tags.slice(0, featured ? 6 : 4).map((tag) => (
                 <span
                   key={tag}
                   className={cn(
@@ -150,9 +153,9 @@ export function DemoCard({ demo, index }: Props) {
                   {tag}
                 </span>
               ))}
-              {demo.tags.length > 4 && (
+              {demo.tags.length > (featured ? 6 : 4) && (
                 <span className="text-[11px] text-[var(--text-faint)] px-1">
-                  +{demo.tags.length - 4}
+                  +{demo.tags.length - (featured ? 6 : 4)}
                 </span>
               )}
             </div>
@@ -160,14 +163,14 @@ export function DemoCard({ demo, index }: Props) {
             {/* Tech stack + CTA */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 flex-wrap">
-                {demo.techStack.slice(0, 3).map((tech) => (
+                {demo.techStack.slice(0, featured ? 4 : 3).map((tech) => (
                   <span key={tech} className="text-[11px] text-[var(--text-faint)] font-mono">
                     {tech}
                   </span>
                 ))}
-                {demo.techStack.length > 3 && (
+                {demo.techStack.length > (featured ? 4 : 3) && (
                   <span className="text-[11px] text-[var(--text-faint)]">
-                    +{demo.techStack.length - 3}
+                    +{demo.techStack.length - (featured ? 4 : 3)}
                   </span>
                 )}
               </div>
