@@ -5,23 +5,23 @@ import { motion } from "framer-motion";
 const steps = [
   {
     number: "01",
-    title: "Descoberta e Estratégia",
-    description: "Começamos entendendo seus objetivos de negócio, usuários e restrições técnicas. Cada decisão que segue é baseada em pesquisa e pensamento estratégico.",
+    title: "Entender antes de propor",
+    description: "Antes de qualquer orçamento ou protótipo, entendemos o que você está tentando resolver — não só o que você pediu. Uma hora de conversa boa evita semanas de retrabalho.",
   },
   {
     number: "02",
-    title: "Design e Arquitetura",
-    description: "Projetamos o sistema do zero — componentes de UI, modelos de dados, contratos de API. As decisões são tomadas explicitamente, antes de uma linha de código ser escrita.",
+    title: "Decidir o que vai e o que não vai",
+    description: "Definimos telas, fluxos e estrutura de dados antes de codar. Você aprova. Quando o desenvolvimento começa, não há mais dúvida sobre o que está sendo construído.",
   },
   {
     number: "03",
-    title: "Engenharia e Iteração",
-    description: "Construímos em ciclos focados com feedback contínuo. Cada sprint entrega software funcional que você pode ver, testar e responder.",
+    title: "Construir em ciclos curtos",
+    description: "Cada semana tem entrega real — algo que você consegue abrir no navegador e testar. Problema aparece cedo, quando ainda é barato corrigir.",
   },
   {
     number: "04",
-    title: "Entrega e Escala",
-    description: "Entregamos com pipelines de CI/CD, monitoramento e documentação em vigor. Seu produto é construído para crescer — técnica e comercialmente.",
+    title: "Lançar e não sumir",
+    description: "Deploy com CI/CD, monitoramento ativo e documentação que sua equipe consegue ler. O projeto termina, o produto continua rodando.",
   },
 ];
 
@@ -33,19 +33,19 @@ export function Process() {
           {/* Left */}
           <div className="lg:sticky lg:top-28">
             <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">
-              Como Trabalhamos
+              Como um projeto acontece
             </p>
             <h2
               id="process-heading"
               className="text-4xl sm:text-5xl font-black tracking-tight mb-6"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              Processo rigoroso.
+              Sem surpresas
               <br />
-              <span className="gradient-text">Resultados excepcionais.</span>
+              <span className="gradient-text">no meio do caminho.</span>
             </h2>
             <p className="text-[var(--text-muted)] text-lg leading-relaxed max-w-md">
-              Seguimos um processo testado em batalha que elimina ambiguidade, mantém as partes alinhadas e entrega software que funciona — na primeira vez.
+              Projetos travam quando o escopo não está claro. Por isso começamos definindo o que vai ser feito antes de escrever uma linha. Parece óbvio — mas poucos fazem.
             </p>
           </div>
 

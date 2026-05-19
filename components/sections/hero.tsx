@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const fadeUp = {
@@ -37,25 +37,25 @@ export function Hero() {
         <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={0}
           className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-card)] text-xs text-[var(--text-muted)] mb-8"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[var(--primary)]" aria-hidden="true" />
-          Estúdio de engenharia de software premium
+          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" aria-hidden="true" />
+          Disponível para novos projetos
         </motion.div>
 
         <motion.h1 variants={fadeUp} initial="hidden" animate="visible" custom={1}
           className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight leading-[1.05]"
           style={{ fontFamily: "var(--font-outfit)" }}
         >
-          <span className="gradient-text">Experiências de software</span>
+          <span className="gradient-text">Construímos o software</span>
           <br />
-          <span className="text-[var(--text)]">premium e soluções</span>
+          <span className="text-[var(--text)]">que sua empresa vai</span>
           <br />
-          <span className="text-[var(--text)]">digitais excepcionais</span>
+          <span className="text-[var(--text)]">orgulhar de mostrar.</span>
         </motion.h1>
 
         <motion.p variants={fadeUp} initial="hidden" animate="visible" custom={2}
           className="mt-7 text-lg sm:text-xl text-[var(--text-muted)] max-w-2xl mx-auto leading-relaxed"
         >
-          Projetamos e desenvolvemos aplicações web, plataformas SaaS e produtos digitais de nível mundial para empresas que se recusam a ser comuns.
+          Da interface ao backend — entregamos produtos digitais completos com código que não vira dívida técnica, prazo que não vira surpresa e design que os seus usuários realmente entendem.
         </motion.p>
 
         <motion.div variants={fadeUp} initial="hidden" animate="visible" custom={3}
@@ -63,13 +63,13 @@ export function Hero() {
         >
           <Button size="lg" asChild>
             <Link href="/portfolio" className="flex items-center gap-2">
-              Ver Nosso Trabalho
+              Ver as demos
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </Link>
           </Button>
           <Button variant="secondary" size="lg" asChild>
             <a href="mailto:contato@developmentconsulting.io" className="flex items-center gap-2">
-              Iniciar um Projeto
+              Falar com a gente
               <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
             </a>
           </Button>
@@ -79,10 +79,10 @@ export function Hero() {
           className="mt-20 grid grid-cols-2 sm:grid-cols-4 gap-px border border-[var(--border)] rounded-2xl bg-[var(--border)] overflow-hidden"
         >
           {[
-            { label: "Projetos Entregues",    value: "120+" },
-            { label: "Satisfação do Cliente", value: "99%" },
-            { label: "Anos de Excelência",    value: "8+" },
-            { label: "Especialistas",         value: "24" },
+            { label: "Primeira resposta",                    value: "< 48h" },
+            { label: "Projetos concluídos",                  value: "100%" },
+            { label: "Código em produção",                   value: "5+ anos" },
+            { label: "Retrabalho por escopo mal definido",   value: "0" },
           ].map(({ label, value }) => (
             <div key={label} className="bg-[var(--bg-card)] px-8 py-6 text-center">
               <p className="text-3xl font-black gradient-text-primary" style={{ fontFamily: "var(--font-outfit)" }}>{value}</p>

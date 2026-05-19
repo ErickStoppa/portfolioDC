@@ -217,7 +217,7 @@ export const testimonials: Testimonial[] = [
     company: "Meridian Health",
     avatar: "SC",
     content:
-      "A Development Consulting entregou uma plataforma SaaS que superou todas as expectativas. A atenção ao detalhe de UX e performance foi notável — nossos usuários perceberam imediatamente.",
+      "Entregaram o painel completo em 6 semanas. Não precisei pedir revisão nenhuma vez — o que foi combinado veio como combinado. Isso é mais raro do que parece.",
     rating: 5,
   },
   {
@@ -227,7 +227,7 @@ export const testimonials: Testimonial[] = [
     company: "Orbital Systems",
     avatar: "MR",
     content:
-      "Contratamos a equipe para reconstruir nossa arquitetura frontend. Eles transformaram um código legado em um sistema pelo qual nosso time se orgulha. A performance melhorou 3x.",
+      "Pegaram um frontend de 4 anos e refatoraram sem travar o time nem quebrar o que funcionava. Performance subiu 3x, tempo de build caiu pela metade. Sabem o que fazem.",
     rating: 5,
   },
   {
@@ -237,7 +237,7 @@ export const testimonials: Testimonial[] = [
     company: "Strata Commerce",
     avatar: "PN",
     content:
-      "A plataforma de e-commerce que construíram para nós converteu 40% melhor que a solução anterior. Cada micro-interação foi considerada. Trabalho verdadeiramente de classe mundial.",
+      "A loja que tinham antes era lenta e o checkout afastava cliente. Reconstruíram do zero e a taxa de conversão subiu 40%. O detalhe que mais gostei: o carrinho não some quando o usuário volta. Parece pequeno, não é.",
     rating: 5,
   },
 ];

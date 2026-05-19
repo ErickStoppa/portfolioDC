@@ -13,16 +13,15 @@ export function Testimonials() {
       <div className="mx-auto max-w-7xl">
         <div className="text-center max-w-xl mx-auto mb-16">
           <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">
-            Histórias de Clientes
+            O que dizem quem já trabalhou com a gente
           </p>
           <h2
             id="testimonials-heading"
             className="text-4xl sm:text-5xl font-black tracking-tight"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
-            Confiado por líderes de
-            <br />
-            <span className="gradient-text">produto no mundo todo</span>
+            Na prática,{" "}
+            <span className="gradient-text">o que muda.</span>
           </h2>
         </div>
 

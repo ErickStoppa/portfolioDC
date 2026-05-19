@@ -26,19 +26,19 @@ export function CtaBanner() {
           />
 
           <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-4">
-            Pronto para construir?
+            Tem um projeto em mente?
           </p>
           <h2
             id="cta-heading"
             className="text-4xl sm:text-5xl font-black tracking-tight mb-5"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
-            Seu próximo grande produto
+            A gente analisa sua ideia
             <br />
-            <span className="gradient-text">começa aqui</span>
+            <span className="gradient-text">sem compromisso.</span>
           </h2>
           <p className="text-[var(--text-muted)] text-lg max-w-lg mx-auto leading-relaxed mb-10">
-            Fale conosco sobre seu projeto. Respondemos em até 24 horas com uma avaliação honesta e um caminho claro a seguir.
+            Manda um resumo do que você quer construir. Em até 48 horas você recebe uma resposta real — sem template, sem pitch de vendas, sem enrolação.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -47,17 +47,17 @@ export function CtaBanner() {
                 href="mailto:contato@developmentconsulting.io"
                 className="flex items-center gap-2"
               >
-                Iniciar uma Conversa
+                Mandar mensagem
                 <ArrowUpRight className="w-5 h-5" aria-hidden="true" />
               </a>
             </Button>
             <Button variant="secondary" size="xl" asChild>
-              <a href="/portfolio">Explorar Nosso Trabalho</a>
+              <a href="/portfolio">Ver os projetos</a>
             </Button>
           </div>
 
           <p className="mt-8 text-xs text-[var(--text-subtle)]">
-            Sem compromisso. Conselho honesto, sempre.
+            Sem formulário de 10 campos. Só um e-mail.
           </p>
         </motion.div>
       </div>

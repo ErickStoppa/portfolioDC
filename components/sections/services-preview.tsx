@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Globe, Layers, BarChart3, ShoppingBag, Code2, Palette } from "lucide-react";
+import { Globe, Layers, BarChart3, ShoppingBag, Code2, Palette } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -20,12 +20,12 @@ const cardVariants = {
 };
 
 const services = [
-  { icon: "Globe",       title: "Desenvolvimento Web Personalizado",  description: "Aplicações web artesanais criadas para performance, escalabilidade e experiência do usuário excepcional.", category: "Desenvolvimento" },
-  { icon: "Layers",      title: "Plataformas SaaS",                   description: "Produtos SaaS completos com autenticação, cobrança, multi-tenancy e tudo que o enterprise exige.",          category: "Produto" },
-  { icon: "BarChart3",   title: "Dashboards e Analytics",             description: "Dashboards executivos repletos de dados que transformam informações brutas em decisões claras.",              category: "Analytics" },
-  { icon: "ShoppingBag", title: "Soluções de E-commerce",             description: "Lojas virtuais e plataformas de comércio premium projetadas para converter em cada ponto de contato.",       category: "Comércio" },
-  { icon: "Code2",       title: "Arquitetura Frontend",               description: "Design estratégico de sistemas frontend escaláveis e sustentáveis para equipes de qualquer tamanho.",         category: "Arquitetura" },
-  { icon: "Palette",     title: "Sistemas UI/UX",                     description: "Sistemas de design e bibliotecas de componentes abrangentes que garantem consistência em escala.",            category: "Design" },
+  { icon: "Globe",       title: "Desenvolvimento Web Personalizado",  description: "Aplicações web construídas do zero, com foco em velocidade de carregamento, acessibilidade e código que a próxima pessoa consegue entender.", category: "Desenvolvimento" },
+  { icon: "Layers",      title: "Plataformas SaaS",                   description: "Desde a tela de login até o painel de admin — entregamos o produto inteiro, não só a parte bonita.",                                         category: "Produto" },
+  { icon: "BarChart3",   title: "Dashboards e Analytics",             description: "Painéis que mostram o que importa, sem scroll infinito nem gráfico que ninguém sabe ler. Dados fazem sentido quando a visualização é bem feita.", category: "Analytics" },
+  { icon: "ShoppingBag", title: "Soluções de E-commerce",             description: "Lojas que carregam rápido, têm checkout que não espanta o cliente e inventário que não vira planilha manual.",                                 category: "Comércio" },
+  { icon: "Code2",       title: "Arquitetura Frontend",               description: "Estrutura de componentes, design system e padrões de código que fazem a próxima feature levar dias, não semanas.",                              category: "Arquitetura" },
+  { icon: "Palette",     title: "Sistemas UI/UX",                     description: "Interface que o usuário entende sem tutorial, em qualquer tela, em qualquer estado. Testado, não chutado.",                                      category: "Design" },
 ];
 
 export function ServicesPreview() {
@@ -35,19 +35,19 @@ export function ServicesPreview() {
         {/* Header */}
         <div className="max-w-2xl mb-16">
           <p className="text-xs font-semibold text-[var(--primary)] uppercase tracking-widest mb-3">
-            O que Fazemos
+            O que entregamos
           </p>
           <h2
             id="services-heading"
             className="text-4xl sm:text-5xl font-black tracking-tight mb-4"
             style={{ fontFamily: "var(--font-outfit)" }}
           >
-            Criado para empresas que
+            Do zero ao produto —
             <br />
-            <span className="gradient-text-primary">exigem o melhor</span>
+            <span className="gradient-text-primary">sem terceirizar a parte difícil.</span>
           </h2>
           <p className="text-[var(--text-muted)] text-lg leading-relaxed">
-            Somos especialistas em todo o espectro do desenvolvimento de produtos digitais modernos — de interfaces perfeitas a arquiteturas backend escaláveis.
+            Fazemos front, back e design no mesmo time. Sem sub-contratos, sem repasse de responsabilidade. Você fala com quem escreve o código.
           </p>
         </div>
 
@@ -93,10 +93,9 @@ export function ServicesPreview() {
         <div className="mt-8 flex justify-end">
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors duration-150 group focus-visible:outline-none focus-visible:text-[var(--text)]"
+            className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] transition-colors duration-150 focus-visible:outline-none focus-visible:text-[var(--text)]"
           >
-            Ver todos os serviços
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-150" aria-hidden="true" />
+            Como trabalhamos →
           </Link>
         </div>
       </div>

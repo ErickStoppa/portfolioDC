@@ -107,14 +107,14 @@ export function Navbar() {
               )}
             </button>
             <Button variant="secondary" size="sm" asChild>
-              <Link href="/portfolio">Ver Trabalhos</Link>
+              <Link href="/portfolio">Ver Demos</Link>
             </Button>
             <Button size="sm" asChild>
               <a
                 href="mailto:contato@developmentconsulting.io"
                 className="flex items-center gap-1.5"
               >
-                Fale Conosco
+                Falar com a gente
                 <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </Button>
@@ -182,14 +182,14 @@ export function Navbar() {
               })}
               <div className="mt-4 flex flex-col gap-3 pt-4 border-t border-[var(--border)]">
                 <Button variant="secondary" size="lg" asChild className="w-full">
-                  <Link href="/portfolio">Ver Trabalhos</Link>
+                  <Link href="/portfolio">Ver Demos</Link>
                 </Button>
                 <Button size="lg" asChild className="w-full">
                   <a
                     href="mailto:contato@developmentconsulting.io"
                     className="flex items-center justify-center gap-2"
                   >
-                    Fale Conosco
+                    Falar com a gente
                     <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
                   </a>
                 </Button>

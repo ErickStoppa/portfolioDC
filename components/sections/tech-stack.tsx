@@ -7,10 +7,10 @@ export function TechStack() {
   const doubled = [...techStack, ...techStack];
 
   return (
-    <section className="py-20 overflow-hidden border-y border-[var(--border-subtle)]" aria-label="Construído com tecnologia líder de mercado">
+    <section className="py-20 overflow-hidden border-y border-[var(--border-subtle)]" aria-label="A stack que está em produção nos nossos projetos">
       <div className="mx-auto max-w-7xl px-5 lg:px-8 mb-10 text-center">
         <p className="text-xs font-semibold text-[var(--text-subtle)] uppercase tracking-widest">
-          Construído com tecnologia líder de mercado
+          A stack que está em produção nos nossos projetos
         </p>
       </div>
       <div className="relative flex" aria-hidden="true">

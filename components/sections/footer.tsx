@@ -49,7 +49,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
-              Experiências de software premium e soluções digitais para empresas que exigem o melhor.
+              Desenvolvimento web e produto digital — da interface ao backend, com código que dura.
             </p>
             <div className="flex items-center gap-3 mt-6">
               {[
