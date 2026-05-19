@@ -90,7 +90,9 @@ export function KpiSparkCard({
       {/* Row 2 */}
       <div className="flex items-end justify-between gap-2">
         <p className="text-[26px] font-bold text-white tabular-nums leading-none">{value}</p>
-        <Sparkline data={sparkline} color={hex} />
+        <span className="hidden sm:block shrink-0">
+          <Sparkline data={sparkline} color={hex} />
+        </span>
       </div>
 
       {/* Row 3 */}

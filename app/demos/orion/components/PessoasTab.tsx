@@ -164,12 +164,20 @@ export default function PessoasTab({
       {/* SEÇÃO 4: Employee table */}
       <div className="orion-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left" style={{ minWidth: 760 }}>
+          <table className="w-full text-left" style={{ minWidth: 360 }}>
             <thead>
               <tr className="border-b border-[#1a2540]">
-                {["Colaborador","Cargo","Departamento","Status","Admissão","Salário","Performance"].map(col => (
-                  <th key={col} className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]">
-                    {col}
+                {[
+                  { label: "Colaborador" },
+                  { label: "Cargo",        cls: "hidden sm:table-cell" },
+                  { label: "Departamento", cls: "hidden md:table-cell" },
+                  { label: "Status" },
+                  { label: "Admissão",     cls: "hidden lg:table-cell" },
+                  { label: "Salário" },
+                  { label: "Performance" },
+                ].map(({ label, cls }) => (
+                  <th key={label} className={`px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]${cls ? ` ${cls}` : ""}`}>
+                    {label}
                   </th>
                 ))}
               </tr>
@@ -197,9 +205,9 @@ export default function PessoasTab({
                       </div>
                     </td>
                     {/* Cargo */}
-                    <td className="px-4 py-3 text-[10px] text-[#94a3b8]">{e.role}</td>
+                    <td className="px-4 py-3 text-[10px] text-[#94a3b8] hidden sm:table-cell">{e.role}</td>
                     {/* Dept */}
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden md:table-cell">
                       <span className={`orion-badge text-[9px] ${dCfg.bg} ${dCfg.color}`}>{dCfg.label}</span>
                     </td>
                     {/* Status */}
@@ -207,7 +215,7 @@ export default function PessoasTab({
                       <span className={`orion-badge text-[9px] ${sCfg.color} ${sCfg.bg}`}>{sCfg.label}</span>
                     </td>
                     {/* Admission */}
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 hidden lg:table-cell">
                       <p className="text-[10px] font-mono text-[#475569]">
                         {e.admissionDate.split("-").reverse().join("/")}
                       </p>

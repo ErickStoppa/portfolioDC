@@ -162,7 +162,7 @@ export default function AnalyticsTab({ monthlyMetrics, budgetLines, transactions
             <p className="text-[10px] mt-0.5 text-[#475569]">Receitas pagas por categoria</p>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left" style={{ minWidth: 380 }}>
+            <table className="w-full text-left" style={{ minWidth: 320 }}>
               <thead>
                 <tr className="border-b border-[#1a2540]">
                   {["Segmento","Receita","% Total","YoY","Margem Est."].map(c => (
@@ -235,11 +235,19 @@ export default function AnalyticsTab({ monthlyMetrics, budgetLines, transactions
           <h3 className="text-sm font-semibold text-[#cbd5e1]">Sumário Mensal</h3>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-left" style={{ minWidth: 600 }}>
+          <table className="w-full text-left" style={{ minWidth: 360 }}>
             <thead>
               <tr className="border-b border-[#1a2540]">
-                {["Mês","Receita Bruta","Lucro Bruto","EBITDA","Marg. EBITDA","Lucro Líquido","Marg. Líq."].map(col => (
-                  <th key={col} className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]">{col}</th>
+                {[
+                  { label: "Mês" },
+                  { label: "Receita Bruta" },
+                  { label: "Lucro Bruto",  hide: true },
+                  { label: "EBITDA" },
+                  { label: "Marg. EBITDA", hide: true },
+                  { label: "Lucro Líquido" },
+                  { label: "Marg. Líq.",   hide: true },
+                ].map(({ label, hide }) => (
+                  <th key={label} className={`px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]${hide ? " hidden sm:table-cell" : ""}`}>{label}</th>
                 ))}
               </tr>
             </thead>
@@ -253,11 +261,11 @@ export default function AnalyticsTab({ monthlyMetrics, budgetLines, transactions
                       {d.month}/26
                     </td>
                     <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#6366f1]">{formatCurrency(d.revenue)}</td>
-                    <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#22c55e]">{formatCurrency(d.grossProfit)}</td>
+                    <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#22c55e] hidden sm:table-cell">{formatCurrency(d.grossProfit)}</td>
                     <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#38bdf8]">{formatCurrency(d.ebitda)}</td>
-                    <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#38bdf8]">{((d.ebitda/d.revenue)*100).toFixed(1)}%</td>
+                    <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#38bdf8] hidden sm:table-cell">{((d.ebitda/d.revenue)*100).toFixed(1)}%</td>
                     <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#a78bfa]">{formatCurrency(d.netIncome)}</td>
-                    <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#a78bfa]">{((d.netIncome/d.revenue)*100).toFixed(1)}%</td>
+                    <td className="px-4 py-2.5 text-[11px] font-mono tabular-nums text-[#a78bfa] hidden sm:table-cell">{((d.netIncome/d.revenue)*100).toFixed(1)}%</td>
                   </tr>
                 );
               })}

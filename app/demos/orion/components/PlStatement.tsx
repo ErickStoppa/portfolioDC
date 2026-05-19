@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { formatCurrency } from "@/lib/utils";
 import type { PlLine } from "@/data/orion";
 import type { PlFilter } from "../types/orion.types";
@@ -80,6 +81,16 @@ export default function PlStatement({
 }: PlStatementProps) {
   const cols = buildCols(filter, selectedMonth);
 
+  // ── Mobile detection (SSR-safe) ──────────────────────────────────────────────
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const h = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", h);
+    return () => mq.removeEventListener("change", h);
+  }, []);
+
   // locate anchor lines for margin row
   const lb   = lines.find(l => l.key === "lucro_bruto");
   const rl   = lines.find(l => l.key === "receita_liquida");
@@ -90,6 +101,18 @@ export default function PlStatement({
 
   // helper: for "anual" the Total col is last; we want a visual separator
   const isLastColTotal = (ci: number) => (isAnual && ci === cols.length - 1);
+
+  // ── Mobile column hiding: in anual mode show only prev+current month + Total ──
+  const currentMonthIdx = selectedMonth;
+  const prevMonthIdx    = selectedMonth > 0 ? selectedMonth - 1 : 0;
+  const hiddenColIndices: Set<number> = (isAnual && isMobile)
+    ? new Set(cols.map((_, i) => i).filter(i => {
+        const isTotal   = i === cols.length - 1;
+        const isCurrent = i === currentMonthIdx;
+        const isPrev    = i === prevMonthIdx;
+        return !isTotal && !isCurrent && !isPrev;
+      }))
+    : new Set<number>();
 
   return (
     <div className="orion-card overflow-hidden">
@@ -130,8 +153,8 @@ export default function PlStatement({
       )}
 
       {/* ── Table ────────────────────────────────────────────────────────── */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left tabular-nums" style={{ minWidth: isMensal ? 520 : isAnual ? 1040 : 560 }}>
+      <div className="overflow-x-auto -mx-px">
+        <table className="w-full text-left tabular-nums" style={{ minWidth: isMobile ? (isMensal ? 320 : isAnual ? 320 : 360) : (isMensal ? 520 : isAnual ? 1040 : 560) }}>
           <thead>
             <tr className="border-b border-[#1a2540]">
               <th className="px-5 py-2.5 text-[10px] uppercase tracking-wider text-[#475569] font-medium sticky left-0 bg-[#0a1220] z-10">
@@ -142,7 +165,7 @@ export default function PlStatement({
                   key={ci}
                   className={`px-3 py-2.5 text-[10px] uppercase tracking-wider font-medium text-right whitespace-nowrap ${
                     isLastColTotal(ci) ? "text-[#94a3b8] border-l border-[#1a2540]" : "text-[#475569]"
-                  }`}
+                  }${hiddenColIndices.has(ci) ? " hidden" : ""}`}
                 >
                   {col.label}
                 </th>
@@ -196,7 +219,7 @@ export default function PlStatement({
                         key={ci}
                         className={`px-3 py-2.5 text-right font-mono text-[12px] whitespace-nowrap ${
                           isLastColTotal(ci) ? "border-l border-[#1a2540] font-semibold" : ""
-                        }`}
+                        }${hiddenColIndices.has(ci) ? " hidden" : ""}`}
                         style={{
                           color: dc ?? (isTotal ? "#e2e8f0" : line.isNegative ? "#f43f5e" : ci === 0 ? "#94a3b8" : "#475569"),
                           fontWeight: isTotal ? 600 : 400,
@@ -232,12 +255,12 @@ export default function PlStatement({
                         pctVal = mCur - mPrev;
                         const c = pctVal >= 0 ? "#22c55e" : "#f43f5e";
                         return (
-                          <td key={ci} className="px-3 py-2 text-right font-mono text-[11px] whitespace-nowrap italic" style={{ color: c }}>
+                          <td key={ci} className={`px-3 py-2 text-right font-mono text-[11px] whitespace-nowrap italic${hiddenColIndices.has(ci) ? " hidden" : ""}`} style={{ color: c }}>
                             {pctVal > 0 ? "+" : ""}{pctVal.toFixed(1)} pp
                           </td>
                         );
                       } else if (col.kind === "varPct") {
-                        return <td key={ci} className="px-3 py-2 text-right text-[#1a2540] text-[11px]" style={{ color: "#334155" }}>—</td>;
+                        return <td key={ci} className={`px-3 py-2 text-right text-[#1a2540] text-[11px]${hiddenColIndices.has(ci) ? " hidden" : ""}`} style={{ color: "#334155" }}>—</td>;
                       } else {
                         const lbV = col.getValue(lb);
                         const rlV = col.getValue(rl);
@@ -245,7 +268,7 @@ export default function PlStatement({
                         return (
                           <td
                             key={ci}
-                            className={`px-3 py-2 text-right font-mono text-[11px] whitespace-nowrap italic ${isLastColTotal(ci) ? "border-l border-[#1a2540]" : ""}`}
+                            className={`px-3 py-2 text-right font-mono text-[11px] whitespace-nowrap italic ${isLastColTotal(ci) ? "border-l border-[#1a2540]" : ""}${hiddenColIndices.has(ci) ? " hidden" : ""}`}
                             style={{ color: marginColor(pctVal) }}
                           >
                             {pctVal.toFixed(1)}%
@@ -263,6 +286,11 @@ export default function PlStatement({
           </tbody>
         </table>
       </div>
+      {isAnual && (
+        <p className="sm:hidden text-[11px] text-center text-[#475569] py-2 border-t border-[#1a2540]">
+          Exibindo mês atual e anterior · Gire o dispositivo para ver a DRE completa
+        </p>
+      )}
     </div>
   );
 }

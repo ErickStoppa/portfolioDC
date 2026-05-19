@@ -198,21 +198,21 @@ export default function FinanceiroTab({
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left" style={{ minWidth: 780 }}>
+          <table className="w-full text-left" style={{ minWidth: 400 }}>
             <thead>
               <tr className="border-b border-[#1a2540]">
                 {[
-                  { label: "Tipo",              cls: "w-24"  },
-                  { label: "NF-e",              cls: "w-28"  },
-                  { label: "Descrição",          cls: ""      },
-                  { label: "Método",             cls: "w-28"  },
-                  { label: "Vencimento",         cls: "w-28"  },
-                  { label: "Status",             cls: "w-28"  },
-                  { label: "Valor",              cls: "w-32 text-right" },
-                ].map(({ label, cls }) => (
+                  { label: "Tipo",       cls: "w-24"            },
+                  { label: "NF-e",       cls: "w-28",  hide: true },
+                  { label: "Descrição",  cls: ""                },
+                  { label: "Método",     cls: "w-28",  hide: true },
+                  { label: "Vencimento", cls: "w-28"            },
+                  { label: "Status",     cls: "w-28"            },
+                  { label: "Valor",      cls: "w-32 text-right" },
+                ].map(({ label, cls, hide }) => (
                   <th
                     key={label}
-                    className={`px-4 py-3 text-[10px] uppercase tracking-wider text-[#475569] font-medium ${cls}`}
+                    className={`px-4 py-3 text-[10px] uppercase tracking-wider text-[#475569] font-medium ${cls}${hide ? " hidden sm:table-cell" : ""}`}
                   >
                     {label}
                   </th>
@@ -238,16 +238,16 @@ export default function FinanceiroTab({
                       </span>
                     </td>
                     {/* NF-e */}
-                    <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">
+                    <td className="px-4 py-3 text-[10px] font-mono text-[#475569] hidden sm:table-cell">
                       {tx.nfNumber ?? "—"}
                     </td>
                     {/* Descrição + Contraparte */}
                     <td className="px-4 py-3">
                       <p className="text-xs text-[#cbd5e1] leading-snug">{tx.description}</p>
-                      <p className="text-[10px] text-[#475569] mt-0.5">{tx.counterparty}</p>
+                      <p className="hidden sm:block text-[10px] text-[#475569] mt-0.5">{tx.counterparty}</p>
                     </td>
                     {/* Método */}
-                    <td className="px-4 py-3 text-[10px] text-[#94a3b8] capitalize">
+                    <td className="px-4 py-3 text-[10px] text-[#94a3b8] capitalize hidden sm:table-cell">
                       {tx.paymentMethod ?? "—"}
                     </td>
                     {/* Vencimento */}

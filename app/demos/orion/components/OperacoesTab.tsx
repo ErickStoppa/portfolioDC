@@ -264,11 +264,21 @@ export default function OperacoesTab({
           {/* PO table */}
           <div className="orion-card overflow-hidden">
             <div className="overflow-x-auto">
-              <table className="w-full text-left" style={{ minWidth: 780 }}>
+              <table className="w-full text-left" style={{ minWidth: 420 }}>
                 <thead>
                   <tr className="border-b border-[#1a2540]">
-                    {["OC","Fornecedor","Categoria","Itens","Valor","Status","Entrega","Prioridade","Ações"].map(c => (
-                      <th key={c} className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]">{c}</th>
+                    {[
+                      { label: "OC" },
+                      { label: "Fornecedor" },
+                      { label: "Categoria",  hide: "hidden sm:table-cell" },
+                      { label: "Itens",      hide: "hidden sm:table-cell" },
+                      { label: "Valor" },
+                      { label: "Status" },
+                      { label: "Entrega",    hide: "hidden md:table-cell" },
+                      { label: "Prioridade", hide: "hidden md:table-cell" },
+                      { label: "Ações" },
+                    ].map(({ label, hide }) => (
+                      <th key={label} className={`px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]${hide ? ` ${hide}` : ""}`}>{label}</th>
                     ))}
                   </tr>
                 </thead>
@@ -281,23 +291,23 @@ export default function OperacoesTab({
                     const urgColor  = po.priority === "critica" ? "#f43f5e" : "#f59e0b";
                     return (
                       <tr key={po.id} className="orion-table-row">
-                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">{po.id}</td>
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569] max-w-[80px] truncate">{po.id}</td>
                         <td className="px-4 py-3">
                           <p className="text-xs text-[#cbd5e1]">{po.supplierName}</p>
-                          <p className="text-[10px] text-[#475569]">{po.requestedBy}</p>
+                          <p className="hidden sm:block text-[10px] text-[#475569]">{po.requestedBy}</p>
                         </td>
-                        <td className="px-4 py-3 text-[10px] text-[#94a3b8]">{po.category}</td>
-                        <td className="px-4 py-3 text-xs font-mono tabular-nums text-[#94a3b8]">{po.items}</td>
+                        <td className="px-4 py-3 text-[10px] text-[#94a3b8] hidden sm:table-cell">{po.category}</td>
+                        <td className="px-4 py-3 text-xs font-mono tabular-nums text-[#94a3b8] hidden sm:table-cell">{po.items}</td>
                         <td className="px-4 py-3 text-xs font-mono font-semibold tabular-nums text-[#6366f1]">
                           {formatCurrency(po.totalValue)}
                         </td>
                         <td className="px-4 py-3">
                           <span className={`orion-badge text-[9px] ${cfg.color} ${cfg.bg}`}>{cfg.label}</span>
                         </td>
-                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">
+                        <td className="px-4 py-3 text-[10px] font-mono text-[#475569] hidden md:table-cell">
                           {po.expectedDelivery.split("-").reverse().join("/")}
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3 hidden md:table-cell">
                           {isUrgent && (
                             <span className="text-[9px] font-bold px-1.5 py-0.5 rounded capitalize"
                               style={{ backgroundColor: urgColor + "22", color: urgColor }}>

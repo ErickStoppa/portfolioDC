@@ -130,12 +130,19 @@ export default function TesourariaTab({ bankAccounts, cashFlowItems, fxRates, se
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left" style={{ minWidth: 680 }}>
+          <table className="w-full text-left" style={{ minWidth: 320 }}>
             <thead>
               <tr className="border-b border-[#1a2540]">
-                {["Data", "Banco", "Descrição", "Tipo", "Valor", "Saldo Após"].map(col => (
-                  <th key={col} className="px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]">
-                    {col}
+                {[
+                  { label: "Data" },
+                  { label: "Banco",      hide: true },
+                  { label: "Descrição" },
+                  { label: "Tipo" },
+                  { label: "Valor" },
+                  { label: "Saldo Após", hide: true },
+                ].map(({ label, hide }) => (
+                  <th key={label} className={`px-4 py-3 text-[10px] uppercase tracking-wider font-medium text-[#475569]${hide ? " hidden sm:table-cell" : ""}`}>
+                    {label}
                   </th>
                 ))}
               </tr>
@@ -143,10 +150,11 @@ export default function TesourariaTab({ bankAccounts, cashFlowItems, fxRates, se
             <tbody>
               {filteredMoves.map(m => (
                 <tr key={m.id} className="orion-table-row">
-                  <td className="px-4 py-3 text-[10px] font-mono text-[#475569]">
-                    {m.date.split("-").reverse().join("/")}
+                  <td className="px-4 py-3 text-[10px] font-mono text-[#475569] whitespace-nowrap">
+                    <span className="hidden sm:inline">{m.date.split("-").reverse().join("/")}</span>
+                    <span className="sm:hidden">{m.date.slice(5).split("-").reverse().join("/")}</span>
                   </td>
-                  <td className="px-4 py-3 text-xs text-[#94a3b8]">{m.bank}</td>
+                  <td className="px-4 py-3 text-xs text-[#94a3b8] hidden sm:table-cell">{m.bank}</td>
                   <td className="px-4 py-3 text-xs text-[#cbd5e1]">{m.desc}</td>
                   <td className="px-4 py-3">
                     <span
@@ -167,7 +175,7 @@ export default function TesourariaTab({ bankAccounts, cashFlowItems, fxRates, se
                       {m.type === "credito" ? "+" : "−"}{formatCurrency(m.amount)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-[10px] font-mono text-[#475569] tabular-nums">
+                  <td className="px-4 py-3 text-[10px] font-mono text-[#475569] tabular-nums hidden sm:table-cell">
                     {formatCurrency(m.balance)}
                   </td>
                 </tr>
